@@ -1,0 +1,8 @@
+{
+    "global" : {
+        "type" : "scalar"    
+    },
+    "ExplicitConstructor" : {
+    	"warnOnTemplates" : false
+    }
+}

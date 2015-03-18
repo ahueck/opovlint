@@ -1,0 +1,13 @@
+{
+    "global" : {
+        "type" : "scalar"  
+    },
+	"replacement" : {
+		"location" : "/home/ahueck/workspaces/trans",
+		"apply": false
+	},
+	"ExplicitCast" : {
+		"cast" : "reCast",
+		"header" : "recast.h"
+	}
+}
