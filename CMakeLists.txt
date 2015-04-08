@@ -39,9 +39,6 @@ include/core/Configuration.h
 include/core/IFactory.h
 include/core/Module.h
 include/core/Issue.h
-#include/core/Value.h
-#include/core/ValueTraits.h
-#include/core/PropertyMacros.h
 include/core/IssueReporter.h
 include/core/ConsoleReporter.h
 
@@ -94,4 +91,4 @@ target_link_libraries(stdimpl libopov)
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
 target_link_libraries(find-type${EXE_SUFFIX} ${TOOLCHAIN_LINK_LIB} libopov stdimpl)
 
-#add_subdirectory(test)
+add_subdirectory(test)

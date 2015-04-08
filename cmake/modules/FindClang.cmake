@@ -1,44 +1,49 @@
-# Detect CLANG
-IF (NOT LLVM_INCLUDE_DIR OR NOT LLVM_LIB_DIR)
-	message(FATAL_ERROR "No LLVM and Clang support requires LLVM")
-else (NOT LLVM_INCLUDE_DIR OR NOT LLVM_LIB_DIR)
-	MACRO(FIND_AND_ADD_CLANG_LIB _libname_)
-		find_library(CLANG_${_libname_}_LIB ${_libname_} ${LLVM_LIB_DIR} ${CLANG_LIB_DIR})
-		IF (CLANG_${_libname_}_LIB)
-		   set(CLANG_LIBS ${CLANG_LIBS} ${CLANG_${_libname_}_LIB})
-		ENDIF(CLANG_${_libname_}_LIB)
-	ENDMACRO(FIND_AND_ADD_CLANG_LIB)
+# Detect Clang libraries
+#
+# IN: 
+#  - ${LLVM_INCLUDE_DIR}
+#  - ${CLANG_LIB_DIR}
+#
+# OUT:
+#  - ${CLANG_LIBS}: contains all found Clang libraries for linking
+#  - ${CLANG_FOUND}: true if (all) clang libraries were found
+#
+if(NOT LLVM_INCLUDE_DIR OR NOT LLVM_LIB_DIR)
+  message(FATAL_ERROR "No LLVM and Clang directory set.")
+else()  
+  macro(find_and_add_clang_lib _libname_)
+    find_library(CLANG_${_libname_}_LIB ${_libname_} ${LLVM_LIB_DIR} ${CLANG_LIB_DIR})
+    if(CLANG_${_libname_}_LIB)
+      set(CLANG_LIBS ${CLANG_LIBS} ${CLANG_${_libname_}_LIB})
+    else()
+      message(WARNING "Could not find Clang library: " ${_libname_})
+    endif()
+  endmacro()
 
-	set(CLANG_INCLUDE_DIRS ${CLANG_INCLUDE_DIRS} ${LLVM_INCLUDE_DIR})
-	set(CLANG_INCLUDE_DIRS ${CLANG_INCLUDE_DIRS} ${CLANG_INCLUDE_DIR})
+	find_and_add_clang_lib(clangFrontend)
+	find_and_add_clang_lib(clangDriver)
+	find_and_add_clang_lib(clangCodeGen)
+	find_and_add_clang_lib(clangSema)
+	find_and_add_clang_lib(clangChecker)
+	find_and_add_clang_lib(clangAnalysis)
+	find_and_add_clang_lib(clangRewrite)
+	find_and_add_clang_lib(clangAST)
+	find_and_add_clang_lib(clangParse)
+	find_and_add_clang_lib(clangLex)
+	find_and_add_clang_lib(clangBasic)
+	find_and_add_clang_lib(clangARCMigrate)
+	find_and_add_clang_lib(clangEdit)
+	find_and_add_clang_lib(clangFrontendTool)
+	find_and_add_clang_lib(clangRewrite)
+	find_and_add_clang_lib(clangSerialization)
+	find_and_add_clang_lib(clangTooling)
+  find_and_add_clang_lib(clangASTMatchers)
+	find_and_add_clang_lib(clangStaticAnalyzerCheckers)
+	find_and_add_clang_lib(clangStaticAnalyzerCore)
+	find_and_add_clang_lib(clangStaticAnalyzerFrontend)
+	find_and_add_clang_lib(clangSema)
+	find_and_add_clang_lib(clangRewriteCore)
 
-	FIND_AND_ADD_CLANG_LIB(clangFrontend)
-	FIND_AND_ADD_CLANG_LIB(clangDriver)
-	FIND_AND_ADD_CLANG_LIB(clangCodeGen)
-	FIND_AND_ADD_CLANG_LIB(clangSema)
-	FIND_AND_ADD_CLANG_LIB(clangChecker)
-	FIND_AND_ADD_CLANG_LIB(clangAnalysis)
-	FIND_AND_ADD_CLANG_LIB(clangRewrite)
-	FIND_AND_ADD_CLANG_LIB(clangAST)
-	FIND_AND_ADD_CLANG_LIB(clangParse)
-	FIND_AND_ADD_CLANG_LIB(clangLex)
-	FIND_AND_ADD_CLANG_LIB(clangBasic)
-	FIND_AND_ADD_CLANG_LIB(clangARCMigrate)
-	FIND_AND_ADD_CLANG_LIB(clangEdit)
-	FIND_AND_ADD_CLANG_LIB(clangFrontendTool)
-	FIND_AND_ADD_CLANG_LIB(clangRewrite)
-	FIND_AND_ADD_CLANG_LIB(clangSerialization)
-	FIND_AND_ADD_CLANG_LIB(clangTooling)
-  	FIND_AND_ADD_CLANG_LIB(clangASTMatchers) #new
-	FIND_AND_ADD_CLANG_LIB(clangStaticAnalyzerCheckers)
-	FIND_AND_ADD_CLANG_LIB(clangStaticAnalyzerCore)
-	FIND_AND_ADD_CLANG_LIB(clangStaticAnalyzerFrontend)
-	FIND_AND_ADD_CLANG_LIB(clangSema)
-	FIND_AND_ADD_CLANG_LIB(clangRewriteCore)
-
-	# Note that I'm using -Wl,--{start|end}-group around the Clang libs; this is
-	# because there are circular dependencies that make the correct order difficult
-	# to specify and maintain. 
 	#CLANG_LIBS := \
 	#-Wl,--start-group \
 	#-lclangAST \
@@ -62,13 +67,9 @@ else (NOT LLVM_INCLUDE_DIR OR NOT LLVM_LIB_DIR)
 	#-lclangTooling \
 	#-Wl,--end-group
 
-	IF (CLANG_LIBS)
-	  set(CLANG_FOUND TRUE)
-	ENDIF (CLANG_LIBS)
-
-	IF (NOT CLANG_FOUND)
-	  IF (CLANG_FIND_REQUIRED)
-		message(FATAL_ERROR "Could not find Clang.")
-	  ENDIF (CLANG_FIND_REQUIRED)
-	ENDIF (NOT CLANG_FOUND)
-ENDIF (NOT LLVM_INCLUDE_DIR OR NOT LLVM_LIB_DIR)
+  if(CLANG_LIBS)
+    set(CLANG_FOUND TRUE)
+  else()
+    set(CLANG_FOUND FALSE)
+  endif()
+endif()
