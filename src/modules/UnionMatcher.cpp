@@ -58,21 +58,6 @@ void UnionMatcher::run(
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
 	ihandle.addIssue(sm, inv_union, moduleName(), moduleDescription(), message.str());
-	if(is_anon) {
-		const bool remove_union = std::distance(inv_union->field_begin(), inv_union->field_end()) == 1;
-		if(remove_union) {
-			// Highly unlikely to ever happen
-			thandle.addReplacements(trutil::removeNode(sm, inv_union));
-			thandle.addReplacements(trutil::insertNode(sm, fieldDecls.front(), inv_union));
-		} else {
-			for(auto fd : fieldDecls) {
-				thandle.addReplacements(trutil::removeNode(sm, fd));
-				thandle.addReplacements(trutil::insertNode(sm, fd, inv_union));
-			}
-		}
-	} else {
-		thandle.addReplacements(tooling::Replacement(sm, inv_union->getLocStart(), 5, "struct"));
-	}
 }
 
 std::string UnionMatcher::moduleName() {

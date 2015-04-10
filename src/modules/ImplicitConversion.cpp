@@ -51,7 +51,6 @@ void ImplicitConversion::run(
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
 	ihandle.addIssue(sm, expr, moduleName(), moduleDescription());//, message.str());
-	thandle.addReplacements(trutil::castTheExpr(sm, expr, type_s));
 }
 
 std::string ImplicitConversion::moduleName() {

@@ -56,13 +56,6 @@ void ExplicitCast::run(
 	auto& sm = context->getSourceManager();
 	auto& ihandle = context->getIssueHandler();
 	ihandle.addIssue(sm, ecast, moduleName(), moduleDescription());
-	thandle.addReplacements(thandle.getIncludeDirectives()->addAngledInclude(clutil::locOf(sm, e).getBegin(), header_cast));
-	// FIXME improve that part...
-	//thandle.addReplacements(trutil::insertString(sm, e, cast_stmt + "<" + clutil::typeOf(e) + ", " + type_s + ">("));
-	//thandle.addReplacements(trutil::insertString(sm, e, ")", false));
-	thandle.addReplacements(trutil::insertString(sm, e, "TestString\n", true));
-	thandle.addReplacements(trutil::insertString(sm, e, "TestStringBelow??\n", true));
-	thandle.addReplacements(trutil::removeNode(sm, e));
 }
 
 std::string ExplicitCast::moduleName() {

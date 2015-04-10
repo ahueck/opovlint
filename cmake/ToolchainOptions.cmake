@@ -23,12 +23,8 @@ endif()
 
 #setup general compiler options
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-#Ignore the following. Most of it is defined through LLVM_COMPILE_FLAGS
-	#set(COMMON_FLAGS ${COMMON_FLAGS} "-Wall -Wextra -pedantic -Wstrict-prototypes -Wunreachable-code  -Wwrite-strings -Wpointer-arith -Wbad-function-cast -Wcast-align -Wcast-qual")  
-	#set(CXX_ONLY_FLAGS ${CXX_ONLY_FLAGS} " -std=c++11")
-
-	set(CXX_ONLY_FLAGS "${CXX_ONLY_FLAGS} -fno-rtti -fexceptions") # -Wl,-rpath,/home/ahueck/gcc/4.8.3/lib64" Somehow required to make it link!
-	set(TOOLCHAIN_LINK_LIB "${TOOLCHAIN_LINK_LIB}" ) #-Wl,-rpath,/home/ahueck/gcc/4.8.3/lib64
+	set(CXX_ONLY_FLAGS "${CXX_ONLY_FLAGS} -fno-rtti -fexceptions") 
+	#set(TOOLCHAIN_LINK_LIB "${TOOLCHAIN_LINK_LIB}" ) 
 	
 	if(ENABLE_SSE)
 		set(COMMON_FLAGS "${COMMON_FLAGS} -msse4")
@@ -77,14 +73,14 @@ else()
 	set(ALL_CXX_FLAGS ${CMAKE_CXX_FLAGS_DEBUG})
 endif()
 
-message("Build Type: " ${CMAKE_BUILD_TYPE})
-message("Compiler Flags (Modus): " ${ALL_CXX_FLAGS})
-message("Compiler Flags (cmake): " ${CMAKE_CXX_FLAGS})
-message("Found Clang: " ${CLANG_INCLUDE_DIRS})
-message("Found LLVM: " ${LLVM_INCLUDE_DIR})
-message("Clang libs: " ${CLANG_LIBS})
-message("LLVM CXX flags: " ${LLVM_COMPILE_FLAGS})
-message("LLVM LD flags: " ${LLVM_LDFLAGS})
-message("LLVM core libs: " ${LLVM_LIBS_CORE})
-message("LLVM JIT libs: " ${LLVM_LIBS_JIT})
-message("LLVM JIT objs: " ${LLVM_LIBS_JIT_OBJECTS})
+message("Build Type: " "${CMAKE_BUILD_TYPE}")
+message("Compiler Flags (Modus): " "${ALL_CXX_FLAGS}")
+message("Compiler Flags (cmake): " "${CMAKE_CXX_FLAGS}")
+message("Found Clang: " "${CLANG_INCLUDE_DIRS}")
+message("Found LLVM: " "${LLVM_INCLUDE_DIR}")
+message("Clang libs: " "${CLANG_LIBS}")
+message("LLVM CXX flags: " "${LLVM_COMPILE_FLAGS}")
+message("LLVM LD flags: " "${LLVM_LDFLAGS}")
+message("LLVM core libs: " "${LLVM_LIBS_CORE}")
+message("LLVM JIT libs: " "${LLVM_LIBS_JIT}")
+message("LLVM JIT objs: " "${LLVM_LIBS_JIT_OBJECTS}")

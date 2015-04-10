@@ -60,14 +60,6 @@ void ImplicitConditionMatcher::run(
 	auto& thandle = context->getTransformationHandler();
 	auto& sm = context->getSourceManager();
 	ihandle.addIssue(sm, invalid, moduleName(), moduleDescription());
-	thandle.addReplacements(trutil::addExplicitCompare(sm, invalid , type_s));
-	/*
-	if(implicit_cast) {
-		thandle.addReplacements(trutil::addExplicitCompare(sm, implicit_cast , type_s));
-	} else {
-		thandle.addReplacements(trutil::addExplicitCompare(sm, llvm::dyn_cast<UnaryOperator>(unary_op) , type_s));
-	}
-	*/
 }
 
 std::string ImplicitConditionMatcher::moduleName() {
