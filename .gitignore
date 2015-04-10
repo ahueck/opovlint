@@ -28,5 +28,4 @@
 *.app
 
 # Build folder
-build/*.*
-build/test/*.*
+build/*
