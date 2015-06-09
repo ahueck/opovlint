@@ -28,7 +28,7 @@ void AllImplicitConversion::setupOnce(const Configuration* config) {
 }
 
 void AllImplicitConversion::setupMatcher() {
-	StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(constructExpr().bind("conversion"))));
+	StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(constructExpr(unless(temporaryObjectExpr())).bind("conversion"))));
 
 			/*constructExpr(unless(anyOf(
 															hasDeclaration(constructorDecl(isCopyOrMoveCtor()))
