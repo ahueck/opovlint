@@ -29,3 +29,6 @@
 
 # Build folder
 build/*
+
+# bin folder
+bin/*

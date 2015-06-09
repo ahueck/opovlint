@@ -64,6 +64,7 @@ src/modules/ConditionalAssgnMatcher.cpp
 src/modules/ImplicitConversion.cpp
 src/modules/ExplicitConstructor.cpp
 src/modules/AllImplicitConversion.cpp
+src/modules/GlobalScope.cpp
 )
 
 set(PHEADERS
@@ -91,4 +92,4 @@ target_link_libraries(stdimpl libopov)
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
 target_link_libraries(find-type${EXE_SUFFIX} "${TOOLCHAIN_LINK_LIB}" libopov stdimpl)
 
-add_subdirectory(test)
+#add_subdirectory(test)

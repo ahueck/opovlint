@@ -21,6 +21,7 @@
 #include <modules/ConditionalAssgnMatcher.h>
 #include <modules/ExplicitConstructor.h>
 #include <modules/AllImplicitConversion.h>
+ #include <modules/GlobalScope.h>
 
 OpOvApp::OpOvApp(const std::string& config_path) :
 		config_path(config_path) {
@@ -48,12 +49,12 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
-	addModule(new opov::module::ImplicitConditionMatcher());
-	addModule(new opov::module::ExplicitCast());
-	addModule(new opov::module::UnionMatcher());
-	addModule(new opov::module::ImplicitConversion());
+	addModule(new opov::module::GlobalScope());
+	//addModule(new opov::module::ExplicitCast());
+	//addModule(new opov::module::UnionMatcher());
+	//addModule(new opov::module::ImplicitConversion());
 	// ADOL-C only?
-	addModule(new opov::module::ConditionalAssgnMatcher());
+	//addModule(new opov::module::ConditionalAssgnMatcher());
 	// General coding conventions...
 	/*
 	addModule(new opov::module::ExplicitConstructor());

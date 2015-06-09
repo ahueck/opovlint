@@ -81,6 +81,10 @@ AST_MATCHER_P(MaterializeTemporaryExpr, hasTemporary, internal::Matcher<Expr>, I
 	return InnerMatcher.matches(*Node.GetTemporaryExpr(), Finder, Builder);
 }
 
+AST_MATCHER(NestedNameSpecifier, isGlobalNamespace) {
+	return Node.getKind() == NestedNameSpecifier::SpecifierKind::Global;
+}
+
 } // end namespace ast_matchers
 } // end namespace clang
 

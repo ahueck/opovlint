@@ -9,5 +9,8 @@
 	"ExplicitCast" : {
 		"cast" : "reCast",
 		"header" : "recast.h"
+	},
+	"GlobalScope" : {
+        "any_param" : false
 	}
 }
