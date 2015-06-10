@@ -50,7 +50,10 @@ void ImplicitConversion::run(
 	auto& thandle = context->getTransformationHandler();
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
-	ihandle.addIssue(sm, expr, moduleName(), moduleDescription());//, message.str());
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	expr->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
+	ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());//, message.str());
 }
 
 std::string ImplicitConversion::moduleName() {

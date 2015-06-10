@@ -22,6 +22,7 @@
 #include <modules/ExplicitConstructor.h>
 #include <modules/AllImplicitConversion.h>
 #include <modules/GlobalScope.h>
+#include <modules/GlobalScopeT.h>
 
 OpOvApp::OpOvApp(const std::string& config_path) :
 		config_path(config_path) {
@@ -49,13 +50,13 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
-	addModule(new opov::module::GlobalScope());
+	addModule(new opov::module::GlobalScopeT());
 	addModule(new opov::module::ExplicitCast());
 	addModule(new opov::module::UnionMatcher());
 	addModule(new opov::module::ImplicitConversion());
 	addModule(new opov::module::ImplicitConditionMatcher());
 	addModule(new opov::module::AllImplicitConversion());
-	addModule(new opov::module::ExplicitConstructor());
+	//addModule(new opov::module::ExplicitConstructor());
 	addModule(new opov::module::ConditionalAssgnMatcher());
 	// ADOL-C only?
 	//addModule(new opov::module::ConditionalAssgnMatcher());

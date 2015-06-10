@@ -59,7 +59,10 @@ void ImplicitConditionMatcher::run(
 	auto& ihandle = context->getIssueHandler();
 	auto& thandle = context->getTransformationHandler();
 	auto& sm = context->getSourceManager();
-	ihandle.addIssue(sm, invalid, moduleName(), moduleDescription());
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	invalid->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
+	ihandle.addIssue(sm, invalid,s.str(), moduleName(), moduleDescription());
 }
 
 std::string ImplicitConditionMatcher::moduleName() {

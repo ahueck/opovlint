@@ -16,15 +16,15 @@
 
 namespace opov {
 template<typename T>
-void IssueHandler::addIssue(const clang::SourceManager& sm, T node, const std::string& module, const std::string& module_descr, std::string message) {
+void IssueHandler::addIssue(const clang::SourceManager& sm, T node, const std::string& code, const std::string& module, const std::string& module_descr, std::string message) {
 	std::shared_ptr<Issue> issue = std::make_shared<Issue>();
 	auto pos = clutil::posOf(sm, node);
-	std::string node_source = clutil::node2str(sm, node);
+	//std::string node_source = clutil::node2str(sm, node);
 	std::string issue_file = clutil::fileOriginOf(sm, node);
 	issue->setModuleName(module);
 	issue->setModuleDescription(module_descr);
 	issue->setDescription(message);
-	issue->setCode(node_source);
+	issue->setCode(code);
 	issue->setLineStart(std::get<0>(pos));
 	issue->setLineEnd(std::get<1>(pos));
 	issue->setColumnStart(std::get<2>(pos));

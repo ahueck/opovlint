@@ -76,7 +76,7 @@ void ImplicitCondition::run(
 	auto& sm = context->getSourceManager();
 	const auto& invalid_expr = visitor->extractExpr(const_cast<Expr*>(t2));
 	for (auto e : invalid_expr) {
-		ihandle.addIssue(sm, e, moduleName(), moduleDescription());
+		ihandle.addIssue(sm, e, "", moduleName(), moduleDescription());
 	}
 }
 

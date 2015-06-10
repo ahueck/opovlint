@@ -44,7 +44,10 @@ void AllImplicitConversion::run(
 			"conversion");
 	auto& sm = context->getSourceManager();
 	auto& ihandle = context->getIssueHandler();
-	ihandle.addIssue(sm, expr, moduleName(), moduleDescription());
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	expr->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
+	ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());
 }
 
 std::string AllImplicitConversion::moduleName() {

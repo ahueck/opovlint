@@ -57,7 +57,10 @@ void UnionMatcher::run(
 	auto& thandle = context->getTransformationHandler();
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
-	ihandle.addIssue(sm, inv_union, moduleName(), moduleDescription(), message.str());
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	inv_union->print(s, 0);
+	ihandle.addIssue(sm, inv_union,s.str(),moduleName(), moduleDescription(), message.str());
 }
 
 std::string UnionMatcher::moduleName() {

@@ -65,6 +65,7 @@ src/modules/ImplicitConversion.cpp
 src/modules/ExplicitConstructor.cpp
 src/modules/AllImplicitConversion.cpp
 src/modules/GlobalScope.cpp
+src/modules/GlobalScopeT.cpp
 )
 
 set(PHEADERS

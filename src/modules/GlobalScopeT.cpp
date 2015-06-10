@@ -1,11 +1,21 @@
 /*
- * GlobalScope.cpp
+ * GlobalScopeT.cpp
+ *
+ *  Created on: Jun 10, 2015
+ *      Author: ahueck
+ */
+
+
+
+
+/*
+ * GlobalScopeT.cpp
  *
  *  Created on: June 09, 2015
  *      Author: ahueck
  */
 
-#include <modules/GlobalScope.h>
+#include <modules/GlobalScopeT.h>
 #include <core/ClangMatcherExt.h>
 #include <core/ModuleContext.h>
 #include <core/Logger.h>
@@ -22,20 +32,21 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-GlobalScope::GlobalScope() {
+GlobalScopeT::GlobalScopeT() {
 
 }
 
-void GlobalScope::setupOnce(const Configuration* config) {
+void GlobalScopeT::setupOnce(const Configuration* config) {
   config->getValue("global:type", type_s);
 }
 
-void GlobalScope::setupMatcher() {
-  auto declref_matcher = declRefExpr(eachOf(to(functionDecl()), has(nestedNameSpecifier(isGlobalNamespace())))).bind("global");
+void GlobalScopeT::setupMatcher() {
+  auto declref_matcher = //declRefExpr(eachOf(to(functionDecl()), has(nestedNameSpecifier(specifiesNamespace(namespaceDecl(asString("::")))))));//isGlobalNamespace())))).bind("global");
+		  declRefExpr(eachOf(to(functionDecl()), has(nestedNameSpecifier(isGlobalNamespace())))).bind("global");
   this->addMatcher(declref_matcher);
 }
 
-void GlobalScope::run(
+void GlobalScopeT::run(
   const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const Expr* call = result.Nodes.getStmtAs<Expr>("global");
   auto& ihandle = context->getIssueHandler();
@@ -47,15 +58,15 @@ void GlobalScope::run(
   ihandle.addIssue(sm, call, s.str(), moduleName(), moduleDescription());
 }
 
-std::string GlobalScope::moduleName() {
-  return "GlobalScope";
+std::string GlobalScopeT::moduleName() {
+  return "GlobalScopeTypedef";
 }
 
-std::string GlobalScope::moduleDescription() {
-  return "Qualified lookup with ::.";
+std::string GlobalScopeT::moduleDescription() {
+  return "Qualified lookup with :: with scalar typedef.";
 }
 
-GlobalScope::~GlobalScope() {
+GlobalScopeT::~GlobalScopeT() {
 }
 
 } // namespace module

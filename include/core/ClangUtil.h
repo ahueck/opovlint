@@ -97,12 +97,24 @@ inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::Sou
 
 template<typename NODE>
 inline std::string node2str(const clang::SourceManager& sm, NODE expr) {
+
 	auto range = locOf(sm, expr);
 	auto startData = sm.getCharacterData(range.getBegin());
-	const std::string source_code = std::string(startData,
-			sm.getCharacterData(range.getEnd()) - startData);
+	auto endData = sm.getCharacterData(range.getEnd());
+	const std::string source_code = std::string(startData, endData - startData);
 
 	return source_code;
+	/*
+	auto range = locOf(sm, expr);
+	auto p = sm.getDecomposedLoc(range.getBegin());
+	auto pe = sm.getDecomposedLoc(range.getEnd());
+
+	std::string text = clang::Lexer::getSourceText(clang::CharSourceRange::getTokenRange(range), sm, clang::LangOptions(), 0);
+    if (text.at(text.size()-1) == ',')
+        return clang::Lexer::getSourceText(clang::CharSourceRange::getCharRange(range), sm, clang::LangOptions(), 0);
+    return text;
+    */
+
 }
 
 class TypeDeducer: public clang::RecursiveASTVisitor<TypeDeducer> {

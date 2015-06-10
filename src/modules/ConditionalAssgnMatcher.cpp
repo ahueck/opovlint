@@ -42,7 +42,10 @@ void ConditionalAssgnMatcher::run(
 			"condassign");
 	auto& sm = context->getSourceManager();
 	auto& ihandle = context->getIssueHandler();
-	ihandle.addIssue(sm, e, moduleName(), moduleDescription());
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	e->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
+	ihandle.addIssue(sm, e, s.str(), moduleName(), moduleDescription());
 	// Transform to if-else?
 }
 

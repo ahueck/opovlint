@@ -1,12 +1,12 @@
 /*
- * GlobalScope.h
+ * GlobalScopeT.h
  *
  *  Created on: June 09, 2015
  *      Author: ahueck
  */
 
-#ifndef GLOBALSCOPE_H_
-#define GLOBALSCOPE_H_
+#ifndef GLOBALSCOPET_H_
+#define GLOBALSCOPET_H_
 
 #include <core/ASTMatcherModule.h>
 
@@ -14,12 +14,12 @@
 
 namespace opov {
 namespace module {
-class GlobalScope: public opov::ASTMatcherModule {
+class GlobalScopeT: public opov::ASTMatcherModule {
 private:
 	std::string type_s;
 
 public:
-	GlobalScope();
+	GlobalScopeT();
 	virtual void setupOnce(const Configuration* config) override;
 	virtual void setupMatcher() override;
 	virtual void run(
@@ -27,10 +27,10 @@ public:
 					override;
 	virtual std::string moduleName() override;
 	virtual std::string moduleDescription() override;
-	virtual ~GlobalScope();
+	virtual ~GlobalScopeT();
 };
 
 } // namespace module
 } /* namespace opov */
 
-#endif /* GLOBALSCOPE_H_ */
+#endif /* GLOBALSCOPET_H_ */
