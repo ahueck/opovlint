@@ -1,6 +1,6 @@
 {
     "global" : {
-        "type" : "scalar"  
+        "type" : "double"  
     },
 	"replacement" : {
 		"location" : "/home/ahueck/workspaces/trans",
