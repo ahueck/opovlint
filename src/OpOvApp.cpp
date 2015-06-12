@@ -9,6 +9,7 @@
 #include <core/IFactory.h>
 #include <core/JSONConfiguration.h>
 #include <core/ConsoleReporter.h>
+#include <core/CSVReporter.h>
 #include <AnalyzerFactory.h>
 #include <core/Util.h>
 #include <core/IssueHandler.h>
@@ -40,7 +41,7 @@ void OpOvApp::loadConfig() {
 }
 
 void OpOvApp::createReporter() {
-	reporter = opov::util::make_unique<opov::ConsoleReporter>();
+	reporter = opov::util::make_unique<opov::CSVReporter>();
 }
 
 void OpOvApp::createFactory() {
@@ -50,14 +51,14 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
-	addModule(new opov::module::GlobalScopeT());
-	addModule(new opov::module::ExplicitCast());
-	addModule(new opov::module::UnionMatcher());
+	//addModule(new opov::module::GlobalScopeT());
+	//addModule(new opov::module::ExplicitCast());
+	//addModule(new opov::module::UnionMatcher());
 	addModule(new opov::module::ImplicitConversion());
-	addModule(new opov::module::ImplicitConditionMatcher());
-	addModule(new opov::module::AllImplicitConversion());
+	//addModule(new opov::module::ImplicitConditionMatcher());
+	//addModule(new opov::module::AllImplicitConversion());
 	//addModule(new opov::module::ExplicitConstructor());
-	addModule(new opov::module::ConditionalAssgnMatcher());
+	//addModule(new opov::module::ConditionalAssgnMatcher());
 	// ADOL-C only?
 	//addModule(new opov::module::ConditionalAssgnMatcher());
 	// General coding conventions...

@@ -17,7 +17,7 @@ src/core/ASTMatcherModule.cpp
 src/core/AbstractModuleConsumer.cpp
 src/core/AbstractFactory.cpp
 src/core/ConsoleReporter.cpp
-
+src/core/CSVReporter.cpp
 src/core/JSONConfiguration.cpp
 
 include/external/IncludeDirectives.cpp

@@ -42,7 +42,7 @@ void GlobalScopeT::setupOnce(const Configuration* config) {
 
 void GlobalScopeT::setupMatcher() {
   auto declref_matcher = //declRefExpr(eachOf(to(functionDecl()), has(nestedNameSpecifier(specifiesNamespace(namespaceDecl(asString("::")))))));//isGlobalNamespace())))).bind("global");
-		  declRefExpr(eachOf(to(functionDecl()), has(nestedNameSpecifier(isGlobalNamespace())))).bind("global");
+		  declRefExpr(eachOf(to(functionDecl(hasAnyParameter(isTypedef(type_s)))), has(nestedNameSpecifier(isGlobalNamespace())))).bind("global");
   this->addMatcher(declref_matcher);
 }
 

@@ -32,7 +32,7 @@ void ImplicitConversion::setupOnce(const Configuration* config) {
 
 void ImplicitConversion::setupMatcher() {
 	StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(
-										constructExpr(hasImplicitConversion(type_s)).bind("conversion"))));
+										constructExpr(hasImplicitConversion(type_s), unless(temporaryObjectExpr())).bind("conversion"))));
 	/*constructExpr(
 			unless(hasParent(varDecl())) // TODO remove varDecl req.?
 					, hasImplicitConversion(type_s)).bind("conversion");
@@ -53,7 +53,10 @@ void ImplicitConversion::run(
 	std::string exprStr;
 	llvm::raw_string_ostream s(exprStr);
 	expr->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());//, message.str());
+	LOG_MSG("Code: " << std::string(s.str()));
+	expr->dump();
+	LOG_MSG("########################");
+	//ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());//, message.str());
 }
 
 std::string ImplicitConversion::moduleName() {

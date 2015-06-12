@@ -74,7 +74,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db,
 		executor->setModule(module);
 		int sig = tool.run(actionFactory.get());
 		if(sig == 1) {
-			LOG_ERROR("Module '" << module->moduleName() << "' failed.");
+			/*LOG_ERROR("Module '" << module->moduleName() << "' failed.");*/
 			//return sig;
 		}
 	}
