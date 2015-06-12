@@ -1,16 +1,5 @@
 {
     "global" : {
         "type" : "double"  
-    },
-	"replacement" : {
-		"location" : "/home/ahueck/workspaces/trans",
-		"apply": false
-	},
-	"ExplicitCast" : {
-		"cast" : "reCast",
-		"header" : "recast.h"
-	},
-	"GlobalScope" : {
-        "any_param" : false
-	}
+    }
 }
