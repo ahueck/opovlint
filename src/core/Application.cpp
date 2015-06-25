@@ -63,7 +63,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db,
 	std::string replacement_loc;
 	bool apply_replacements;
 	config->getValue("replacement:location", replacement_loc);
-	config->getValue("replacement:apply", apply_replacements);
+	config->getValue("replacement:apply", apply_replacements);	
 	int sig = 0;
 
 	if(!replacementHandler.findClangApplyReplacements("")) {
@@ -81,7 +81,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db,
 
 	reporter->addIssues(ihandler->getAllIssues());
 	ihandler->clear();
-
+/*
 	replacementHandler.setDestinationDir(replacement_loc);
 	if(!replacementHandler.serializeReplacements(thandler->getAllReplacements())) {
 		LOG_DEBUG("Failed to serialize replacements");
@@ -92,7 +92,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db,
 		}
 	}
 	thandler->getAllReplacements().clear();
-
+*/
 	return sig;
 }
 
