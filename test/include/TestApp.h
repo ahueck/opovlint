@@ -11,10 +11,10 @@
 #include <core/Application.h>
 #include <core/Util.h>
 #include <core/IFactory.h>
-#include <core/JSONConfiguration.h>
+#include <core/configuration/JSONConfiguration.h>
 #include <AnalyzerFactory.h>
-#include <core/IssueHandler.h>
-#include <core/TransformationHandler.h>
+#include <core/issue/IssueHandler.h>
+#include <core/transformation/TransformationHandler.h>
 #include "MockReporter.h"
 
 

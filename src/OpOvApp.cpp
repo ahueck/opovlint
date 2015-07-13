@@ -7,13 +7,13 @@
 
 #include "OpOvApp.h"
 #include <core/IFactory.h>
-#include <core/JSONConfiguration.h>
-#include <core/ConsoleReporter.h>
-#include <core/CSVReporter.h>
+#include <core/configuration/JSONConfiguration.h>
+#include <core/reporting/ConsoleReporter.h>
+#include <core/reporting/CSVReporter.h>
 #include <AnalyzerFactory.h>
 #include <core/Util.h>
-#include <core/IssueHandler.h>
-#include <core/TransformationHandler.h>
+#include <core/issue/IssueHandler.h>
+#include <core/transformation/TransformationHandler.h>
 #include <modules/ImplicitCondition.h>
 #include <modules/ExplicitCast.h>
 #include <modules/ImplicitConversion.h>

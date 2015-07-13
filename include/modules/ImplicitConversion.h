@@ -8,7 +8,7 @@
 #ifndef IMPLICITCONVERSION_H_
 #define IMPLICITCONVERSION_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <string>
 //#include <memory>

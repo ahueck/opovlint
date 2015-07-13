@@ -7,12 +7,12 @@
 
 #include <modules/ConditionalAssgnMatcher.h>
 #include <core/ClangMatcherExt.h>
-#include <core/ModuleContext.h>
+#include <core/module/ModuleContext.h>
 #include <core/Logger.h>
 #include <core/ClangUtil.h>
 #include <core/Util.h>
-#include <core/Configuration.h>
-#include <core/IssueHandler.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
 //#include <modules/ConditionalAssgnVisitor.h>
 
 namespace opov {

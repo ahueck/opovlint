@@ -8,7 +8,7 @@
 #ifndef ISSUEHANDLER_HPP_
 #define ISSUEHANDLER_HPP_
 
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 #include <core/ClangUtil.h>
 #include <clang/Basic/SourceManager.h>
 

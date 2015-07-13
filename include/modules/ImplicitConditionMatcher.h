@@ -8,7 +8,7 @@
 #ifndef IMPLICITCONDITIONMATCHER_H_
 #define IMPLICITCONDITIONMATCHER_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <string>
 

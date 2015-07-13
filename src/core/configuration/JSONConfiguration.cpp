@@ -5,7 +5,7 @@
  *      Author: ahueck
  */
 
-#include <core/JSONConfiguration.h>
+#include <core/configuration/JSONConfiguration.h>
 
 #include <fstream>
 

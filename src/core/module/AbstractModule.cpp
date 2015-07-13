@@ -5,10 +5,10 @@
  *      Author: ahueck
  */
 
-#include <core/AbstractModule.h>
-#include <core/ModuleContext.h>
-#include <core/Configuration.h>
-#include <core/Issue.h>
+#include <core/module/AbstractModule.h>
+#include <core/module/ModuleContext.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/Issue.h>
 #include <core/ClangUtil.h>
 
 #include <clang/AST/Stmt.h>

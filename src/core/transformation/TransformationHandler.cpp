@@ -5,7 +5,7 @@
  *      Author: ahueck
  */
 
-#include <core/TransformationHandler.h>
+#include <core/transformation/TransformationHandler.h>
 #include <core/Logger.h>
 #include <clang/Tooling/Refactoring.h>
 

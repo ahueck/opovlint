@@ -5,7 +5,7 @@
  *      Author: ahueck
  */
 
-#include <core/IssueHandler.h>
+#include <core/issue/IssueHandler.h>
 
 namespace opov {
 

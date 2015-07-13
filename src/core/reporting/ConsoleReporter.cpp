@@ -5,9 +5,9 @@
  *      Author: ahueck
  */
 
-#include <core/ConsoleReporter.h>
+#include <core/reporting/ConsoleReporter.h>
 #include <core/Logger.h>
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 
 namespace opov {
 ConsoleReporter::ConsoleReporter() {

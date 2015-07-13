@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#include <core/IssueReporter.h>
-#include <core/Issue.h>
+#include <core/reporting/IssueReporter.h>
+#include <core/issue/Issue.h>
 
 namespace opov {
 

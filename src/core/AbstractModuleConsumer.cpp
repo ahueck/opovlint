@@ -7,9 +7,9 @@
 
 #include <core/AbstractModuleConsumer.h>
 #include <core/Logger.h>
-#include <core/Configuration.h>
-#include <core/Module.h>
-#include <core/ModuleContext.h>
+#include <core/configuration/Configuration.h>
+#include <core/module/Module.h>
+#include <core/module/ModuleContext.h>
 
 namespace opov {
 

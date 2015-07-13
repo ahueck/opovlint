@@ -8,7 +8,7 @@
 #ifndef IMPLICITCONDITION_H_
 #define IMPLICITCONDITION_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <memory>
 #include <vector>

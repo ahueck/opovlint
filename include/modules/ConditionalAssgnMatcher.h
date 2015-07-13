@@ -8,7 +8,7 @@
 #ifndef CONDITIONALASSGNMATCHER_H_
 #define CONDITIONALASSGNMATCHER_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <string>
 //#include <memory>

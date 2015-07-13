@@ -8,7 +8,7 @@
 #ifndef GLOBALSCOPET_H_
 #define GLOBALSCOPET_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <string>
 

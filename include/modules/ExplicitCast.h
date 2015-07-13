@@ -8,7 +8,7 @@
 #ifndef EXPLICITCAST_H_
 #define EXPLICITCAST_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <string>
 //#include <memory>

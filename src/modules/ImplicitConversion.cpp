@@ -7,14 +7,14 @@
 
 #include <modules/ImplicitConversion.h>
 #include <core/ClangMatcherExt.h>
-#include <core/ModuleContext.h>
+#include <core/module/ModuleContext.h>
 #include <core/Logger.h>
 #include <core/ClangUtil.h>
 #include <core/Util.h>
-#include <core/Configuration.h>
-#include <core/IssueHandler.h>
-#include <core/TransformationHandler.h>
-#include <core/TransformationUtil.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/transformation/TransformationHandler.h>
+#include <core/transformation/TransformationUtil.h>
 //#include <modules/ExplicitCastVisitor.h>
 
 namespace opov {
@@ -53,10 +53,7 @@ void ImplicitConversion::run(
 	std::string exprStr;
 	llvm::raw_string_ostream s(exprStr);
 	expr->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	LOG_MSG("Code: " << std::string(s.str()));
-	expr->dump();
-	LOG_MSG("########################");
-	//ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());//, message.str());
+	ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());//, message.str());
 }
 
 std::string ImplicitConversion::moduleName() {

@@ -5,7 +5,7 @@
  *      Author: ahueck
  */
 #include <core/Logger.h>
-#include <core/ModuleContext.h>
+#include <core/module/ModuleContext.h>
 #include <ModuleConsumer.h>
 
 namespace opov {

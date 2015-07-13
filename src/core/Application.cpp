@@ -7,12 +7,12 @@
 
 #include <core/Application.h>
 #include <core/IFactory.h>
-#include <core/Module.h>
-#include <core/Configuration.h>
-#include <core/IssueReporter.h>
+#include <core/module/Module.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/reporting/IssueReporter.h>
 #include <core/Logger.h>
-#include <core/IssueHandler.h>
-#include <core/TransformationHandler.h>
+#include <core/transformation/TransformationHandler.h>
 #include <core/Util.h>
 
 #include <external/ReplacementHandling.h>

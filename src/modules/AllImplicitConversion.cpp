@@ -9,9 +9,9 @@
 
 #include <core/ClangMatcherExt.h>
 #include <core/ClangUtil.h>
-#include <core/Configuration.h>
-#include <core/IssueHandler.h>
-#include <core/ModuleContext.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/module/ModuleContext.h>
 
 namespace opov {
 namespace module {

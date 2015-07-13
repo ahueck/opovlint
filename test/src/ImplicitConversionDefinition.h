@@ -8,7 +8,7 @@
 #ifndef IMPLICITCONVERSIONDEFINITION_H_
 #define IMPLICITCONVERSIONDEFINITION_H_
 
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 
 #include <MockReporter.h>
 #include <TestApp.h>

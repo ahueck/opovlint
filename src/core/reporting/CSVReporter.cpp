@@ -7,9 +7,9 @@
 
 
 
-#include <core/CSVReporter.h>
+#include <core/reporting/CSVReporter.h>
 #include <core/Logger.h>
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 #include <sstream>
 
 namespace opov {

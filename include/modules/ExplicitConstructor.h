@@ -8,7 +8,7 @@
 #ifndef EXPLICITCONSTRUCTOR_H_
 #define EXPLICITCONSTRUCTOR_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 namespace opov {
 namespace module {

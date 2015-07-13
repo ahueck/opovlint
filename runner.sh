@@ -1,6 +1,6 @@
 #!/bin/bash
 
-debug=1
+debug=0
 
 function verify() {
     if [ $debug -eq 1 ] ; then
@@ -15,7 +15,7 @@ verify system
 verify union_matcher
 verify implicitconversion
 verify implicitcond_matcher
-verify implicitcond
+#verify implicitcond
 verify explicitcast
 verify conditionalassgn
 verify explicitconstructor

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#include <core/ASTMatcherModule.h>
-#include <core/ModuleContext.h>
+#include <core/module/ASTMatcherModule.h>
+#include <core/module/ModuleContext.h>
 
 namespace opov {
 

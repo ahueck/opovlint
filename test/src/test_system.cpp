@@ -9,8 +9,8 @@
 
 #include <core/ClangUtil.h>
 #include <core/Util.h>
-#include <core/ASTMatcherModule.h>
-#include <core/JSONConfiguration.h>
+#include <core/module/ASTMatcherModule.h>
+#include <core/configuration/JSONConfiguration.h>
 #include <modules/ExplicitCast.h>
 
 #include <string>

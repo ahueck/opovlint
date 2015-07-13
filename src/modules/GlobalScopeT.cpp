@@ -17,14 +17,13 @@
 
 #include <modules/GlobalScopeT.h>
 #include <core/ClangMatcherExt.h>
-#include <core/ModuleContext.h>
+#include <core/module/ModuleContext.h>
 #include <core/Logger.h>
 #include <core/ClangUtil.h>
-#include <core/IssueHandler.h>
-#include <core/IssueHandler.h>
-#include <core/TransformationHandler.h>
-#include <core/TransformationUtil.h>
-#include <core/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/transformation/TransformationHandler.h>
+#include <core/transformation/TransformationUtil.h>
+#include <core/configuration/Configuration.h>
 
 namespace opov {
 namespace module {

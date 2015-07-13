@@ -5,12 +5,12 @@
  *      Author: ahueck
  */
 
-#include <core/ModuleContext.h>
+#include <core/module/ModuleContext.h>
 
-#include <core/IssueHandler.h>
-#include <core/TransformationHandler.h>
-#include <core/Issue.h>
-#include <core/IssueReporter.h>
+#include <core/issue/Issue.h>
+#include <core/issue/IssueHandler.h>
+#include <core/reporting/IssueReporter.h>
+#include <core/transformation/TransformationHandler.h>
 
 #include <clang/AST/ASTContext.h>
 #include <clang/Basic/SourceManager.h>

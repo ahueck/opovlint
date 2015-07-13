@@ -6,9 +6,9 @@
  */
 
 #include <core/Logger.h>
-#include <core/ModuleContext.h>
-#include <core/Configuration.h>
-#include <core/IssueReporter.h>
+#include <core/module/ModuleContext.h>
+#include <core/configuration/Configuration.h>
+#include <core/reporting/IssueReporter.h>
 #include <AnalyzerFactory.h>
 #include <ModuleConsumer.h>
 

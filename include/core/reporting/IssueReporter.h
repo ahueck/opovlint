@@ -8,7 +8,7 @@
 #ifndef ISSUEREPORTER_H_
 #define ISSUEREPORTER_H_
 
-#include "IssueHandlerStruct.h"
+#include "../issue/IssueHandlerStruct.h"
 #include <vector>
 #include <string>
 

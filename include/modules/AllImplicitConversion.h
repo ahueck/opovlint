@@ -8,7 +8,7 @@
 #ifndef ALLIMPLICITCONVERSION_H_
 #define ALLIMPLICITCONVERSION_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 namespace opov {
 namespace module {
