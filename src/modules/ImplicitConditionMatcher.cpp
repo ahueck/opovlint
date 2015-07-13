@@ -6,13 +6,12 @@
  */
 
 #include <modules/ImplicitConditionMatcher.h>
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
+#include <core/utility/ClangUtil.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/transformation/TransformationUtil.h>
 #include <core/configuration/Configuration.h>
 
 namespace opov {
@@ -55,13 +54,11 @@ void ImplicitConditionMatcher::run(
 	const Expr* implicit_cast = result.Nodes.getStmtAs<Expr>("implicit");
 	const Expr* unary_op = result.Nodes.getStmtAs<Expr>("unary");
 	const Expr* invalid = !implicit_cast ? unary_op : implicit_cast;
+
 	auto& ihandle = context->getIssueHandler();
-	auto& thandle = context->getTransformationHandler();
 	auto& sm = context->getSourceManager();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	invalid->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	ihandle.addIssue(sm, invalid,s.str(), moduleName(), moduleDescription());
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, invalid, moduleName(), moduleDescription());
 }
 
 std::string ImplicitConditionMatcher::moduleName() {

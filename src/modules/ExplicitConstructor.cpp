@@ -7,7 +7,7 @@
 
 #include <modules/ExplicitConstructor.h>
 
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
@@ -60,12 +60,11 @@ void ExplicitConstructor::run(
 			|| ctor->getMinRequiredArguments() > 1) {
 		return;
 	}
+
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	ctor->print(s, 0);
-	ihandle.addIssue(sm, ctor, s.str(), moduleName(), moduleDescription());
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, ctor, moduleName(), moduleDescription());
 }
 
 std::string ExplicitConstructor::moduleName() {

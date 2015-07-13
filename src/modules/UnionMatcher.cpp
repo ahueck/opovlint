@@ -7,14 +7,13 @@
 
 #include <modules/UnionMatcher.h>
 #include <modules/FieldDeclCollector.h>
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
-#include <core/Util.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/transformation/TransformationUtil.h>
 #include <core/configuration/Configuration.h>
 
 namespace opov {
@@ -54,13 +53,10 @@ void UnionMatcher::run(
 			<< " fieldDecl violate the convention.";
 	LOG_DEBUG(message.str());
 
-	auto& thandle = context->getTransformationHandler();
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	inv_union->print(s, 0);
-	ihandle.addIssue(sm, inv_union,s.str(),moduleName(), moduleDescription(), message.str());
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, inv_union, moduleName(), moduleDescription(), message.str());
 }
 
 std::string UnionMatcher::moduleName() {

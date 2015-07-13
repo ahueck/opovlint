@@ -6,11 +6,11 @@
  */
 
 #include <modules/ConditionalAssgnMatcher.h>
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
-#include <core/Util.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 //#include <modules/ConditionalAssgnVisitor.h>
@@ -40,13 +40,11 @@ void ConditionalAssgnMatcher::run(
 		const clang::ast_matchers::MatchFinder::MatchResult& result) {
 	const ConditionalOperator* e = result.Nodes.getStmtAs<ConditionalOperator>(
 			"condassign");
+
 	auto& sm = context->getSourceManager();
 	auto& ihandle = context->getIssueHandler();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	e->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	ihandle.addIssue(sm, e, s.str(), moduleName(), moduleDescription());
-	// Transform to if-else?
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, e, moduleName(), moduleDescription());
 }
 
 std::string ConditionalAssgnMatcher::moduleName() {

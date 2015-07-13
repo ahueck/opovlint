@@ -8,7 +8,7 @@
 #ifndef TRANSFORMATIONUTIL_H_
 #define TRANSFORMATIONUTIL_H_
 
-#include <core/ClangUtil.h>
+#include <core/utility/ClangUtil.h>
 
 #include <clang/Tooling/Refactoring.h>
 

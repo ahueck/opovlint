@@ -16,13 +16,12 @@
  */
 
 #include <modules/GlobalScopeT.h>
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
+#include <core/utility/ClangUtil.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/transformation/TransformationUtil.h>
 #include <core/configuration/Configuration.h>
 
 namespace opov {
@@ -48,13 +47,11 @@ void GlobalScopeT::setupMatcher() {
 void GlobalScopeT::run(
   const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const Expr* call = result.Nodes.getStmtAs<Expr>("global");
+
   auto& ihandle = context->getIssueHandler();
-  auto& thandle = context->getTransformationHandler();
   auto& sm = context->getSourceManager();
-  std::string exprStr;
-  llvm::raw_string_ostream s(exprStr);
-  call->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-  ihandle.addIssue(sm, call, s.str(), moduleName(), moduleDescription());
+  auto& ac = context->getASTContext();
+  ihandle.addIssue(sm, ac, call, moduleName(), moduleDescription());
 }
 
 std::string GlobalScopeT::moduleName() {

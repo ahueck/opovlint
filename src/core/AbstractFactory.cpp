@@ -10,7 +10,7 @@
 #include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/reporting/IssueReporter.h>
-#include <core/Util.h>
+#include <core/utility/Util.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
 #include <clang/Frontend/CompilerInstance.h>

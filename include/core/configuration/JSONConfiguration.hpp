@@ -8,7 +8,7 @@
 #ifndef JSONPROPERTY_HPP_
 #define JSONPROPERTY_HPP_
 
-#include <core/Util.h>
+#include <core/utility/Util.h>
 
 namespace opov {
 

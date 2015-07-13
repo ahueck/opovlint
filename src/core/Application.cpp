@@ -13,7 +13,7 @@
 #include <core/reporting/IssueReporter.h>
 #include <core/Logger.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/Util.h>
+#include <core/utility/Util.h>
 
 #include <external/ReplacementHandling.h>
 

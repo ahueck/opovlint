@@ -6,12 +6,11 @@
  */
 
 #include <modules/ExplicitCast.h>
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
-#include <core/Util.h>
-#include <core/transformation/TransformationUtil.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 #include <core/transformation/TransformationHandler.h>
 #include <modules/ExplicitCastVisitor.h>
 #include <core/issue/IssueHandler.h>
@@ -51,13 +50,10 @@ void ExplicitCast::run(
 	//LOG_DEBUG("Found a potential cast node: " << clutil::node2str(e, context->getSourceManager()));
 	auto ecast = const_cast<ExplicitCastExpr*>(e);
 
-	auto& thandle = context->getTransformationHandler();
 	auto& sm = context->getSourceManager();
 	auto& ihandle = context->getIssueHandler();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	e->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	ihandle.addIssue(sm, ecast, s.str(), moduleName(), moduleDescription());
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, ecast, moduleName(), moduleDescription());
 }
 
 std::string ExplicitCast::moduleName() {

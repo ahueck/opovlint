@@ -7,8 +7,8 @@
 
 #include <modules/AllImplicitConversion.h>
 
-#include <core/ClangMatcherExt.h>
-#include <core/ClangUtil.h>
+#include <core/utility/ClangMatcherExt.h>
+#include <core/utility/ClangUtil.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
@@ -42,12 +42,11 @@ void AllImplicitConversion::run(
 		const clang::ast_matchers::MatchFinder::MatchResult& result) {
 	const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>(
 			"conversion");
+
 	auto& sm = context->getSourceManager();
 	auto& ihandle = context->getIssueHandler();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	expr->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());
 }
 
 std::string AllImplicitConversion::moduleName() {

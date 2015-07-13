@@ -9,7 +9,7 @@
 #define CLANGMATCHEREXT_H_
 
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
+#include <core/utility/ClangUtil.h>
 #include <clang/ASTMatchers/ASTMatchers.h>
 
 namespace clang {
@@ -25,7 +25,7 @@ __CKIND(ConstructorConversion)
 
 AST_POLYMORPHIC_MATCHER_P(isTypedef, AST_POLYMORPHIC_SUPPORTED_TYPES_2(Expr, Decl), std::string, type){
 	const auto typeOf_expr = Node.getType().getUnqualifiedType().getAsString();
-	LOG_DEBUG("isTypedef of '" << type << "' : " << typeOf_expr);
+	//LOG_DEBUG("isTypedef of '" << type << "' : " << typeOf_expr);
 	return type == typeOf_expr;
 }
 

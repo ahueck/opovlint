@@ -14,6 +14,7 @@
 
 namespace clang {
 class SourceManager;
+class ASTContext;
 }
 
 namespace opov {
@@ -27,7 +28,7 @@ public:
 	IssueHandler();
 	void setSource(const std::string& source);
 	template<typename T>
-	void addIssue(const clang::SourceManager& sm, T node, const std::string& code, const std::string& module, const std::string& module_descr, std::string message="");
+	void addIssue(const clang::SourceManager& sm, const clang::ASTContext& ac, T node, const std::string& module, const std::string& module_descr, std::string message="");
 	TUIssuesMap& getAllIssues();
 	void clear();
 	virtual ~IssueHandler();

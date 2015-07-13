@@ -11,7 +11,7 @@
 #include <core/reporting/ConsoleReporter.h>
 #include <core/reporting/CSVReporter.h>
 #include <AnalyzerFactory.h>
-#include <core/Util.h>
+#include <core/utility/Util.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
 #include <modules/ImplicitCondition.h>

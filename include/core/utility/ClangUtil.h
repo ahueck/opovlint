@@ -95,6 +95,30 @@ inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::Sou
 	return std::tuple_cat(rowOf(sm, node), colOf(sm, node));
 }
 
+template<typename T>
+inline std::string ast2str(/*const clang::SourceManager& sm,*/ T node) {
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	node->dump(s); /*, const_cast<clang::SourceManager&>(sm)); // FIXME const_cast necessary for clang 3.5 */
+	return s.str();
+}
+
+inline std::string node2str(const clang::ASTContext& ac, const clang::Stmt* node) {
+	std::string exprStr;
+	llvm::raw_string_ostream s(exprStr);
+	node->printPretty(s, 0, ac.getPrintingPolicy());
+	return s.str();
+}
+
+inline std::string node2str(const clang::ASTContext& ac, const clang::Decl* node) {
+	std::string declStr;
+	llvm::raw_string_ostream s(declStr);
+	node->print(s, ac.getPrintingPolicy());
+	return s.str();
+}
+
+
+/*
 template<typename NODE>
 inline std::string node2str(const clang::SourceManager& sm, NODE expr) {
 
@@ -104,18 +128,17 @@ inline std::string node2str(const clang::SourceManager& sm, NODE expr) {
 	const std::string source_code = std::string(startData, endData - startData);
 
 	return source_code;
-	/*
-	auto range = locOf(sm, expr);
-	auto p = sm.getDecomposedLoc(range.getBegin());
-	auto pe = sm.getDecomposedLoc(range.getEnd());
-
-	std::string text = clang::Lexer::getSourceText(clang::CharSourceRange::getTokenRange(range), sm, clang::LangOptions(), 0);
-    if (text.at(text.size()-1) == ',')
-        return clang::Lexer::getSourceText(clang::CharSourceRange::getCharRange(range), sm, clang::LangOptions(), 0);
-    return text;
-    */
-
+//	auto range = locOf(sm, expr);
+//	auto p = sm.getDecomposedLoc(range.getBegin());
+//	auto pe = sm.getDecomposedLoc(range.getEnd());
+//
+//	std::string text = clang::Lexer::getSourceText(clang::CharSourceRange::getTokenRange(range), sm, clang::LangOptions(), 0);
+//    if (text.at(text.size()-1) == ',')
+//        return clang::Lexer::getSourceText(clang::CharSourceRange::getCharRange(range), sm, clang::LangOptions(), 0);
+//    return text;
 }
+*/
+
 
 class TypeDeducer: public clang::RecursiveASTVisitor<TypeDeducer> {
 private:

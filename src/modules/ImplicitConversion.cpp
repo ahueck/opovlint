@@ -6,15 +6,14 @@
  */
 
 #include <modules/ImplicitConversion.h>
-#include <core/ClangMatcherExt.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/Logger.h>
-#include <core/ClangUtil.h>
-#include <core/Util.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/transformation/TransformationUtil.h>
 //#include <modules/ExplicitCastVisitor.h>
 
 namespace opov {
@@ -47,13 +46,10 @@ void ImplicitConversion::run(
 	//LOG_DEBUG("Found node: " << clutil::node2str(expr, context->getSourceManager()));
 	std::stringstream message;
 	//message << "A cast of the source excerpt to '" << type_s << "' is a potential solution.";
-	auto& thandle = context->getTransformationHandler();
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
-	std::string exprStr;
-	llvm::raw_string_ostream s(exprStr);
-	expr->printPretty(s, 0, context->getASTContext().getPrintingPolicy());
-	ihandle.addIssue(sm, expr, s.str(), moduleName(), moduleDescription());//, message.str());
+	auto& ac = context->getASTContext();
+	ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());//, message.str());
 }
 
 std::string ImplicitConversion::moduleName() {
