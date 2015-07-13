@@ -8,7 +8,6 @@
 #include <modules/ExplicitCast.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 #include <core/transformation/TransformationHandler.h>
@@ -34,7 +33,6 @@ void ExplicitCast::setupOnce(const Configuration* config) {
 }
 
 void ExplicitCast::setupMatcher() {
-	LOG_DEBUG("Setup matcher 'ExplicitCast'");
 	// TODO here we ignore constructor conversions. This case is handled in ImplicitConversion module
 	StatementMatcher invalid_expl_cast = explicitCastExpr(
 			unless(anyOf(isTypedef(type_s), isConstructorConversion())),
@@ -47,7 +45,6 @@ void ExplicitCast::run(
 		const clang::ast_matchers::MatchFinder::MatchResult& result) {
 	const ExplicitCastExpr* e = result.Nodes.getStmtAs<ExplicitCastExpr>(
 			"cast");
-	//LOG_DEBUG("Found a potential cast node: " << clutil::node2str(e, context->getSourceManager()));
 	auto ecast = const_cast<ExplicitCastExpr*>(e);
 
 	auto& sm = context->getSourceManager();

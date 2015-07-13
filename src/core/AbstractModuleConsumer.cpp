@@ -6,7 +6,7 @@
  */
 
 #include <core/AbstractModuleConsumer.h>
-#include <core/Logger.h>
+#include <core/logging/Logger.h>
 #include <core/configuration/Configuration.h>
 #include <core/module/Module.h>
 #include <core/module/ModuleContext.h>

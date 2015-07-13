@@ -6,8 +6,6 @@
  */
 
 #include <modules/FieldDeclCollector.h>
-
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
 
 namespace opov {

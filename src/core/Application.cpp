@@ -11,7 +11,7 @@
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/reporting/IssueReporter.h>
-#include <core/Logger.h>
+#include <core/logging/Logger.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 

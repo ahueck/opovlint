@@ -8,9 +8,9 @@
 #ifndef ABSTRACTMODULECONSUMER_H_
 #define ABSTRACTMODULECONSUMER_H_
 
-#include <vector>
-
 #include <clang/AST/ASTConsumer.h>
+
+#include <vector>
 
 namespace opov {
 

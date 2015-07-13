@@ -13,11 +13,12 @@
 #include <core/utility/Util.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
+#include <core/logging/Logger.h>
+
 #include <clang/Frontend/CompilerInstance.h>
 #include <llvm/ADT/StringRef.h>
 #include <clang/Tooling/Refactoring.h>
 
-#include <core/Logger.h>
 
 namespace opov {
 

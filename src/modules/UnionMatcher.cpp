@@ -9,7 +9,6 @@
 #include <modules/FieldDeclCollector.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 #include <core/issue/IssueHandler.h>
@@ -32,7 +31,6 @@ void UnionMatcher::setupOnce(const Configuration* config) {
 }
 
 void UnionMatcher::setupMatcher() {
-	LOG_DEBUG("Setup matcher!");
 	DeclarationMatcher invalid_unions = recordDecl(isUnion(),
 			hasDescendant(fieldDecl(isTypedef(type_s)))).bind("union");
 
@@ -51,7 +49,6 @@ void UnionMatcher::run(
 	message << (is_anon ? "Anonymous union" : "Union")
 			<< " with typedef member. " << fieldDecls.size()
 			<< " fieldDecl violate the convention.";
-	LOG_DEBUG(message.str());
 
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();

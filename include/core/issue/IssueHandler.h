@@ -9,8 +9,10 @@
 #define ISSUEHANDLER_H_
 
 #include "IssueHandlerStruct.h"
-#include <string>
+
 #include <llvm/ADT/StringMap.h>
+
+#include <string>
 
 namespace clang {
 class SourceManager;

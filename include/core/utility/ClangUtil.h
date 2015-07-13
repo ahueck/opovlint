@@ -8,11 +8,12 @@
 #ifndef CLANGUTIL_H_
 #define CLANGUTIL_H_
 
-#include <core/Logger.h>
+#include <core/logging/Logger.h>
 
 #include <clang/AST/AST.h>
 #include <clang/Lex/Lexer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
+
 #include <string>
 #include <sstream>
 //#include <system_error>

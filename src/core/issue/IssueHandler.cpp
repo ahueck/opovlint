@@ -22,13 +22,6 @@ TUIssuesMap& IssueHandler::getAllIssues() {
 
 void IssueHandler::clear() {
 	source = "";
-	/*
-	for(auto& issue_m : issues) {
-		for(auto i : issue_m.second.Issues) {
-			delete i;
-		}
-	}
-	*/
 	issues.clear();
 }
 

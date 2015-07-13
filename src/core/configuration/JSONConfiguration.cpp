@@ -6,10 +6,9 @@
  */
 
 #include <core/configuration/JSONConfiguration.h>
+#include <core/logging/Logger.h>
 
 #include <fstream>
-
-#include <core/Logger.h>
 
 namespace opov {
 

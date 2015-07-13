@@ -10,6 +10,7 @@
 
 #include <core/issue/Issue.h>
 #include <core/utility/ClangUtil.h>
+
 #include <clang/Basic/SourceManager.h>
 #include <clang/AST/ASTContext.h>
 

@@ -5,12 +5,12 @@
  *      Author: ahueck
  */
 
-#include <core/Logger.h>
+#include <AnalyzerFactory.h>
+#include <ModuleConsumer.h>
+#include <core/logging/Logger.h>
 #include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/reporting/IssueReporter.h>
-#include <AnalyzerFactory.h>
-#include <ModuleConsumer.h>
 
 #include <clang/AST/ASTConsumer.h>
 #include <clang/Frontend/CompilerInstance.h>

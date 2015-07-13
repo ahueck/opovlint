@@ -8,9 +8,9 @@
 #ifndef JSONCONFIGURATION_H_
 #define JSONCONFIGURATION_H_
 
-#include <external/jsonpp.hpp>
-
 #include "Configuration.h"
+
+#include <external/jsonpp.hpp>
 
 #include <string>
 

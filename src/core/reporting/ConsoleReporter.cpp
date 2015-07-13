@@ -6,8 +6,8 @@
  */
 
 #include <core/reporting/ConsoleReporter.h>
-#include <core/Logger.h>
 #include <core/issue/Issue.h>
+#include <core/logging/Logger.h>
 
 namespace opov {
 ConsoleReporter::ConsoleReporter() {

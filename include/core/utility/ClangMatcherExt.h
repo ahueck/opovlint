@@ -8,8 +8,9 @@
 #ifndef CLANGMATCHEREXT_H_
 #define CLANGMATCHEREXT_H_
 
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
+#include <core/logging/Logger.h>
+
 #include <clang/ASTMatchers/ASTMatchers.h>
 
 namespace clang {

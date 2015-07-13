@@ -8,7 +8,6 @@
 #include <modules/ImplicitConditionMatcher.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>

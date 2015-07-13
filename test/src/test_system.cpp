@@ -7,8 +7,8 @@
 
 #include <TestApp.h>
 
-#include <core/ClangUtil.h>
-#include <core/Util.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 #include <core/module/ASTMatcherModule.h>
 #include <core/configuration/JSONConfiguration.h>
 #include <modules/ExplicitCast.h>

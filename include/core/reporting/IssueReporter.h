@@ -9,6 +9,7 @@
 #define ISSUEREPORTER_H_
 
 #include "../issue/IssueHandlerStruct.h"
+
 #include <vector>
 #include <string>
 

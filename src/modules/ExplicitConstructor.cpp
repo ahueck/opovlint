@@ -11,9 +11,6 @@
 #include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
-//#include <core/Logger.h>
-//#include <core/ClangUtil.h>
-//#include <core/Util.h>
 
 namespace opov {
 namespace module {

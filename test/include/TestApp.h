@@ -9,7 +9,7 @@
 #define OPOVAPP_H_
 
 #include <core/Application.h>
-#include <core/Util.h>
+#include <core/utility/Util.h>
 #include <core/IFactory.h>
 #include <core/configuration/JSONConfiguration.h>
 #include <AnalyzerFactory.h>

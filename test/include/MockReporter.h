@@ -9,7 +9,7 @@
 #define MOCKREPORTER_H_
 
 #include <core/reporting/IssueReporter.h>
-#include <core/Logger.h>
+#include <core/logging/Logger.h>
 #include <core/issue/IssueHandlerStruct.h>
 
 #include <memory>

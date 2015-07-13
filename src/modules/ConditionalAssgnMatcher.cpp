@@ -8,12 +8,10 @@
 #include <modules/ConditionalAssgnMatcher.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
-//#include <modules/ConditionalAssgnVisitor.h>
 
 namespace opov {
 namespace module {

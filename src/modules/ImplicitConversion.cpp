@@ -8,7 +8,6 @@
 #include <modules/ImplicitConversion.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
-#include <core/Logger.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 #include <core/configuration/Configuration.h>
@@ -43,9 +42,7 @@ void ImplicitConversion::run(
 		const clang::ast_matchers::MatchFinder::MatchResult& result) {
 	const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>(
 			"conversion");
-	//LOG_DEBUG("Found node: " << clutil::node2str(expr, context->getSourceManager()));
-	std::stringstream message;
-	//message << "A cast of the source excerpt to '" << type_s << "' is a potential solution.";
+
 	auto& ihandle = context->getIssueHandler();
 	auto& sm = context->getSourceManager();
 	auto& ac = context->getASTContext();
