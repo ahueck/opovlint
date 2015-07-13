@@ -1,6 +1,6 @@
 #!/bin/bash
 
-debug=0
+debug=1
 
 function verify() {
     if [ $debug -eq 1 ] ; then
@@ -8,7 +8,7 @@ function verify() {
     fi
     echo -e "Test '$1' \c"
     ./bin/test_$1$suffix > /dev/shm/out_opov.log
-    grep -q 'All tests passed' /dev/shm/out_opov.log && echo "succeeded." || echo "failed!"
+    grep -q 'All tests passed' /dev/shm/out_opov.log && echo "succeeded." || (echo "failed!" && exit 1)
 }
 
 verify system
