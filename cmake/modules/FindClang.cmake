@@ -68,6 +68,7 @@ else()
 	#-Wl,--end-group
 
   if(CLANG_LIBS)
+	#string(REPLACE ";" " " CLANG_LIBS "${CLANG_LIBS}")
     set(CLANG_FOUND TRUE)
   else()
     set(CLANG_FOUND FALSE)

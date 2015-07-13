@@ -46,11 +46,11 @@ src/modules/GlobalScopeT.cpp
 )
 
 add_library(libopov ${LSOURCES})
-target_link_libraries(libopov "${TOOLCHAIN_LINK_LIB}")
+target_link_libraries(libopov ${TOOLCHAIN_LINK_LIB})
 add_library(stdimpl ${PSOURCES})
 target_link_libraries(stdimpl libopov)
 
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
-target_link_libraries(find-type${EXE_SUFFIX} "${TOOLCHAIN_LINK_LIB}" libopov stdimpl)
+target_link_libraries(find-type${EXE_SUFFIX} ${TOOLCHAIN_LINK_LIB} libopov stdimpl)
 
 add_subdirectory(test)
