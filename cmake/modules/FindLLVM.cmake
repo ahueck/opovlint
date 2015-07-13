@@ -17,7 +17,7 @@ if(LLVM_INCLUDE_DIR)
   set(LLVM_FOUND TRUE)
 else()
 	find_program(LLVM_CONFIG_EXECUTABLE
-	  NAMES llvm-config
+	  NAMES llvm-config llvm-config-3.5
 	  PATHS /opt/local/bin /usr/local/bin
 	)
 
@@ -40,7 +40,7 @@ else()
 	execute_process(COMMAND ${LLVM_CONFIG_EXECUTABLE} --ldflags  OUTPUT_VARIABLE LLVM_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
 	#--system-libs is new in llvm 3.5
 	execute_process(COMMAND ${LLVM_CONFIG_EXECUTABLE} --system-libs  OUTPUT_VARIABLE LLVM_LDFLAGS2 OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
-	string(REPLACE "\n" " " LLVM_LDFLAGS ${LLVM_LDFLAGS} ${LLVM_LDFLAGS2})
+	string(REPLACE "\n" " " LLVM_LDFLAGS ${LLVM_LDFLAGS} " " ${LLVM_LDFLAGS2})
 	exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --libs      OUTPUT_VARIABLE LLVM_LIBS_CORE )
 	find_llvm_libs(${LLVM_CONFIG_EXECUTABLE} "jit native" LLVM_LIBS_JIT LLVM_LIBS_JIT_OBJECTS )
 	#STRING(REPLACE " -lLLVMCore -lLLVMSupport -lLLVMSystem" "" LLVM_LIBS_JIT ${LLVM_LIBS_JIT_RAW})
