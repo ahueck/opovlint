@@ -11,7 +11,7 @@ install:
   - echo "deb-src http://llvm.org/apt/precise/ llvm-toolchain-precise-3.5 main" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
   - sudo apt-get install gcc-4.8
-  - sudo apt-get install build-essential cmake zlib1g-dev libxml2-dev libedit-dev clang-3.5 libclang-common-3.5-dev libclang-3.5-dev libclang1-3.5 libclang1-3.5-dbg libllvm-3.5-ocaml-dev libllvm3.5 libllvm3.5-dbg llvm-3.5 llvm-3.5-dev llvm-3.5-runtime clang-modernize-3.5 clang-format-3.5
+  - sudo apt-get install build-essential cmake zlib1g-dev libxml2-dev libedit-dev clang-3.5 libclang-common-3.5-dev libclang-3.5-dev libclang1-3.5 libllvm-3.5-ocaml-dev libllvm3.5 llvm-3.5 llvm-3.5-dev llvm-3.5-runtime clang-modernize-3.5 clang-format-3.5
 
 script: 
   - mkdir build && cd build/ && cmake .. && make -j4
