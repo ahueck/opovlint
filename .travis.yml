@@ -22,7 +22,7 @@ script:
   - cmake -DCMAKE_CXX_COMPILER=g++-4.8 ..
   - make
   - cd ..
-  - chmod +x ../runner.sh 
+  - chmod +x runner.sh 
   - ./runner.sh
 
 branches:
