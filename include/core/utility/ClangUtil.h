@@ -16,7 +16,6 @@
 
 #include <string>
 #include <sstream>
-//#include <system_error>
 
 namespace opov {
 
@@ -44,7 +43,7 @@ inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
 			DecomposedLocation.first);
 	if (Entry != NULL) {
 		llvm::SmallString<256> FilePath(Entry->getName());
-		llvm::error_code EC = llvm::sys::fs::make_absolute(FilePath);
+		std::error_code EC = llvm::sys::fs::make_absolute(FilePath);
 		return EC ? FilePath.c_str() : Entry->getName();
 	} else {
 		return "";
