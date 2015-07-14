@@ -43,7 +43,7 @@ inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
 			DecomposedLocation.first);
 	if (Entry != NULL) {
 		llvm::SmallString<256> FilePath(Entry->getName());
-		std::error_code EC = llvm::sys::fs::make_absolute(FilePath);
+		auto EC = llvm::sys::fs::make_absolute(FilePath);
 		return EC ? FilePath.c_str() : Entry->getName();
 	} else {
 		return "";
