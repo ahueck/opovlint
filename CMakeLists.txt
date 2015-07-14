@@ -51,6 +51,7 @@ add_library(stdimpl ${PSOURCES})
 target_link_libraries(stdimpl libopov)
 
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
-target_link_libraries(find-type${EXE_SUFFIX} ${TOOLCHAIN_LINK_LIB} libopov stdimpl)
+#target_link_libraries(find-type${EXE_SUFFIX} ${TOOLCHAIN_LINK_LIB} libopov stdimpl)
+target_link_libraries(find-type${EXE_SUFFIX} libopov stdimpl)
 
 add_subdirectory(test)
