@@ -17,15 +17,11 @@ src/core/module/ASTMatcherModule.cpp
 src/core/AbstractModuleConsumer.cpp
 src/core/AbstractFactory.cpp
 src/core/configuration/JSONConfiguration.cpp
-
 include/external/IncludeDirectives.cpp
 include/external/ReplacementHandling.cpp
-
 src/core/issue/IssueHandler.cpp
-
 src/core/reporting/ConsoleReporter.cpp
 src/core/reporting/CSVReporter.cpp
-
 src/core/transformation/TransformationHandler.cpp
 )
 
@@ -33,7 +29,6 @@ src/core/transformation/TransformationHandler.cpp
 set(PSOURCES 
 src/AnalyzerFactory.cpp
 src/ModuleConsumer.cpp
-
 src/modules/ImplicitConditionMatcher.cpp
 src/modules/FieldDeclCollector.cpp
 src/modules/UnionMatcher.cpp
@@ -51,7 +46,9 @@ add_library(stdimpl ${PSOURCES})
 target_link_libraries(stdimpl libopov)
 
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
-#target_link_libraries(find-type${EXE_SUFFIX} ${TOOLCHAIN_LINK_LIB} libopov stdimpl)
-target_link_libraries(find-type${EXE_SUFFIX} libopov stdimpl)
+target_link_libraries(find-type${EXE_SUFFIX} stdimpl)
 
-add_subdirectory(test)
+if(MAKE_TEST)
+  message(STATUS "Requested generation of tests.")
+  add_subdirectory(test)
+endif()

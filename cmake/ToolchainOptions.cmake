@@ -1,6 +1,6 @@
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-#setup of all necessary include/lib dirs for the development of a clang based tool
+# Setup of all necessary include/lib dirs for the development of a Clang based tool
 find_package(LLVM REQUIRED)
 find_package(Clang REQUIRED)
 
@@ -18,9 +18,9 @@ if(CMAKE_CXX_COMPILER MATCHES ".*clang")
 	set(CMAKE_COMPILER_IS_CLANGXX 1)
 endif()
 
-#setup general compiler options
+# Setup general compiler options
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-    # Ignore for now: ${LLVM_COMPILE_FLAGS}
+  # Ignore for now: ${LLVM_COMPILE_FLAGS}
 	set(CXX_ONLY_FLAGS "-std=c++11 -Wall -Wextra -pedantic -Wunreachable-code -Wwrite-strings -Wpointer-arith -Wcast-align -Wcast-qual -Wno-unused-parameter -fPIC -fexceptions -fno-rtti ${CXX_ONLY_FLAGS}")
 
 	# Release build
@@ -32,6 +32,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 	# Release build optimized for size
 	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os")
 
+	# COMMON_FLAGS is unsued for now
 	set(CMAKE_CXX_FLAGS  "${CXX_ONLY_FLAGS} ${COMMON_FLAGS} ${CMAKE_CXX_FLAGS}")
 endif()
 

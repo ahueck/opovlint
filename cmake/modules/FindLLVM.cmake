@@ -1,10 +1,18 @@
 ##
-## Setup for llvm-config executable, and important llvm vars
+## Script relies on llvm-config binary to gather the necessary information
+## to compile a LLVM/Clang based tool.
+##
+## Note:  If llvm-config can not be located, use ${LLVM_ROOT_DIR} variable 
+##        for the path to the respective bin/ folder.
+##
+
+
+function(setup_llvm)
+## Setup for llvm-config executable
 ##
 ## Out:
-##  Var: 
+##  Var: ${LLVM_ROOT_DIR} (Prefix of LLVM)
 ##  Exe: ${LLVM_CONFIG}
-function(setup_llvm)
   set(llvm_config_names llvm-config-3.7
                         llvm-config-3.6
                         llvm-config-3.5
@@ -29,7 +37,13 @@ function(setup_llvm)
   set(LLVM_CONFIG ${LLVM_CONFIG} PARENT_SCOPE)
 endfunction()
 
-function(set_llvm_cppflags)
+function(set_llvm_cpp_flags)
+## Compiler flags used for LLVM 
+## Note:  Removes definitions (-D and -U), 
+##        Optimization flags (-O, -g)
+##        Include flags (-I)
+## Out:
+##  Var: ${LLVM_COMPILE_FLAGS}
   execute_process(
     COMMAND ${LLVM_CONFIG} --cxxflags
     OUTPUT_VARIABLE llvm_cxxflags
@@ -41,6 +55,9 @@ function(set_llvm_cppflags)
 endfunction()
 
 function(set_llvm_lib_path)
+## ld flags of LLVM (/usr/lib/...)
+## Out:
+##  Var: ${LLVM_LIBRARY_DIRS}
   execute_process(
     COMMAND ${LLVM_CONFIG} --libdir
     OUTPUT_VARIABLE llvm_ldflags
@@ -50,6 +67,9 @@ function(set_llvm_lib_path)
 endfunction()
 
 function(set_llvm_system_libs)
+## System libraries used by LLVM
+## Out:
+##  Var: ${LLVM_SYSTEM_LIBS}
   execute_process(
     COMMAND ${LLVM_CONFIG} --system-libs
     OUTPUT_VARIABLE llvm_system_libs
@@ -59,6 +79,9 @@ function(set_llvm_system_libs)
 endfunction()
 
 function(set_llvm_include_dir)
+## Include direcotry of LLVM (-I)
+## Out:
+##  Var: ${LLVM_SYSTEM_LIBS}
   execute_process(
     COMMAND ${LLVM_CONFIG} --includedir
     OUTPUT_VARIABLE llvm_includdir
@@ -68,6 +91,9 @@ function(set_llvm_include_dir)
 endfunction()
 
 function(set_llvm_definitions)
+## Definitions used by LLVM (-D)
+## Out:
+##  Var: ${LLVM_DEFINITIONS}
   execute_process(
     COMMAND ${LLVM_CONFIG} --cppflags
     OUTPUT_VARIABLE llvm_definitions
@@ -78,18 +104,37 @@ function(set_llvm_definitions)
   set(LLVM_DEFINITIONS ${llvm_definitions} PARENT_SCOPE)
 endfunction()
 
-function(set_llvm_libs_all)
-  execute_process(
-    COMMAND ${LLVM_CONFIG} --libs
-    OUTPUT_VARIABLE llvm_libs
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-  string(REGEX REPLACE " -" ";-" llvm_libs ${llvm_libs})
+function(set_llvm_libs)
+## LLVM libraries to link against.
+## Flag: ${LLVM_LINK_SMALL} = true indicates to use a minimal
+##       set of libraries for the Clang tool. Might fail.
+## Out:
+##  Var: ${LLVM_DEFINITIONS}
+  if(LLVM_LINK_SMALL)
+    set(llvm_libs LLVMTransformUtils
+                  LLVMAnalysis LLVMTarget LLVMIRReader
+                  LLVMObject LLVMMCParser LLVMMC
+                  LLVMBitReader LLVMAsmParser LLVMCore
+                  LLVMOption LLVMSupport)
+  else()
+    execute_process(
+      COMMAND ${LLVM_CONFIG} --libs
+      OUTPUT_VARIABLE llvm_libs
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    string(REGEX REPLACE " -" ";-" llvm_libs ${llvm_libs})
+  endif()
   set(LLVM_LIBS ${llvm_libs} PARENT_SCOPE)
 endfunction()
 
 setup_llvm()
+set_llvm_libs()
+set_llvm_cpp_flags()
+set_llvm_lib_path()
+set_llvm_system_libs()
+set_llvm_include_dir()
+set_llvm_definitions()
 
-## Use existing CMake feature provided by LLVM
+## Use existing CMake feature provided by LLVM (path not always working)
 ##  Vars (partial): ${LLVM_INCLUDE_DIRS}, ${LLVM_LIBRARY_DIRS}, ${LLVM_DEFINITIONS}
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm-3.7/cmake")
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm-3.6/cmake")
@@ -97,19 +142,8 @@ setup_llvm()
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm/cmake")
 #message(STATUS ${CMAKE_MODULE_PATH})
 #include(LLVMConfig)
-# Alternative: seems buggy on some (binary) installs
-#find_package(LLVM REQUIRED CONFIG)
 
+## Alternative: seems buggy on some (binary) installs
+#find_package(LLVM REQUIRED CONFIG)
 # FIXME does not work on this plattform (CLang 3.5.0)
 #llvm_map_components_to_libnames(LLVM_LIBS support core)
-
-#set(LLVM_LIBS LLVMOption;LLVMAsmParser;LLVMBitReader;LLVMIRReader;LLVMObject;LLVMMC;LLVMMCParser;LLVMCodeGen;LLVMExecutionEngine;LLVMInterpreter;LLVMCore;LLVMSupport)
-#set(LLVM_LIBS LLVMOption;LLVMAsmParser;LLVMBitReader;LLVMIRReader;LLVMObject;LLVMMCParser;LLVMInterpreter;LLVMExecutionEngine;LLVMMC;LLVMCore;LLVMSupport)
-#set(LLVM_LIBS LLVMOption;LLVMAsmParser;LLVMBitReader;LLVMIRReader;LLVMObject;LLVMMCParser;LLVMMC;LLVMCore;LLVMSupport)
-set(LLVM_LIBS LLVMIRReader;LLVMObject;LLVMMCParser;LLVMMC;LLVMBitReader;LLVMAsmParser;LLVMCore;LLVMOption;LLVMSupport)
-#set_llvm_libs_all()
-set_llvm_cppflags()
-set_llvm_lib_path()
-set_llvm_system_libs()
-set_llvm_include_dir()
-set_llvm_definitions()
