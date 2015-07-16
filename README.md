@@ -45,9 +45,8 @@ Provide developers of (numerical) codes with static code analysis
 to avoid problematic coding patterns
 
 For legacy numerical codes:
-
-    - Flag potential problematic code locations
-    - Ideally autocorrect them
+- Flag potential problematic code locations
+- Ideally autocorrect them
 
 
 Installation 
@@ -61,8 +60,9 @@ For Ubuntu/Dabian, refer to the [Travis CI file](.travis.yml) for guidance.
 1.  C++ Compiler with C++11 support (gcc version >= 4.8)
 2.  Cmake (version >=2.8)
 3.  Clang/LLVM in Version 3.5.0. Newer versions might not work due to the changing API.
-    The build system relies on the presence of **llvm-config**(-3.5 -3.6 -3.7) binary.
-    If it can't be found, set ${LLVM_ROOT_DIR} where the bin/ folder is located.
+    The build system relies on the presence of the **llvm-config**(-3.5 -3.6 -3.7) binary.
+    If it can't be found, set the cmake variable ${LLVM_ROOT_DIR} to point to the 
+    respective bin/ folder where llvm-config is located.
 
 ### Build the OO-Lint tool
 In the root folder of the project:
