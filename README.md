@@ -1,23 +1,28 @@
-## OO-Lint (opovlint)
+OO-Lint (opovlint)
+===========
 
 This is a project for linting operator overloads in C++. It is implemented as 
 a Clang tool.
 
-## Disclaimer
+Disclaimer
+------------
 
-The status of this software is alpha level and not ready for public usage.
+The status of this software is alpha level.
 
-## License
+License
+------------
 
 Distributed under the MIT License. For details refer to file "LICENSE"
 
 
-## Motivation
+Motivation
+------------
 
-Operator Overloading allows for the semantic augmentation of existing codes. The basic arithmetic type in a code is replaced by a user-defined type.
+Operator Overloading allows for the semantic augmentation of existing codes. 
+The basic arithmetic type in a code is replaced by a user-defined type.
 
-Type change (in theory this just works): 
-    typedef scalar double -> typedef scalar userdef_double
+**Type change** (in theory this just works): 
+- typedef **double** scalar; -> typedef **userdef_double** scalar;
 
 However, several coding patterns are not compatible with user-defined classes 
 and result in compile time errors
@@ -33,16 +38,37 @@ and result in compile time errors
 - etc.
 
 
-## Goal
+Goal
+------------
 
 Provide developers of (numerical) codes with static code analysis 
 to avoid problematic coding patterns
 
 For legacy numerical codes:
+
     - Flag potential problematic code locations
     - Ideally autocorrect them
 
 
-## Installation 
+Installation 
+------------
 
-TBD
+The tool is developed and tested on Linux. 
+For Ubuntu/Dabian, refer to the [Travis CI file](.travis.yml) for guidance.
+
+### Prerequisites
+
+1.  C++ Compiler with C++11 support (gcc version >= 4.8)
+2.  Cmake (version >=2.8)
+3.  Clang/LLVM in Version 3.5.0. Newer versions might not work due to the changing API.
+    The build system relies on the presence of **llvm-config**(-3.5 -3.6 -3.7) binary.
+    If it can't be found, set ${LLVM_ROOT_DIR} where the bin/ folder is located.
+
+### Build the OO-Lint tool
+In the root folder of the project:
+
+    mkdir build && cd build/
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    make
+
+The binary should be created in the project bin/ folder. 
