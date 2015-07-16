@@ -19,13 +19,12 @@ before_script:
   - cd build
 
 script: 
-  - cmake -DCMAKE_CXX_COMPILER=g++-4.8 ..
+  - cmake -DCMAKE_CXX_COMPILER=g++-4.8 -DMAKE_TEST=TRUE ..
   - make
-  - cd ..
-  - chmod +x runner.sh 
-  - ./runner.sh
+  - cd .. && chmod +x unit_tests.sh
+  - ./unit_tests.sh
 
 branches:
   only:
     - master
-    - project_structure
+    - devel
