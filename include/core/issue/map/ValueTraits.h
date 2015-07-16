@@ -8,6 +8,8 @@
 #ifndef ISSUETRAITS_H_
 #define ISSUETRAITS_H_
 
+#include <string>
+
 //#include <map>
 //#include <ostream>
 

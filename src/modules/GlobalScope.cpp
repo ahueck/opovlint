@@ -28,7 +28,7 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 
 void GlobalScope::setupMatcher() {
-  auto declref_matcher = declRefExpr(eachOf(to(functionDecl()), has(nestedNameSpecifier(isGlobalNamespace())))).bind("global");
+  auto declref_matcher = declRefExpr(allOf(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))), has(nestedNameSpecifier()))).bind("global");
   this->addMatcher(declref_matcher);
 }
 

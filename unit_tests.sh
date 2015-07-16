@@ -15,8 +15,8 @@ verify system
 verify union_matcher
 verify implicitconversion
 verify implicitcond_matcher
-#verify implicitcond
 verify explicitcast
 verify conditionalassgn
 verify explicitconstructor
 verify allimplicitconversion
+verify globalscope

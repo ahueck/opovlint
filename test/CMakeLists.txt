@@ -1,9 +1,6 @@
 include_directories(${PROJECT_SOURCE_DIR}/test/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
-#add_executable(test_implicitcond${EXE_SUFFIX} src/test_implicitcond.cpp)
-#target_link_libraries(test_implicitcond${EXE_SUFFIX}  libopov stdimpl )
-
 add_executable(test_implicitcond_matcher${EXE_SUFFIX} src/test_implicitcond_matcher.cpp)
 target_link_libraries(test_implicitcond_matcher${EXE_SUFFIX} stdimpl )
 
@@ -27,3 +24,6 @@ target_link_libraries(test_explicitconstructor${EXE_SUFFIX}  stdimpl )
 
 add_executable(test_allimplicitconversion${EXE_SUFFIX} src/test_allimplicitconversion.cpp)
 target_link_libraries(test_allimplicitconversion${EXE_SUFFIX}  stdimpl )
+
+add_executable(test_globalscope${EXE_SUFFIX} src/test_globalscope.cpp)
+target_link_libraries(test_globalscope${EXE_SUFFIX}  stdimpl )

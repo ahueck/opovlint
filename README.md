@@ -1,18 +1,22 @@
+[![Build Status](https://travis-ci.org/ahueck/opovlint.svg?branch=master)](https://travis-ci.org/ahueck/opovlint)
+
 OO-Lint (opovlint)
 ===========
 
 This is a project for linting operator overloads in C++. It is implemented as 
 a Clang tool.
 
+
 Disclaimer
 ------------
 
 The status of this software is alpha level.
 
+
 License
 ------------
 
-Distributed under the MIT License. For details refer to file "LICENSE"
+Distributed under the MIT License. For details refer to the [LICENSE file](LICENSE)
 
 
 Motivation
@@ -21,7 +25,7 @@ Motivation
 Operator Overloading allows for the semantic augmentation of existing codes. 
 The basic arithmetic type in a code is replaced by a user-defined type.
 
-**Type change** (in theory this just works): 
+*Type change* (in theory this just works): 
 - typedef **double** scalar; -> typedef **userdef_double** scalar;
 
 However, several coding patterns are not compatible with user-defined classes 
@@ -34,7 +38,7 @@ and result in compile time errors
 - Unions
     - Incompatible with complex data classes [§9.5-1, C++03 Standard]
 - Explicit Conversions
-    - Cast operation from a user-defined type to a built-in often not possible
+    - Cast operation from a user-defined type to a built-in is often not possible
 - etc.
 
 
@@ -65,6 +69,7 @@ For Ubuntu/Dabian, refer to the [Travis CI file](.travis.yml) for guidance.
     respective bin/ folder where llvm-config is located.
 
 ### Build the OO-Lint tool
+
 In the root folder of the project:
 
     mkdir build && cd build/

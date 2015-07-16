@@ -14,7 +14,6 @@
 #include <core/utility/Util.h>
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <modules/ImplicitCondition.h>
 #include <modules/ExplicitCast.h>
 #include <modules/ImplicitConversion.h>
 #include <modules/ImplicitConditionMatcher.h>
@@ -23,7 +22,6 @@
 #include <modules/ExplicitConstructor.h>
 #include <modules/AllImplicitConversion.h>
 #include <modules/GlobalScope.h>
-#include <modules/GlobalScopeT.h>
 
 OpOvApp::OpOvApp(const std::string& config_path) :
 		config_path(config_path) {
@@ -51,7 +49,7 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
-	addModule(new opov::module::GlobalScopeT());
+	addModule(new opov::module::GlobalScope());
 	addModule(new opov::module::ExplicitCast());
 	addModule(new opov::module::UnionMatcher());
 	addModule(new opov::module::ImplicitConversion());
