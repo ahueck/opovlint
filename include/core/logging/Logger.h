@@ -10,8 +10,10 @@
 
 #include <llvm/Support/raw_ostream.h>
 
-// FIXME set at compile time...
+#ifndef LOG_LEVEL
+// Usually set at compile time.
 #define LOG_LEVEL 1
+#endif
 
 #define LOG_LEVEL_MSG(LEVEL, MSG) if(LEVEL <= LOG_LEVEL) llvm::outs() << "In '" << __func__  << "' (" << __LINE__ <<"): " << MSG << "\n"
 

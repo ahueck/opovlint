@@ -12,14 +12,14 @@ before_install:
 
 install:
   - sudo apt-get install gcc-4.8 g++-4.8
-  - sudo apt-get install build-essential cmake zlib1g-dev libxml2-dev libedit-dev clang-3.5 libclang-common-3.5-dev libclang-3.5-dev libclang1-3.5 libllvm-3.5-ocaml-dev libllvm3.5 llvm-3.5 llvm-3.5-dev llvm-3.5-runtime clang-modernize-3.5 clang-format-3.5
+  - sudo apt-get install zlib1g-dev libxml2-dev libedit-dev clang-3.5 libclang-common-3.5-dev libclang-3.5-dev libclang1-3.5 libllvm-3.5-ocaml-dev libllvm3.5 llvm-3.5 llvm-3.5-dev llvm-3.5-runtime
 
 before_script:
   - mkdir build
   - cd build
 
 script: 
-  - cmake -DCMAKE_CXX_COMPILER=g++-4.8 -DMAKE_TEST=TRUE ..
+  - cmake -DCMAKE_CXX_COMPILER=g++-4.8 -DMAKE_TEST=TRUE -DLOG_LEVEL=0 ..
   - make
   - cd .. && chmod +x unit_tests.sh
   - ./unit_tests.sh

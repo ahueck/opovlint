@@ -33,10 +33,17 @@ void ExplicitCast::setupOnce(const Configuration* config) {
 }
 
 void ExplicitCast::setupMatcher() {
-	// TODO here we ignore constructor conversions. This case is handled in ImplicitConversion module
+	/* 1. 	We ignore constructor conversions. This case is handled in ImplicitConversion module
+	 * 2. 	We do not warn on casts to scalar pointer (hasDestinationType(hasCanonicalType(pointerType())))
+	 * 		as we deem it to be legal to write static_cast<scalar*>(&my_scalar);
+	 */
 	StatementMatcher invalid_expl_cast = explicitCastExpr(
-			unless(anyOf(isTypedef(type_s), isConstructorConversion())),
-			hasSourceExpression(ofType(type_s))).bind("cast");
+						unless(
+							anyOf(hasDestinationType(hasCanonicalType(pointerType()))
+							, isTypedef(type_s)
+							, isConstructorConversion())
+							),
+						hasSourceExpression(ofType(type_s))).bind("cast");
 
 	this->addMatcher(invalid_expl_cast);
 }
