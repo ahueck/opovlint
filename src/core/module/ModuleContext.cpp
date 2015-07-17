@@ -18,33 +18,38 @@
 //#include <clang/AST/AST.h>
 
 namespace opov {
-ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler) :
-		config(config), issues(), context(nullptr), ihandler(ihandler), thandler(thandler) {
-	issues.reserve(100);
+
+ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
+    : config(config)
+    , issues()
+    , context(nullptr)
+    , ihandler(ihandler)
+    , thandler(thandler) {
+  issues.reserve(100);
 }
 
 void ModuleContext::setASTContext(clang::ASTContext* context) {
-	this->context = context;
+  this->context = context;
 }
 
 clang::ASTContext& ModuleContext::getASTContext() {
-	return *context;
+  return *context;
 }
 
 clang::SourceManager& ModuleContext::getSourceManager() {
-	return context->getSourceManager();
+  return context->getSourceManager();
 }
 
 TransformationHandler& ModuleContext::getTransformationHandler() {
-	return *thandler;
+  return *thandler;
 }
 
 IssueHandler& ModuleContext::getIssueHandler() {
-	return *ihandler;
+  return *ihandler;
 }
 /*
 std::vector<Issue*>& ModuleContext::getIssues() {
-	return issues;
+        return issues;
 }
 */
 /*
@@ -60,5 +65,5 @@ std::vector<Issue*>& ModuleContext::getIssues() {
  */
 ModuleContext::~ModuleContext() {
 }
-}
 
+} /* namespace opov */

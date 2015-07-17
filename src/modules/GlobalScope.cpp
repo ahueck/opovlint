@@ -20,7 +20,6 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 GlobalScope::GlobalScope() {
-
 }
 
 void GlobalScope::setupOnce(const Configuration* config) {
@@ -28,12 +27,12 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 
 void GlobalScope::setupMatcher() {
-  auto declref_matcher = declRefExpr(allOf(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))), has(nestedNameSpecifier()))).bind("global");
+  auto declref_matcher = declRefExpr(allOf(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+                                           has(nestedNameSpecifier()))).bind("global");
   this->addMatcher(declref_matcher);
 }
 
-void GlobalScope::run(
-  const clang::ast_matchers::MatchFinder::MatchResult& result) {
+void GlobalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const Expr* call = result.Nodes.getStmtAs<Expr>("global");
 
   auto& ihandle = context->getIssueHandler();
@@ -53,5 +52,5 @@ std::string GlobalScope::moduleDescription() {
 GlobalScope::~GlobalScope() {
 }
 
-} // namespace module
+} /* namespace module */
 } /* namespace opov */

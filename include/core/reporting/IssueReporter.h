@@ -16,13 +16,13 @@
 namespace opov {
 
 class IssueReporter {
-public:
-	virtual void addIssue(const TranslationUnitIssues& issue) = 0;
-	virtual void addIssues(const TUIssuesMap& issues) = 0;
-	virtual ~IssueReporter() {
-	}
+ public:
+  virtual void addIssue(const TranslationUnitIssues& issue) = 0;
+  virtual void addIssues(const TUIssuesMap& issues) = 0;
+  virtual ~IssueReporter() {
+  }
 };
 
-} // namespace opov
+}  // namespace opov
 
 #endif /* ISSUEREPORTER_H_ */

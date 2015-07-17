@@ -23,24 +23,23 @@ class TranslationUnitReplacements;
 
 namespace opov {
 
-typedef llvm::StringMap<clang::tooling::TranslationUnitReplacements>
-TUReplacementsMap;
+typedef llvm::StringMap<clang::tooling::TranslationUnitReplacements> TUReplacementsMap;
 
 class TransformationHandler {
-private:
-	  TUReplacementsMap replacements;
-	  std::string source;
-	  std::unique_ptr<IncludeDirectives> includes;
+ private:
+  TUReplacementsMap replacements;
+  std::string source;
+  std::unique_ptr<IncludeDirectives> includes;
 
-public:
-	TransformationHandler();
-	void setSource(const std::string& current);
-	void addReplacements(const clang::tooling::Replacement& replacement);
-	void addReplacements(const std::vector<clang::tooling::Replacement>& replacements);
-	TUReplacementsMap& getAllReplacements();
-	void setIncludeDirectives(IncludeDirectives* include);
-	IncludeDirectives* getIncludeDirectives();
-	virtual ~TransformationHandler();
+ public:
+  TransformationHandler();
+  void setSource(const std::string& current);
+  void addReplacements(const clang::tooling::Replacement& replacement);
+  void addReplacements(const std::vector<clang::tooling::Replacement>& replacements);
+  TUReplacementsMap& getAllReplacements();
+  void setIncludeDirectives(IncludeDirectives* include);
+  IncludeDirectives* getIncludeDirectives();
+  virtual ~TransformationHandler();
 };
 
 } /* namespace opov */

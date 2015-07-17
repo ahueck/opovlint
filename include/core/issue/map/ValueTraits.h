@@ -15,60 +15,64 @@
 
 namespace opov {
 
-//static std::map <std::string, std::function<void(std::ostream &, void *)> > formatters;
+// static std::map <std::string, std::function<void(std::ostream &, void *)> >
+// formatters;
 
 // specializable Property type traits
-template<typename T>
+template <typename T>
 struct PropertyType {
-	static const std::string & name() {
-		static std::string _name = "unknown";
-		return _name;
-	}
+  static const std::string& name() {
+    static std::string _name = "unknown";
+    return _name;
+  }
 
-	static T DefaultValue() {
-		return T();
-	}
+  static T DefaultValue() {
+    return T();
+  }
 };
 
-template<>
+template <>
 struct PropertyType<std::string> {
-	static const std::string & name() {
-		static std::string _name = "string";
-		//static int i = []() {formatters["string"] = [](std::ostream & out, void * in) {out << (*(std::string*)in);}; return 0;}();
-		return _name;
-	}
+  static const std::string& name() {
+    static std::string _name = "string";
+    // static int i = []() {formatters["string"] = [](std::ostream & out, void *
+    // in) {out << (*(std::string*)in);}; return 0;}();
+    return _name;
+  }
 
-	static std::string DefaultValue() {
-		return "";
-	}
+  static std::string DefaultValue() {
+    return "";
+  }
 };
 
-template<>
+template <>
 struct PropertyType<int> {
-	static const std::string & name() {
-		static std::string _name = "int";
-		//static int i = []() {formatters["int"] = [](std::ostream & out, void * in) {out << (*(int*)in);}; return 0;}();
-		return _name;
-	}
+  static const std::string& name() {
+    static std::string _name = "int";
+    // static int i = []() {formatters["int"] = [](std::ostream & out, void *
+    // in) {out << (*(int*)in);}; return 0;}();
+    return _name;
+  }
 
-	static int DefaultValue() {
-		return -1;
-	}
+  static int DefaultValue() {
+    return -1;
+  }
 };
 
-template<>
+template <>
 struct PropertyType<unsigned int> {
-	static const std::string & name() {
-		static std::string _name = "unsigned int";
-		//static int i = []() {formatters["unsigned int"] = [](std::ostream & out, void * in) {out << (*(unsigned int*)in);}; return 0;}();
-		return _name;
-	}
+  static const std::string& name() {
+    static std::string _name = "unsigned int";
+    // static int i = []() {formatters["unsigned int"] = [](std::ostream & out,
+    // void * in) {out << (*(unsigned int*)in);}; return 0;}();
+    return _name;
+  }
 
-	static unsigned int DefaultValue() {
-		return 0;
-	}
+  static unsigned int DefaultValue() {
+    return 0;
+  }
 };
 
-} // namespace opov
+}  // namespace opov
 
 #endif /* ISSUETRAITS_H_ */

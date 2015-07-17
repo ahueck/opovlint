@@ -14,17 +14,16 @@
 
 namespace opov {
 
-AbstractModule::AbstractModule() :
-		context(nullptr) {
-
+AbstractModule::AbstractModule()
+    : context(nullptr) {
 }
 
 void AbstractModule::init(const Configuration* config) {
-	setupOnce(config);
+  setupOnce(config);
 }
 
 void AbstractModule::execute(ModuleContext* context) {
-	this->context = context;
+  this->context = context;
 }
 
 AbstractModule::~AbstractModule() {

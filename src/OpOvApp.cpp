@@ -23,40 +23,37 @@
 #include <modules/AllImplicitConversion.h>
 #include <modules/GlobalScope.h>
 
-OpOvApp::OpOvApp(const std::string& config_path) :
-		config_path(config_path) {
-
+OpOvApp::OpOvApp(const std::string& config_path)
+    : config_path(config_path) {
 }
 
 void OpOvApp::loadConfig() {
-	config = opov::util::make_unique<opov::JSONConfiguration>();
-	bool success = config->load(config_path);
-	if (!success) {
-		LOG_FATAL("Could not find configuration file under '" << config_path << "'."
-					<< "Exiting...");
-		exit(-1);
-	}
+  config = opov::util::make_unique<opov::JSONConfiguration>();
+  bool success = config->load(config_path);
+  if (!success) {
+    LOG_FATAL("Could not find configuration file under '" << config_path << "'."
+                                                          << "Exiting...");
+    exit(-1);
+  }
 }
 
 void OpOvApp::createReporter() {
-	reporter = opov::util::make_unique<opov::CSVReporter>();
+  reporter = opov::util::make_unique<opov::CSVReporter>();
 }
 
 void OpOvApp::createFactory() {
-	executor = opov::util::make_unique<opov::AnalyzerFactory>(config.get(),
-									ihandler.get(), thandler.get());
-	executor->init();
+  executor = opov::util::make_unique<opov::AnalyzerFactory>(config.get(), ihandler.get(), thandler.get());
+  executor->init();
 }
 
 void OpOvApp::initModules() {
-	addModule(new opov::module::GlobalScope());
-	addModule(new opov::module::ExplicitCast());
-	addModule(new opov::module::UnionMatcher());
-	addModule(new opov::module::ImplicitConversion());
-	addModule(new opov::module::ImplicitConditionMatcher());
-	addModule(new opov::module::ConditionalAssgnMatcher());
+  addModule(new opov::module::GlobalScope());
+  addModule(new opov::module::ExplicitCast());
+  addModule(new opov::module::UnionMatcher());
+  addModule(new opov::module::ImplicitConversion());
+  addModule(new opov::module::ImplicitConditionMatcher());
+  addModule(new opov::module::ConditionalAssgnMatcher());
 }
 
 OpOvApp::~OpOvApp() {
-
 }

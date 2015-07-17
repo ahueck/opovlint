@@ -11,17 +11,17 @@
 namespace opov {
 
 IssueReporter::IssueReporter() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 IssueReporter::~IssueReporter() {
-	/*
-	if (issues.size() != 0) {
-		std::for_each(issues.begin(), issues.end(), [] (Issue* i) { delete i; } );
-		issues.clear();
-	}
-	*/
+  /*
+  if (issues.size() != 0) {
+          std::for_each(issues.begin(), issues.end(), [] (Issue* i) { delete i;
+  } );
+          issues.clear();
+  }
+  */
 }
 
-} // namespace opov
+}  // namespace opov

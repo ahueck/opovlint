@@ -20,45 +20,45 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 AllImplicitConversion::AllImplicitConversion() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 void AllImplicitConversion::setupOnce(const Configuration* config) {
 }
 
 void AllImplicitConversion::setupMatcher() {
-	StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(constructExpr(unless(temporaryObjectExpr())).bind("conversion"))));
+  StatementMatcher impl_conversion = materializeTemporaryExpr(
+      hasTemporary(ignoringImpCasts(constructExpr(unless(temporaryObjectExpr())).bind("conversion"))));
 
-			/*constructExpr(unless(anyOf(
-															hasDeclaration(constructorDecl(isCopyOrMoveCtor()))
-															, hasParent(explicitCastExpr(isConstructorConversion()))
-															, hasParent(varDecl())))
-													).bind("conversion");*/
-	this->addMatcher(impl_conversion);
+  /*constructExpr(unless(anyOf(
+                                                                                                  hasDeclaration(constructorDecl(isCopyOrMoveCtor()))
+                                                                                                  ,
+     hasParent(explicitCastExpr(isConstructorConversion()))
+                                                                                                  ,
+     hasParent(varDecl())))
+                                                                                  ).bind("conversion");*/
+  this->addMatcher(impl_conversion);
 }
 
-void AllImplicitConversion::run(
-		const clang::ast_matchers::MatchFinder::MatchResult& result) {
-	const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>(
-			"conversion");
+void AllImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
+  const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>("conversion");
 
-	auto& sm = context->getSourceManager();
-	auto& ihandle = context->getIssueHandler();
-	auto& ac = context->getASTContext();
-	ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());
+  auto& sm = context->getSourceManager();
+  auto& ihandle = context->getIssueHandler();
+  auto& ac = context->getASTContext();
+  ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());
 }
 
 std::string AllImplicitConversion::moduleName() {
-	return "AllImplicitConversion";
+  return "AllImplicitConversion";
 }
 
 std::string AllImplicitConversion::moduleDescription() {
-	return "Detects *all* implicit conversions.";
+  return "Detects *all* implicit conversions.";
 }
 
 AllImplicitConversion::~AllImplicitConversion() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
 } /* namespace module */

@@ -12,18 +12,20 @@
 
 #include <string>
 
-class OpOvApp: public opov::Application {
-private:
-	std::string config_path;
-protected:
-	void loadConfig() override;
-	void createReporter() override;
-	void createFactory() override;
-	void initModules() override;
-public:
-	OpOvApp(const std::string& config_path);
+class OpOvApp : public opov::Application {
+ private:
+  std::string config_path;
 
-	virtual ~OpOvApp();
+ protected:
+  void loadConfig() override;
+  void createReporter() override;
+  void createFactory() override;
+  void initModules() override;
+
+ public:
+  OpOvApp(const std::string& config_path);
+
+  virtual ~OpOvApp();
 };
 
 #endif /* OPOVAPP_H_ */

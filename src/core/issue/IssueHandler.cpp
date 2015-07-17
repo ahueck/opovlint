@@ -9,20 +9,22 @@
 
 namespace opov {
 
-IssueHandler::IssueHandler() : source(""), issues() {
+IssueHandler::IssueHandler()
+    : source("")
+    , issues() {
 }
 
 void IssueHandler::setSource(const std::string& current) {
-	source = current;
+  source = current;
 }
 
 TUIssuesMap& IssueHandler::getAllIssues() {
-	return issues;
+  return issues;
 }
 
 void IssueHandler::clear() {
-	source = "";
-	issues.clear();
+  source = "";
+  issues.clear();
 }
 
 IssueHandler::~IssueHandler() {

@@ -11,9 +11,9 @@
 #include <string>
 #include <locale>
 
-#define DS_STRINGIFY_(A) # A
-#define DS_STRINGIFY__(A) DS_STRINGIFY_(A)
-#define DS_STRINGIFY(A) DS_STRINGIFY__(A)
+#define T_STRINGIFY_(A) # A
+#define T_STRINGIFY__(A) T_STRINGIFY_(A)
+#define T_STRINGIFY(A) T_STRINGIFY__(A)
 
 #define REMOVE_WS(_CODE_)\
         _CODE_.erase(\
@@ -30,8 +30,8 @@ static inline std::string trim_str(std::string code) {
 }
 
 #define KICKOFF_TEST(_MODULE_, _CODE_MACRO_, _CODE_MACRO_RESULT_)\
-SCENARIO("Test the system (state) with " DS_STRINGIFY(_MODULE_) " executed 2 times against the same code.", "[kickoff]") {\
-	GIVEN("The static analyzer with the '" DS_STRINGIFY(_MODULE_) "' module.") {\
+SCENARIO("Test the system (state) with " T_STRINGIFY(_MODULE_) " executed 2 times against the same code.", "[kickoff]") {\
+	GIVEN("The static analyzer with the '" T_STRINGIFY(_MODULE_) "' module.") {\
 		opov::test::TestApp app;\
 		app.init();\
 		app.addModule(new _MODULE_);\
@@ -69,7 +69,7 @@ WHEN(_WHEN_) {\
 	auto reporter = app.getReporter();\
 	THEN("One issue is raised.") {\
 		REQUIRE(reporter->issues.size() == 1);\
-		AND_THEN("The issues code is the string: " DS_STRINGIFY(_RESULT_)) {\
+		AND_THEN("The issues code is the string: " T_STRINGIFY(_RESULT_)) {\
 			auto the_issue = reporter->issues[0];\
 			REQUIRE(trim_str(the_issue->getCode()) == trim_str(_RESULT_));\
 		}\

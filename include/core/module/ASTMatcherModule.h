@@ -14,19 +14,18 @@
 
 namespace opov {
 
-class ASTMatcherModule: public opov::AbstractModule,
-		public clang::ast_matchers::MatchFinder::MatchCallback {
-protected:
-	clang::ast_matchers::MatchFinder finder;
+class ASTMatcherModule : public opov::AbstractModule, public clang::ast_matchers::MatchFinder::MatchCallback {
+ protected:
+  clang::ast_matchers::MatchFinder finder;
 
-public:
-	ASTMatcherModule();
-	template<typename T>
-	void addMatcher(const T &nodeMatch);
-	virtual void init(const Configuration* config) override;
-	virtual void setupMatcher() = 0;
-	virtual void execute(ModuleContext* context) override;
-	virtual ~ASTMatcherModule();
+ public:
+  ASTMatcherModule();
+  template <typename T>
+  void addMatcher(const T& nodeMatch);
+  virtual void init(const Configuration* config) override;
+  virtual void setupMatcher() = 0;
+  virtual void execute(ModuleContext* context) override;
+  virtual ~ASTMatcherModule();
 };
 
 } /* namespace opov */

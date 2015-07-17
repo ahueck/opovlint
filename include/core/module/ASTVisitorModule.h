@@ -16,13 +16,11 @@
 
 namespace opov {
 
-template<typename T>
-class ASTVisitorModule: public AbstractModule,
-		public clang::RecursiveASTVisitor<T> {
-
-public:
-	virtual void execute(ModuleContext* context) override;
-	virtual ~ASTVisitorModule();
+template <typename T>
+class ASTVisitorModule : public AbstractModule, public clang::RecursiveASTVisitor<T> {
+ public:
+  virtual void execute(ModuleContext* context) override;
+  virtual ~ASTVisitorModule();
 };
 
 } /* namespace opov */

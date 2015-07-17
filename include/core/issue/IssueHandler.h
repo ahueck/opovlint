@@ -22,18 +22,19 @@ class ASTContext;
 namespace opov {
 
 class IssueHandler {
-private:
-	std::string source;
-	TUIssuesMap issues;
+ private:
+  std::string source;
+  TUIssuesMap issues;
 
-public:
-	IssueHandler();
-	void setSource(const std::string& source);
-	template<typename T>
-	void addIssue(const clang::SourceManager& sm, const clang::ASTContext& ac, T node, const std::string& module, const std::string& module_descr, std::string message="");
-	TUIssuesMap& getAllIssues();
-	void clear();
-	virtual ~IssueHandler();
+ public:
+  IssueHandler();
+  void setSource(const std::string& source);
+  template <typename T>
+  void addIssue(const clang::SourceManager& sm, const clang::ASTContext& ac, T node, const std::string& module,
+                const std::string& module_descr, std::string message = "");
+  TUIssuesMap& getAllIssues();
+  void clear();
+  virtual ~IssueHandler();
 };
 
 } /* namespace opov */

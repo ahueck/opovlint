@@ -14,16 +14,17 @@
 
 namespace opov {
 
-class CSVReporter: public opov::IssueReporter {
-public:
-	CSVReporter();
-	virtual void addIssue(const TranslationUnitIssues& issue) override;
-	virtual void addIssues(const TUIssuesMap& issues) override;
-	virtual ~CSVReporter();
-private:
-	void print(const TranslationUnitIssues& issue);
+class CSVReporter : public opov::IssueReporter {
+ public:
+  CSVReporter();
+  virtual void addIssue(const TranslationUnitIssues& issue) override;
+  virtual void addIssues(const TUIssuesMap& issues) override;
+  virtual ~CSVReporter();
+
+ private:
+  void print(const TranslationUnitIssues& issue);
 };
 
-} // namespace opov
+}  // namespace opov
 
 #endif /* CSVREPORTER_H_ */

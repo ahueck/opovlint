@@ -10,16 +10,14 @@
 
 namespace opov {
 
-ModuleConsumer::ModuleConsumer(Module* module,
-		ModuleContext* mcontext) :
-		AbstractModuleConsumer(module, mcontext) {
-
+ModuleConsumer::ModuleConsumer(Module* module, ModuleContext* mcontext)
+    : AbstractModuleConsumer(module, mcontext) {
 }
 
 ModuleConsumer::~ModuleConsumer() {
-	// TODO Auto-generated destructor stub
-	//llvm::outs() << "Killed ModuleConsumer: " << this << "\n";
-	LOG_DEBUG("Killed ModuleConsumer: " << this);
+  // TODO Auto-generated destructor stub
+  // llvm::outs() << "Killed ModuleConsumer: " << this << "\n";
+  LOG_DEBUG("Killed ModuleConsumer: " << this);
 }
 
 } /* namespace opov */

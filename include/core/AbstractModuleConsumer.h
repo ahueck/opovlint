@@ -17,16 +17,15 @@ namespace opov {
 class Module;
 class ModuleContext;
 
-class AbstractModuleConsumer: public clang::ASTConsumer {
-protected:
-	Module* module;
-	ModuleContext* mcontext;
+class AbstractModuleConsumer : public clang::ASTConsumer {
+ protected:
+  Module* module;
+  ModuleContext* mcontext;
 
-public:
-	AbstractModuleConsumer(Module* module,
-			ModuleContext* mcontext);
-	void HandleTranslationUnit(clang::ASTContext &Context) override;
-	virtual ~AbstractModuleConsumer();
+ public:
+  AbstractModuleConsumer(Module* module, ModuleContext* mcontext);
+  void HandleTranslationUnit(clang::ASTContext& Context) override;
+  virtual ~AbstractModuleConsumer();
 };
 
 } /* namespace opov */

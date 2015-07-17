@@ -13,16 +13,14 @@
 
 namespace opov {
 
-class AnalyzerFactory: public AbstractFactory {
-private:
-
-public:
-	AnalyzerFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
-	virtual bool handleBeginSource(clang::CompilerInstance &CI,
-			llvm::StringRef Filename) override;
-	virtual void handleEndSource() override;
-	virtual clang::ASTConsumer* newASTConsumer() override;
-	virtual ~AnalyzerFactory();
+class AnalyzerFactory : public AbstractFactory {
+ private:
+ public:
+  AnalyzerFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
+  virtual bool handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) override;
+  virtual void handleEndSource() override;
+  virtual clang::ASTConsumer* newASTConsumer() override;
+  virtual ~AnalyzerFactory();
 };
 
 } /* namespace opov */

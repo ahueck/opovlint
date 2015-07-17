@@ -20,37 +20,34 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 ConditionalAssgnMatcher::ConditionalAssgnMatcher() {
-	// TODO Auto-generated constructor stub
+  // TODO Auto-generated constructor stub
 }
 
 void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
-	config->getValue("global:type", type_s);
+  config->getValue("global:type", type_s);
 }
 
 void ConditionalAssgnMatcher::setupMatcher() {
-	// TODO use ofType instead of just typedef?
-	StatementMatcher condassign = conditionalOperator(
-			hasDescendant(expr(isTypedef(type_s)))).bind("condassign");
-	this->addMatcher(condassign);
+  // TODO use ofType instead of just typedef?
+  StatementMatcher condassign = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("condassign");
+  this->addMatcher(condassign);
 }
 
-void ConditionalAssgnMatcher::run(
-		const clang::ast_matchers::MatchFinder::MatchResult& result) {
-	const ConditionalOperator* e = result.Nodes.getStmtAs<ConditionalOperator>(
-			"condassign");
+void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
+  const ConditionalOperator* e = result.Nodes.getStmtAs<ConditionalOperator>("condassign");
 
-	auto& sm = context->getSourceManager();
-	auto& ihandle = context->getIssueHandler();
-	auto& ac = context->getASTContext();
-	ihandle.addIssue(sm, ac, e, moduleName(), moduleDescription());
+  auto& sm = context->getSourceManager();
+  auto& ihandle = context->getIssueHandler();
+  auto& ac = context->getASTContext();
+  ihandle.addIssue(sm, ac, e, moduleName(), moduleDescription());
 }
 
 std::string ConditionalAssgnMatcher::moduleName() {
-	return "ConditionalAssgnMatcher";
+  return "ConditionalAssgnMatcher";
 }
 
 std::string ConditionalAssgnMatcher::moduleDescription() {
-	return "Conditional assignments (?:) are not allowed with ADOL-C.";
+  return "Conditional assignments (?:) are not allowed with ADOL-C.";
 }
 
 ConditionalAssgnMatcher::~ConditionalAssgnMatcher() {

@@ -11,23 +11,22 @@
 namespace opov {
 namespace module {
 
-FieldDeclCollector::FieldDeclCollector(const std::string& type) :
-		violations(), type(type) {
-
+FieldDeclCollector::FieldDeclCollector(const std::string& type)
+    : violations()
+    , type(type) {
 }
 
-std::vector<clang::FieldDecl*> FieldDeclCollector::extractDecl(
-		clang::CXXRecordDecl* unionDecl) {
-	violations.clear();
-	TraverseDecl(unionDecl);
-	return violations;
+std::vector<clang::FieldDecl*> FieldDeclCollector::extractDecl(clang::CXXRecordDecl* unionDecl) {
+  violations.clear();
+  TraverseDecl(unionDecl);
+  return violations;
 }
 
 bool FieldDeclCollector::VisitFieldDecl(clang::FieldDecl* decl) {
-	if (clutil::typeOf(decl) == type) {
-		violations.push_back(decl);
-	}
-	return true;
+  if (clutil::typeOf(decl) == type) {
+    violations.push_back(decl);
+  }
+  return true;
 }
 
 FieldDeclCollector::~FieldDeclCollector() {

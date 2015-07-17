@@ -15,43 +15,44 @@
 namespace opov {
 
 class Value {
-private:
-	std::string type;
-	std::shared_ptr<void> value;
+ private:
+  std::string type;
+  std::shared_ptr<void> value;
 
-public:
+ public:
+  Value()
+      : type("unknown")
+      , value(nullptr) {
+  }
 
-	Value() :
-			type("unknown"), value(nullptr) {
-	}
+  template <typename T>
+  Value(const T& val)
+      : type(PropertyType<T>::name())
+      , value(std::make_shared<T>(val)) {
+  }
 
-	template<typename T>
-	Value(const T& val) :
-			type(PropertyType<T>::name()), value(std::make_shared<T>(val)) {
+  Value(const Value& other)
+      : type(other.type)
+      , value(other.value) {
+  }
 
-	}
+  Value& operator=(const Value& other) {
+    if (this != &other) {
+      this->type = other.type;
+      this->value = other.value;
+    }
+    return *this;
+  }
 
-	Value(const Value& other) :
-			type(other.type), value(other.value) {
-	}
+  template <typename T>
+  const T& get() {
+    return *((T*)value.get());
+  }
 
-	Value& operator=(const Value & other) {
-		if (this != &other) {
-			this->type = other.type;
-			this->value = other.value;
-		}
-		return *this;
-	}
-
-	template<typename T>
-	const T & get() {
-		return *((T*) value.get());
-	}
-
-	~Value() {
-	}
+  ~Value() {
+  }
 };
 
-} // namespace opov
+}  // namespace opov
 
 #endif /* VALUE_H_ */

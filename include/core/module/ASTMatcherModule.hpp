@@ -10,11 +10,11 @@
 
 namespace opov {
 
-template<typename T>
+template <typename T>
 void ASTMatcherModule::addMatcher(const T& matcher) {
-	finder.addMatcher(matcher, this);
+  finder.addMatcher(matcher, this);
 }
 
-} // namespace opov
+}  // namespace opov
 
 #endif /* ASTMATCHERMODULE_HPP_ */

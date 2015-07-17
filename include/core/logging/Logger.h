@@ -15,9 +15,12 @@
 #define LOG_LEVEL 1
 #endif
 
-#define LOG_LEVEL_MSG(LEVEL, MSG) if(LEVEL <= LOG_LEVEL) llvm::outs() << "In '" << __func__  << "' (" << __LINE__ <<"): " << MSG << "\n"
+#define LOG_LEVEL_MSG(LEVEL, MSG) \
+  if (LEVEL <= LOG_LEVEL)         \
+  llvm::outs() << "In '" << __func__ << "' (" << __LINE__ << "): " << MSG << "\n"
 
-//#define LOG_DEBUG(MSG) llvm::outs() << "In '" <<__FILE__  << "' (" << __LINE__ <<"): " << MSG << "\n"
+//#define LOG_DEBUG(MSG) llvm::outs() << "In '" <<__FILE__  << "' (" << __LINE__
+//<<"): " << MSG << "\n"
 
 #define LOG_DEBUG(MSG) LOG_LEVEL_MSG(3, MSG)
 #define LOG_INFO(MSG) LOG_LEVEL_MSG(2, MSG)

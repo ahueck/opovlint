@@ -14,23 +14,22 @@
 
 namespace opov {
 namespace module {
-class GlobalScope: public opov::ASTMatcherModule {
-private:
-	std::string type_s;
 
-public:
-	GlobalScope();
-	virtual void setupOnce(const Configuration* config) override;
-	virtual void setupMatcher() override;
-	virtual void run(
-			const clang::ast_matchers::MatchFinder::MatchResult& result)
-					override;
-	virtual std::string moduleName() override;
-	virtual std::string moduleDescription() override;
-	virtual ~GlobalScope();
+class GlobalScope : public opov::ASTMatcherModule {
+ private:
+  std::string type_s;
+
+ public:
+  GlobalScope();
+  virtual void setupOnce(const Configuration* config) override;
+  virtual void setupMatcher() override;
+  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  virtual std::string moduleName() override;
+  virtual std::string moduleDescription() override;
+  virtual ~GlobalScope();
 };
 
-} // namespace module
+} /* namespace module */
 } /* namespace opov */
 
 #endif /* GLOBALSCOPE_H_ */
