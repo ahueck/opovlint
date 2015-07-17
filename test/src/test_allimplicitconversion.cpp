@@ -9,7 +9,7 @@
 
 #include "ImplicitConversionDefinition.h"
 
-KICKOFF_TEST(opov::module::AllImplicitConversion(), CMP("2.0"), "2.0")
+KICKOFF_TEST(opov::module::AllImplicitConversion(), CMP("2.0"), "2.")
 
 SCENARIO("Constructor Conversions. Module produces one match each time.", "[scalar_match]") {
 	GIVEN("The 'AllImplicitConversion' module.") {
@@ -18,8 +18,8 @@ SCENARIO("Constructor Conversions. Module produces one match each time.", "[scal
 		app.addModule(new opov::module::AllImplicitConversion());
 
 		SIMPLE_TEST1("A comparison with a constant casted to scalar."
-					, CMP("scalar(2.0)")
-					, "scalar(2.0)");
+					, CMP("scalar(2.)")
+					, "scalar(2.)");
 		SIMPLE_TEST1("A comparison with a float casted to scalar."
 					, CMP("scalar(af)")
 					, "scalar(af)");

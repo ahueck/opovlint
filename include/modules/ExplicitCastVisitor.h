@@ -13,15 +13,17 @@
 namespace opov {
 namespace module {
 
-class ExplicitCastVisitor: public clang::RecursiveASTVisitor<ExplicitCastVisitor> {
-protected:
-	const std::string& type;bool subtreeHasType;
+class ExplicitCastVisitor : public clang::RecursiveASTVisitor<ExplicitCastVisitor> {
+ protected:
+  const std::string& type;
+  bool subtreeHasType;
 
-public:
-	ExplicitCastVisitor(const std::string& type = "");bool hasType(
-			clang::ExplicitCastExpr* expr);bool TraverseStmt(clang::Stmt* S);bool VisitExplicitCastExpr(
-			clang::ExplicitCastExpr* expr);
-	virtual ~ExplicitCastVisitor();
+ public:
+  ExplicitCastVisitor(const std::string& type = "");
+  bool hasType(clang::ExplicitCastExpr* expr);
+  bool TraverseStmt(clang::Stmt* S);
+  bool VisitExplicitCastExpr(clang::ExplicitCastExpr* expr);
+  virtual ~ExplicitCastVisitor();
 };
 
 } /* namespace module */

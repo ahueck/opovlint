@@ -8,7 +8,7 @@
 #ifndef CONDITIONALASSGNMATCHER_H_
 #define CONDITIONALASSGNMATCHER_H_
 
-#include <core/ASTMatcherModule.h>
+#include <core/module/ASTMatcherModule.h>
 
 #include <string>
 //#include <memory>
@@ -16,22 +16,20 @@
 namespace opov {
 namespace module {
 
-//class ConditionalAssgnVisitor;
+// class ConditionalAssgnVisitor;
 
-class ConditionalAssgnMatcher: public opov::ASTMatcherModule {
-private:
-	std::string type_s;
-	//std::unique_ptr<ConditionalAssgnVisitor> visitor;
-public:
-	ConditionalAssgnMatcher();
-	virtual void setupOnce(const Configuration* config) override;
-	virtual void setupMatcher() override;
-	virtual void run(
-			const clang::ast_matchers::MatchFinder::MatchResult& result)
-					override;
-	virtual std::string moduleName() override;
-	virtual std::string moduleDescription() override;
-	virtual ~ConditionalAssgnMatcher();
+class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
+ private:
+  std::string type_s;
+  // std::unique_ptr<ConditionalAssgnVisitor> visitor;
+ public:
+  ConditionalAssgnMatcher();
+  virtual void setupOnce(const Configuration* config) override;
+  virtual void setupMatcher() override;
+  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  virtual std::string moduleName() override;
+  virtual std::string moduleDescription() override;
+  virtual ~ConditionalAssgnMatcher();
 };
 
 } /* namespace module */

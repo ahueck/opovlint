@@ -1,2 +1,30 @@
+language: C++
+
+compiler:
+  - gcc
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
+  - echo "deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.5 main" | sudo tee -a /etc/apt/sources.list
+  - echo "deb-src http://llvm.org/apt/precise/ llvm-toolchain-precise-3.5 main" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install gcc-4.8 g++-4.8
+  - sudo apt-get install zlib1g-dev libxml2-dev libedit-dev clang-3.5 libclang-common-3.5-dev libclang-3.5-dev libclang1-3.5 libllvm-3.5-ocaml-dev libllvm3.5 llvm-3.5 llvm-3.5-dev llvm-3.5-runtime
+
+before_script:
+  - mkdir build
+  - cd build
+
 script: 
-  - 'echo "successfull build"'
+  - cmake -DCMAKE_CXX_COMPILER=g++-4.8 -DMAKE_TEST=TRUE -DLOG_LEVEL=0 ..
+  - make
+  - cd .. && chmod +x unit_tests.sh
+  - ./unit_tests.sh
+
+branches:
+  only:
+    - master
+    - devel

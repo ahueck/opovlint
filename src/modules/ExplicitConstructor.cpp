@@ -7,13 +7,10 @@
 
 #include <modules/ExplicitConstructor.h>
 
-#include <core/ClangMatcherExt.h>
-#include <core/ModuleContext.h>
-#include <core/Configuration.h>
-#include <core/IssueHandler.h>
-//#include <core/Logger.h>
-//#include <core/ClangUtil.h>
-//#include <core/Util.h>
+#include <core/utility/ClangMatcherExt.h>
+#include <core/module/ModuleContext.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
 
 namespace opov {
 namespace module {
@@ -21,56 +18,46 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-ExplicitConstructor::ExplicitConstructor() :
-		warnOnTemplates(false) {
-
+ExplicitConstructor::ExplicitConstructor()
+    : warnOnTemplates(false) {
 }
 
 void ExplicitConstructor::setupOnce(const Configuration* config) {
-	config->getValue("ExplicitConstructor:warnOnTemplates", warnOnTemplates,
-			true);
-	//LOG_DEBUG("warnOnTemplates: " << warnOnTemplates);
+  config->getValue("ExplicitConstructor:warnOnTemplates", warnOnTemplates, true);
 }
 
 void ExplicitConstructor::setupMatcher() {
-	auto isTemplSpecialization = hasParent(classTemplateSpecializationDecl());
-	auto constructor =
-			(warnOnTemplates ?
-					constructorDecl(unless(isTemplSpecialization)) :
-					constructorDecl(
-							unless(
-									anyOf(isTemplSpecialization,
-											hasParent(
-													recordDecl(
-															hasParent(
-																	classTemplateDecl()))))))).bind(
-					"constructor");
-	;
-	addMatcher(constructor);
+  auto isTemplSpecialization = hasParent(classTemplateSpecializationDecl());
+  auto constructor =
+      (warnOnTemplates
+           ? constructorDecl(unless(isTemplSpecialization))
+           : constructorDecl(unless(anyOf(isTemplSpecialization,
+                                          hasParent(recordDecl(hasParent(classTemplateDecl()))))))).bind("constructor");
+  ;
+  addMatcher(constructor);
 }
 
-void ExplicitConstructor::run(
-		const clang::ast_matchers::MatchFinder::MatchResult& result) {
-	const CXXConstructorDecl* ctor = result.Nodes.getNodeAs<CXXConstructorDecl>(
-			"constructor");
+void ExplicitConstructor::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
+  const CXXConstructorDecl* ctor = result.Nodes.getNodeAs<CXXConstructorDecl>("constructor");
 
-	if (ctor->isOutOfLine() || ctor->isExplicit() || ctor->isImplicit()
-			|| ctor->isDeleted() || ctor->isCopyOrMoveConstructor()
-			|| ctor->getNumParams() == 0
-			|| ctor->getMinRequiredArguments() > 1) {
-		return;
-	}
-	auto& ihandle = context->getIssueHandler();
-	auto& sm = context->getSourceManager();
-	ihandle.addIssue(sm, ctor, moduleName(), moduleDescription());
+  if (ctor->isOutOfLine() || ctor->isExplicit() || ctor->isImplicit() || ctor->isDeleted() ||
+      ctor->isCopyOrMoveConstructor() || ctor->getNumParams() == 0 || ctor->getMinRequiredArguments() > 1) {
+    return;
+  }
+
+  auto& ihandle = context->getIssueHandler();
+  auto& sm = context->getSourceManager();
+  auto& ac = context->getASTContext();
+  ihandle.addIssue(sm, ac, ctor, moduleName(), moduleDescription());
 }
 
 std::string ExplicitConstructor::moduleName() {
-	return "ExplicitConstructor";
+  return "ExplicitConstructor";
 }
 
 std::string ExplicitConstructor::moduleDescription() {
-	return "Finds (all) non-explicit constructors. Explicit constructors prevent implicit conversions.";
+  return "Finds (all) non-explicit constructors. Explicit constructors prevent "
+         "implicit conversions.";
 }
 
 ExplicitConstructor::~ExplicitConstructor() {

@@ -8,7 +8,7 @@
 #ifndef IMPLICITCONDITIONDEFINITION_H_
 #define IMPLICITCONDITIONDEFINITION_H_
 
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 
 #include <MockReporter.h>
 #include <TestApp.h>

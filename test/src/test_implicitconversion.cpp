@@ -10,7 +10,7 @@
 #include "ImplicitConversionDefinition.h"
 
 
-KICKOFF_TEST(opov::module::ImplicitConversion(), CMP("2.0"), "2.0")
+KICKOFF_TEST(opov::module::ImplicitConversion(), CMP("2.0"), "2.")
 
 #define _TYPE_ "scalar"
 SCENARIO("Constructor Conversions. Module produces one match for type " _TYPE_, "[" _TYPE_ "_match]") {

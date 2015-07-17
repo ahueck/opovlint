@@ -6,7 +6,7 @@
  */
 
 #include <modules/UnionMatcher.h>
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 
 #include <MockReporter.h>
 #include <TestApp.h>

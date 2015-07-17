@@ -1,53 +1,149 @@
-# Detect LLVM and set various variable to link against the different component of LLVM
-#
-# NOTE: This is a modified version of the module originally found in the OpenGTL project
-# at www.opengtl.org
-#
-# LLVM_BIN_DIR : directory with LLVM binaries
-# LLVM_LIB_DIR : directory with LLVM library
-# LLVM_INCLUDE_DIR : directory with LLVM include
-#
-# LLVM_COMPILE_FLAGS : compile flags needed to build a program using LLVM headers
-# LLVM_LDFLAGS : ldflags needed to link
-# LLVM_LIBS_CORE : ldflags needed to link against a LLVM core library
-# LLVM_LIBS_JIT : ldflags needed to link against a LLVM JIT
-# LLVM_LIBS_JIT_OBJECTS : objects you need to add to your source when using LLVM JIT
+##
+## Script relies on llvm-config binary to gather the necessary information
+## to compile a LLVM/Clang based tool.
+##
+## Note:  If llvm-config can not be located, use ${LLVM_ROOT_DIR} variable 
+##        for the path to the respective bin/ folder.
+##
 
-if(LLVM_INCLUDE_DIR)
-  set(LLVM_FOUND TRUE)
-else()
-	find_program(LLVM_CONFIG_EXECUTABLE
-	  NAMES llvm-config
-	  PATHS /opt/local/bin /usr/local/bin
-	)
 
-	if(NOT LLVM_CONFIG_EXECUTABLE)
-		message(FATAL_ERROR "Could not find program llvm-config.")
-	endif()
+function(setup_llvm)
+## Setup for llvm-config executable
+##
+## Out:
+##  Var: ${LLVM_ROOT_DIR} (Prefix of LLVM)
+##  Exe: ${LLVM_CONFIG}
+  set(llvm_config_names llvm-config-3.7
+                        llvm-config-3.6
+                        llvm-config-3.5
+                        llvm-config)
 
-	macro(find_llvm_libs LLVM_CONFIG_EXECUTABLE _libname_ LIB_VAR OBJECT_VAR)
-	  exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --libs ${_libname_}  OUTPUT_VARIABLE ${LIB_VAR} )
-	  string(REGEX MATCHALL "[^ ]*[.]o[ $]"  ${OBJECT_VAR} ${${LIB_VAR}})
-	  separate_arguments(${OBJECT_VAR})
-	  string(REGEX REPLACE "[^ ]*[.]o[ $]" ""  ${LIB_VAR} ${${LIB_VAR}})
-	endmacro()
+  find_program(LLVM_CONFIG
+      NAMES ${llvm_config_names}
+      PATHS /usr/local/bin /opt/local/bin ${LLVM_ROOT_DIR}/bin
+      DOC "llvm-config executable.")
 
-	exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --bindir OUTPUT_VARIABLE LLVM_BIN_DIR )
-	exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --libdir OUTPUT_VARIABLE LLVM_LIB_DIR )
-	#MESSAGE(STATUS "LLVM lib dir: " ${LLVM_LIB_DIR})
-	exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR )
-	exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --cxxflags  OUTPUT_VARIABLE LLVM_COMPILE_FLAGS )
-	execute_process(COMMAND ${LLVM_CONFIG_EXECUTABLE} --ldflags  OUTPUT_VARIABLE LLVM_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
-	#--system-libs is new in llvm 3.5
-	execute_process(COMMAND ${LLVM_CONFIG_EXECUTABLE} --system-libs  OUTPUT_VARIABLE LLVM_LDFLAGS2 OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
-	string(REPLACE "\n" " " LLVM_LDFLAGS ${LLVM_LDFLAGS} ${LLVM_LDFLAGS2})
-	exec_program(${LLVM_CONFIG_EXECUTABLE} ARGS --libs      OUTPUT_VARIABLE LLVM_LIBS_CORE )
-	find_llvm_libs(${LLVM_CONFIG_EXECUTABLE} "jit native" LLVM_LIBS_JIT LLVM_LIBS_JIT_OBJECTS )
-	#STRING(REPLACE " -lLLVMCore -lLLVMSupport -lLLVMSystem" "" LLVM_LIBS_JIT ${LLVM_LIBS_JIT_RAW})
+  if(LLVM_CONFIG)
+    message(STATUS "llvm-config found: ${LLVM_CONFIG}")
+  else()
+    message(FATAL_ERROR "llvm-config NOT found. Search failed: ${llvm_config_names}")
+  endif()
 
-	if(LLVM_INCLUDE_DIR)
-	  set(LLVM_FOUND TRUE)
-	else()
-		set(LLVM_FOUND FALSE)
-	endif()
-endif()
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --prefix
+    OUTPUT_VARIABLE LLVM_ROOT_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  set(LLVM_ROOT_DIR ${LLVM_ROOT_DIR} PARENT_SCOPE)
+  set(LLVM_CONFIG ${LLVM_CONFIG} PARENT_SCOPE)
+endfunction()
+
+function(set_llvm_cpp_flags)
+## Compiler flags used for LLVM 
+## Note:  Removes definitions (-D and -U), 
+##        Optimization flags (-O, -g)
+##        Include flags (-I)
+## Out:
+##  Var: ${LLVM_COMPILE_FLAGS}
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --cxxflags
+    OUTPUT_VARIABLE llvm_cxxflags
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  
+  string(REGEX REPLACE "-D[^ ]*|-U[^ ]*|-I[^ ]*|-g[^ ]*|-[oO][^ ]*" "" llvm_cxxflags ${llvm_cxxflags})
+  string(REGEX REPLACE "[ ]+" " " llvm_cxxflags ${llvm_cxxflags})
+  set(LLVM_COMPILE_FLAGS ${llvm_cxxflags} PARENT_SCOPE)
+endfunction()
+
+function(set_llvm_lib_path)
+## ld flags of LLVM (/usr/lib/...)
+## Out:
+##  Var: ${LLVM_LIBRARY_DIRS}
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --libdir
+    OUTPUT_VARIABLE llvm_ldflags
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  
+  set(LLVM_LIBRARY_DIRS ${llvm_ldflags} PARENT_SCOPE)
+endfunction()
+
+function(set_llvm_system_libs)
+## System libraries used by LLVM
+## Out:
+##  Var: ${LLVM_SYSTEM_LIBS}
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --system-libs
+    OUTPUT_VARIABLE llvm_system_libs
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  
+  set(LLVM_SYSTEM_LIBS ${llvm_system_libs} PARENT_SCOPE)
+endfunction()
+
+function(set_llvm_include_dir)
+## Include direcotry of LLVM (-I)
+## Out:
+##  Var: ${LLVM_SYSTEM_LIBS}
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --includedir
+    OUTPUT_VARIABLE llvm_includdir
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  
+  set(LLVM_INCLUDE_DIRS ${llvm_includdir} PARENT_SCOPE)
+endfunction()
+
+function(set_llvm_definitions)
+## Definitions used by LLVM (-D)
+## Out:
+##  Var: ${LLVM_DEFINITIONS}
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --cppflags
+    OUTPUT_VARIABLE llvm_definitions
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  
+  string(REGEX REPLACE "-I[^ ]*" "" llvm_definitions ${llvm_definitions})
+  string(REGEX REPLACE "[ ]+" " " llvm_definitions ${llvm_definitions})
+  set(LLVM_DEFINITIONS ${llvm_definitions} PARENT_SCOPE)
+endfunction()
+
+function(set_llvm_libs)
+## LLVM libraries to link against.
+## Flag: ${LLVM_LINK_SMALL} = true indicates to use a minimal
+##       set of libraries for the Clang tool. Might fail.
+## Out:
+##  Var: ${LLVM_DEFINITIONS}
+  if(LLVM_LINK_SMALL)
+    set(llvm_libs LLVMTransformUtils
+                  LLVMAnalysis LLVMTarget LLVMIRReader
+                  LLVMObject LLVMMCParser LLVMMC
+                  LLVMBitReader LLVMAsmParser LLVMCore
+                  LLVMOption LLVMSupport)
+  else()
+    execute_process(
+      COMMAND ${LLVM_CONFIG} --libs
+      OUTPUT_VARIABLE llvm_libs
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    string(REGEX REPLACE " -" ";-" llvm_libs ${llvm_libs})
+  endif()
+  set(LLVM_LIBS ${llvm_libs} PARENT_SCOPE)
+endfunction()
+
+setup_llvm()
+set_llvm_libs()
+set_llvm_cpp_flags()
+set_llvm_lib_path()
+set_llvm_system_libs()
+set_llvm_include_dir()
+set_llvm_definitions()
+
+## Use existing CMake feature provided by LLVM (path not always working)
+##  Vars (partial): ${LLVM_INCLUDE_DIRS}, ${LLVM_LIBRARY_DIRS}, ${LLVM_DEFINITIONS}
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm-3.7/cmake")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm-3.6/cmake")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm-3.5/cmake")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LLVM_ROOT_DIR}/share/llvm/cmake")
+#message(STATUS ${CMAKE_MODULE_PATH})
+#include(LLVMConfig)
+
+## Alternative: seems buggy on some (binary) installs
+#find_package(LLVM REQUIRED CONFIG)
+# FIXME does not work on this plattform (CLang 3.5.0)
+#llvm_map_components_to_libnames(LLVM_LIBS support core)

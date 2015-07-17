@@ -11,84 +11,44 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(LSOURCES
 src/core/Application.cpp
-src/core/AbstractModule.cpp
-src/core/ModuleContext.cpp
-src/core/ASTMatcherModule.cpp
+src/core/module/AbstractModule.cpp
+src/core/module/ModuleContext.cpp
+src/core/module/ASTMatcherModule.cpp
 src/core/AbstractModuleConsumer.cpp
 src/core/AbstractFactory.cpp
-src/core/ConsoleReporter.cpp
-
-src/core/JSONConfiguration.cpp
-
+src/core/configuration/JSONConfiguration.cpp
 include/external/IncludeDirectives.cpp
 include/external/ReplacementHandling.cpp
-
-src/core/TransformationHandler.cpp
-src/core/IssueHandler.cpp
+src/core/issue/IssueHandler.cpp
+src/core/reporting/ConsoleReporter.cpp
+src/core/reporting/CSVReporter.cpp
+src/core/transformation/TransformationHandler.cpp
 )
 
-set(LHEADERS
-include/core/Application.h
-include/core/AbstractModule.h
-include/core/ModuleContext.h
-include/core/AbstractModuleConsumer.h
-include/core/ASTVisitorModule.h
-include/core/ASTMatcherModule.h
-include/core/AbstractFactory.h
-include/core/Configuration.h
-include/core/IFactory.h
-include/core/Module.h
-include/core/Issue.h
-include/core/IssueReporter.h
-include/core/ConsoleReporter.h
-
-include/core/JSONConfiguration.h
-include/core/TransformationUtil.h
-
-include/core/TransformationHandler.h
-include/core/IssueHandler.h
-)
 
 set(PSOURCES 
 src/AnalyzerFactory.cpp
 src/ModuleConsumer.cpp
-
-src/modules/ImplicitCondition.cpp
 src/modules/ImplicitConditionMatcher.cpp
-src/modules/ImplicitCastVisitor.cpp
 src/modules/FieldDeclCollector.cpp
 src/modules/UnionMatcher.cpp
 src/modules/ExplicitCast.cpp
-src/modules/ExplicitCastVisitor.cpp
 src/modules/ConditionalAssgnMatcher.cpp
 src/modules/ImplicitConversion.cpp
 src/modules/ExplicitConstructor.cpp
 src/modules/AllImplicitConversion.cpp
+src/modules/GlobalScope.cpp
 )
 
-set(PHEADERS
-include/AnalyzerFactory.h
-include/ModuleConsumer.h
-
-include/modules/ImplicitCondition.h
-include/modules/ImplicitConditionMatcher.h
-include/modules/ImplicitCastVisitor.h
-include/modules/FieldDeclCollector.h
-include/modules/UnionMatcher.h
-include/modules/ExplicitCast.h
-include/modules/ExplicitCastVisitor.h
-include/modules/ConditionalAssgnMatcher.h
-include/modules/ImplicitConversion.h
-include/modules/ExplicitConstructor.h
-include/modules/AllImplicitConversion.h
-)
-
-add_library(libopov ${LSOURCES} ${LHEADERS})
-target_link_libraries(libopov "${TOOLCHAIN_LINK_LIB}")
-add_library(stdimpl ${PSOURCES} ${PHEADERS})
+add_library(libopov ${LSOURCES})
+target_link_libraries(libopov ${TOOLCHAIN_LINK_LIB})
+add_library(stdimpl ${PSOURCES})
 target_link_libraries(stdimpl libopov)
 
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
-target_link_libraries(find-type${EXE_SUFFIX} "${TOOLCHAIN_LINK_LIB}" libopov stdimpl)
+target_link_libraries(find-type${EXE_SUFFIX} stdimpl)
 
-add_subdirectory(test)
+if(MAKE_TEST)
+  message(STATUS "Requested generation of tests.")
+  add_subdirectory(test)
+endif()

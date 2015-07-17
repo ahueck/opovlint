@@ -1,49 +1,44 @@
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-#setup of all necessary include/lib dirs for the development of a clang based tool
+# Setup of all necessary include/lib dirs for the development of a Clang based tool
 find_package(LLVM REQUIRED)
 find_package(Clang REQUIRED)
 
-if(NOT CLANG_FOUND OR NOT LLVM_FOUND)
-	message(WARNING "Detection of Clang. Status: " CLANG_FOUND)
-	message(WARNING "Detection of LLVM. Status: " LLVM_FOUND)
-	message(FATAL_ERROR "Aborting.")
+if(NOT CLANG_FOUND)
+	message(FATAL_ERROR "Detection of Clang failed.")
 else()
-	include_directories(${LLVM_INCLUDE_DIR})
-	include_directories(${CLANG_INCLUDE_DIRS})
-	link_directories(${LLVM_LIB_DIR})
-	set(TOOLCHAIN_LINK_LIB ${CLANG_LIBS} ${LLVM_LIBS_CORE} ${LLVM_LDFLAGS}) 
-	set(CXX_ONLY_FLAGS ${CXX_ONLY_FLAGS} "${LLVM_COMPILE_FLAGS}")
+	include_directories(${LLVM_INCLUDE_DIRS})
+	add_definitions(${LLVM_DEFINITIONS})
+	link_directories(${LLVM_LIBRARY_DIRS})
+	set(TOOLCHAIN_LINK_LIB ${CLANG_LIBS} ${LLVM_LIBS} ${LLVM_SYSTEM_LIBS}) 
 endif()
+
+if(NOT DEFINED LOG_LEVEL)
+	set(LOG_LEVEL 1)
+endif()
+add_definitions(-DLOG_LEVEL=${LOG_LEVEL})
 
 # Misc. find out if clang compiler is used
 if(CMAKE_CXX_COMPILER MATCHES ".*clang")
 	set(CMAKE_COMPILER_IS_CLANGXX 1)
 endif()
 
-#setup general compiler options
+# Setup general compiler options
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-	set(CXX_ONLY_FLAGS "${CXX_ONLY_FLAGS} -fno-rtti -fexceptions") 
-	#set(TOOLCHAIN_LINK_LIB "${TOOLCHAIN_LINK_LIB}" ) 
-	
-	if(ENABLE_SSE)
-		set(COMMON_FLAGS "${COMMON_FLAGS} -msse4")
-		message(STATUS "Enabling SSE4.")
-	endif()
-
-	if(ENABLE_NATIVE)
-		set(COMMON_FLAGS "${COMMON_FLAGS} -march=native")
-		message(STATUS "Enabling native modus.")
-	endif()
+  # Ignore for now: ${LLVM_COMPILE_FLAGS}
+	set(CXX_ONLY_FLAGS "-std=c++11 -Wall -Wextra -pedantic -Wunreachable-code -Wwrite-strings -Wpointer-arith -Wcast-align -Wcast-qual -Wno-unused-parameter -fPIC -fexceptions -fno-rtti ${CXX_ONLY_FLAGS}")
 
 	# Release build
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 	# Release build with debug symbols
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3")
 	# Debug Build
-	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+	set(CMAKE_CXX_FLAGS_DEBUG "-Og")
+	# Release build optimized for size
+	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os")
 
-	set(CMAKE_CXX_FLAGS "${COMMON_FLAGS} ${CXX_ONLY_FLAGS} ${CMAKE_CXX_FLAGS}")
+	# COMMON_FLAGS is unsued for now
+	set(CMAKE_CXX_FLAGS  "${CXX_ONLY_FLAGS} ${COMMON_FLAGS} ${CMAKE_CXX_FLAGS}")
 endif()
 
 # set default build type
@@ -58,7 +53,9 @@ if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG")
 elseif(CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE")
 	set(EXE_SUFFIX "")
 elseif(CMAKE_BUILD_TYPE_UPPER STREQUAL "RELWITHDEBINFO")
-	set(EXE_SUFFIX "RelWithDebInfo")
+	set(EXE_SUFFIX "RelDebg")
+elseif(CMAKE_BUILD_TYPE_UPPER STREQUAL "MINSIZEREL")
+	set(EXE_SUFFIX "RelMin")
 else()
 	message(WARNING "Unknown exe suffix found.")
 	set(EXE_SUFFIX "Unknown")
@@ -68,19 +65,22 @@ if(CMAKE_BUILD_TYPE_UPPER STREQUAL "RELWITHDEBINFO")
 	set(ALL_CXX_FLAGS ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 elseif(CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE")
 	set(ALL_CXX_FLAGS ${CMAKE_CXX_FLAGS_RELEASE})
+elseif(CMAKE_BUILD_TYPE_UPPER STREQUAL "MINSIZEREL")
+	set(ALL_CXX_FLAGS ${CMAKE_CXX_FLAGS_MINSIZEREL})
 else()
 	# Fallback to Debug
 	set(ALL_CXX_FLAGS ${CMAKE_CXX_FLAGS_DEBUG})
 endif()
 
-message("Build Type: " "${CMAKE_BUILD_TYPE}")
-message("Compiler Flags (Modus): " "${ALL_CXX_FLAGS}")
-message("Compiler Flags (cmake): " "${CMAKE_CXX_FLAGS}")
-message("Found Clang: " "${CLANG_INCLUDE_DIRS}")
-message("Found LLVM: " "${LLVM_INCLUDE_DIR}")
-message("Clang libs: " "${CLANG_LIBS}")
-message("LLVM CXX flags: " "${LLVM_COMPILE_FLAGS}")
-message("LLVM LD flags: " "${LLVM_LDFLAGS}")
-message("LLVM core libs: " "${LLVM_LIBS_CORE}")
-message("LLVM JIT libs: " "${LLVM_LIBS_JIT}")
-message("LLVM JIT objs: " "${LLVM_LIBS_JIT_OBJECTS}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Logging level: ${LOG_LEVEL}")
+message(STATUS "Compiler Flags (Modus): ${ALL_CXX_FLAGS}")
+message(STATUS "Compiler Flags (cmake): ${CMAKE_CXX_FLAGS}")
+message(STATUS "Found Clang: ${CLANG_FOUND}")
+message(STATUS "Found LLVM: ${LLVM_ROOT_DIR}")
+message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIRS}")
+message(STATUS "LLVM CXX flags: ${LLVM_COMPILE_FLAGS}")
+message(STATUS "LLVM LD flags: ${LLVM_LIBRARY_DIRS}")
+message(STATUS "LLVM system libs: ${LLVM_SYSTEM_LIBS}")
+message(STATUS "LLVM libs: ${LLVM_LIBS}")
+message(STATUS "Clang libs: ${CLANG_LIBS}")

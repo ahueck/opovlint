@@ -6,7 +6,7 @@
  */
 
 #include <modules/ExplicitConstructor.h>
-#include <core/Issue.h>
+#include <core/issue/Issue.h>
 
 #include <MockReporter.h>
 #include <TestApp.h>
@@ -22,7 +22,7 @@ versionNumber(const scalar num)\n\
 {}"
 
 #define CTOR_T "\
-versionNumber(const T num)\n\
+versionNumber<T>(const T num)\n\
 : versionNumber_(num)\n\
 {}"
 

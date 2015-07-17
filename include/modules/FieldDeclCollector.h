@@ -16,16 +16,16 @@
 namespace opov {
 namespace module {
 
-class FieldDeclCollector: public clang::RecursiveASTVisitor<FieldDeclCollector> {
-private:
-	std::vector<clang::FieldDecl*> violations;
-	const std::string& type;
+class FieldDeclCollector : public clang::RecursiveASTVisitor<FieldDeclCollector> {
+ private:
+  std::vector<clang::FieldDecl*> violations;
+  const std::string& type;
 
-public:
-	FieldDeclCollector(const std::string& type = "");
-	std::vector<clang::FieldDecl*> extractDecl(clang::CXXRecordDecl* unionDecl);bool VisitFieldDecl(
-			clang::FieldDecl* decl);
-	virtual ~FieldDeclCollector();
+ public:
+  FieldDeclCollector(const std::string& type = "");
+  std::vector<clang::FieldDecl*> extractDecl(clang::CXXRecordDecl* unionDecl);
+  bool VisitFieldDecl(clang::FieldDecl* decl);
+  virtual ~FieldDeclCollector();
 };
 
 } /* namespace module */

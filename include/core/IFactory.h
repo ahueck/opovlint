@@ -11,8 +11,8 @@
 #include <clang/Tooling/Tooling.h>
 
 // Forward decl. of several clang classes
-//class CompilerInstance;
-//class StringRef;
+// class CompilerInstance;
+// class StringRef;
 namespace clang {
 class AstConsumer;
 }
@@ -21,13 +21,13 @@ namespace opov {
 
 class Module;
 
-class IFactory: public clang::tooling::SourceFileCallbacks {
-public:
-	virtual void init() = 0;
-	virtual void setModule(Module* m) = 0;
-	virtual clang::ASTConsumer* newASTConsumer() = 0;
-	virtual ~IFactory() {
-	}
+class IFactory : public clang::tooling::SourceFileCallbacks {
+ public:
+  virtual void init() = 0;
+  virtual void setModule(Module* m) = 0;
+  virtual clang::ASTConsumer* newASTConsumer() = 0;
+  virtual ~IFactory() {
+  }
 };
 
 } /* namespace opov */

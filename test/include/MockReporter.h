@@ -8,9 +8,9 @@
 #ifndef MOCKREPORTER_H_
 #define MOCKREPORTER_H_
 
-#include <core/IssueReporter.h>
-#include <core/Logger.h>
-#include <core/IssueHandlerStruct.h>
+#include <core/reporting/IssueReporter.h>
+#include <core/logging/Logger.h>
+#include <core/issue/IssueHandlerStruct.h>
 
 #include <memory>
 
