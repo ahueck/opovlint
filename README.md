@@ -22,14 +22,14 @@ Distributed under the MIT License. For details refer to the [LICENSE file](LICEN
 Motivation
 ------------
 
-Operator Overloading allows for the semantic augmentation of existing codes. 
+Operator overloading allows for the semantic augmentation of existing codes. 
 The basic arithmetic type in a code is replaced by a user-defined type.
 
 *Type change* (in theory this just works): 
 - typedef **double** scalar; -> typedef **userdef_double** scalar;
 
 However, several coding patterns are not compatible with user-defined classes 
-and result in compile time errors
+and result in compile time errors.
 - Implicit Conversions
     - “At most one user-defined conversion [...] is implicitly 
          applied to a single value.” –  [§12.3-4, C++03 Standard]
@@ -46,7 +46,7 @@ Goal
 ------------
 
 Provide developers of (numerical) codes with static code analysis 
-to avoid problematic coding patterns
+to avoid problematic coding patterns.
 
 For legacy numerical codes:
 - Flag potential problematic code locations
@@ -57,15 +57,15 @@ Installation
 ------------
 
 The tool is developed and tested on Linux. 
-For Ubuntu/Dabian, refer to the [Travis CI file](.travis.yml) for guidance.
+For Ubuntu/Debian, refer to the [Travis CI file](.travis.yml) for guidance.
 
 ### Prerequisites
 
-1.  C++ Compiler with C++11 support (gcc version >= 4.8)
-2.  Cmake (version >=2.8)
+1.  C++ Compiler with C++11 support (GCC version >= 4.8)
+2.  cmake (version >=2.8)
 3.  Clang/LLVM in Version 3.5.0. Newer versions might not work due to the changing API.
     The build system relies on the presence of the **llvm-config**(-3.5 -3.6 -3.7) binary.
-    If it can't be found, set the cmake variable ${LLVM_ROOT_DIR} to point to the 
+    If it can not be found, set the cmake variable ${LLVM_ROOT_DIR} to point to the 
     respective bin/ folder where llvm-config is located.
 
 ### Build the OO-Lint tool
