@@ -13,6 +13,9 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/configuration/Configuration.h>
 
+#include <clang/Frontend/TextDiagnostic.h>
+#include <llvm/Support/raw_ostream.h>
+
 namespace opov {
 namespace module {
 
@@ -46,6 +49,9 @@ void ImplicitConditionMatcher::run(const clang::ast_matchers::MatchFinder::Match
   const Expr* implicit_cast = result.Nodes.getStmtAs<Expr>("implicit");
   const Expr* unary_op = result.Nodes.getStmtAs<Expr>("unary");
   const Expr* invalid = !implicit_cast ? unary_op : implicit_cast;
+  auto e = result.Nodes.getMap();
+  BoundNodes::IDToNodeMap::const_iterator BI;
+
 
   auto& ihandle = context->getIssueHandler();
   auto& sm = context->getSourceManager();

@@ -38,6 +38,7 @@ static inline bool isWhitespace(unsigned char c) {
 
 template <typename T>
 inline StringRef whitespaces(const clang::SourceManager& sm, T node) {
+  // Taken from the clang::Rewriter source code.
   SourceRange range = locOf(sm, node);
   // const char* data = sm.getCharacterData(range.getBegin());
   std::pair<FileID, unsigned> V = sm.getDecomposedLoc(range.getBegin());
@@ -69,7 +70,7 @@ inline std::vector<clang::tooling::Replacement> addExplicitCompare(const clang::
   replace += "(0.0)";
   if (isa<UnaryOperator>(expr)) {
     replace += ")";
-    return {Replacement(sm, dyn_cast<UnaryOperator>(expr)->getSubExpr()->getLocStart(), 0, "("),
+    return {Replacement(sm, llvm::dyn_cast<UnaryOperator>(expr)->getSubExpr()->getLocStart(), 0, "("),
             Replacement(sm, range.getEnd(), 0, replace)};
   } else {
     return {Replacement(sm, range.getEnd(), 0, replace)};
@@ -125,7 +126,7 @@ inline clang::tooling::Replacement removeNode(const clang::SourceManager& sm, T 
   // FIXME does not remove empty line
   SourceRange loc = locOf(sm, node, 1);
   CharSourceRange cast_crange = CharSourceRange::getCharRange(loc);
-  return Replacement(sm, cast_crange, "\b");
+  return Replacement(sm, cast_crange, "");
 }
 
 template <typename T, typename U>

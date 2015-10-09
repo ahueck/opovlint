@@ -9,6 +9,7 @@
 #include <core/logging/Logger.h>
 
 #include <clang/Tooling/Refactoring.h>
+#include <clang/Rewrite/Core/Rewriter.h>
 
 namespace opov {
 
@@ -24,12 +25,19 @@ void TransformationHandler::setSource(const std::string& current) {
   source = current;
 }
 
+void TransformationHandler::initRewriter(clang::SourceManager& sm, const clang::LangOptions& langOpts) {
+  rewriter.setSourceMgr(sm, langOpts);
+}
+
 void TransformationHandler::addReplacements(const clang::tooling::Replacement& replacement) {
+  replacement.apply(rewriter);
+  /*
   TranslationUnitReplacements& tunit = replacements[source];
   if (tunit.MainSourceFile.empty()) {
     tunit.MainSourceFile = source;
   }
   tunit.Replacements.push_back(replacement);
+  */
 }
 
 void TransformationHandler::addReplacements(const std::vector<clang::tooling::Replacement>& replacements) {
@@ -44,6 +52,10 @@ void TransformationHandler::setIncludeDirectives(IncludeDirectives* include) {
 
 IncludeDirectives* TransformationHandler::getIncludeDirectives() {
   return includes.get();
+}
+
+clang::Rewriter& TransformationHandler::getRewriter() {
+  return rewriter;
 }
 
 TUReplacementsMap& TransformationHandler::getAllReplacements() {

@@ -13,6 +13,7 @@
 #include <clang/AST/AST.h>
 #include <clang/Lex/Lexer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
+#include <clang/Frontend/TextDiagnostic.h>
 
 #include <string>
 #include <sstream>

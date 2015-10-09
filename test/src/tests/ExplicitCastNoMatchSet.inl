@@ -12,3 +12,5 @@ SIMPLE_TEST0("A static cast of a nested unary."
 		, SCAST("!!a"));
 SIMPLE_TEST0("A static cast of a nested unary of a binary."
 		, SCAST("!!(a*a)"));
+SIMPLE_TEST0("A static cast of a scalar pointer."
+		, SCAST_TYPE("scalar*", "&a"));

@@ -25,7 +25,7 @@
 #define SCAST_T(TYPE, CODE) "static_cast<" TYPE ">(" CODE ")"
 #define SCAST(CODE) MAKE_CODE("res = " SCAST_T("int", CODE))
 #define SCAST_SCALAR(CODE) MAKE_CODE("res = " SCAST_T("scalar", CODE))
-#define SCAST_TYPE(TYPE, CODE) MAKE_CODE("res = " SCAST_T(TYPE, CODE))
+#define SCAST_TYPE(TYPE, CODE) MAKE_CODE(TYPE " cres = " SCAST_T(TYPE, CODE))
 #define SCAST_S(CODE) SCAST_T("int", CODE)
 
 KICKOFF_TEST(opov::module::ExplicitCast(), SCAST("a"), SCAST_S("a"))

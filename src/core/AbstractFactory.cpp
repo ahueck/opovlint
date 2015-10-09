@@ -31,9 +31,9 @@ AbstractFactory::AbstractFactory(Configuration* config, IssueHandler* ihandler, 
 
 bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) {
   currentSource = Filename;
-  thandler->setSource(currentSource);
+  this->context->setCurrentSource(currentSource);
+  // FIXME relocate to modulecontext class
   thandler->setIncludeDirectives(new IncludeDirectives(CI));
-  ihandler->setSource(currentSource);
   return true;
 }
 
