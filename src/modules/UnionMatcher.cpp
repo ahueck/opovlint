@@ -45,9 +45,7 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
           << " fieldDecl violate the convention.";
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, inv_union, moduleName(), moduleDescription(), message.str());
+  ihandle.addIssue(inv_union, moduleName(), moduleDescription(), message.str());
 }
 
 std::string UnionMatcher::moduleName() {

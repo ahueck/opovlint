@@ -54,9 +54,7 @@ void ImplicitConditionMatcher::run(const clang::ast_matchers::MatchFinder::Match
 
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, invalid, moduleName(), moduleDescription());
+  ihandle.addIssue(invalid, moduleName(), moduleDescription());
 }
 
 std::string ImplicitConditionMatcher::moduleName() {

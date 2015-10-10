@@ -142,6 +142,7 @@ inline clang::tooling::Replacement insertNode(const clang::SourceManager& sm, T 
   replacement_str = whitespaces(sm, relative_to).str() + "\n" + clutil::node2str(sm, to_insert) + endl;
   return Replacement(sm, range.getEnd(), 0, replacement_str);
 }
+
 }
 }
 

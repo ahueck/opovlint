@@ -36,9 +36,7 @@ void GlobalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& resul
   const Expr* call = result.Nodes.getStmtAs<Expr>("global");
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, call, moduleName(), moduleDescription());
+  ihandle.addIssue(call, moduleName(), moduleDescription());
 }
 
 std::string GlobalScope::moduleName() {

@@ -43,9 +43,7 @@ void ImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult
   const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>("conversion");
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());  //, message.str());
+  ihandle.addIssue(expr, moduleName(), moduleDescription());  //, message.str());
 }
 
 std::string ImplicitConversion::moduleName() {

@@ -48,10 +48,8 @@ void ExplicitCast::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   const ExplicitCastExpr* e = result.Nodes.getStmtAs<ExplicitCastExpr>("cast");
   auto ecast = const_cast<ExplicitCastExpr*>(e);
 
-  auto& sm = context->getSourceManager();
   auto& ihandle = context->getIssueHandler();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, ecast, moduleName(), moduleDescription());
+  ihandle.addIssue(ecast, moduleName(), moduleDescription());
 }
 
 std::string ExplicitCast::moduleName() {

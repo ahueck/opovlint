@@ -46,9 +46,7 @@ void ExplicitConstructor::run(const clang::ast_matchers::MatchFinder::MatchResul
   }
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, ctor, moduleName(), moduleDescription());
+  ihandle.addIssue(ctor, moduleName(), moduleDescription());
 }
 
 std::string ExplicitConstructor::moduleName() {

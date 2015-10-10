@@ -31,6 +31,7 @@ ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, Tran
 void ModuleContext::initContext(clang::ASTContext* context) {
   this->context = context;
   thandler->initRewriter(context->getSourceManager(), context->getLangOpts());
+  ihandler->init(context);
 }
 
 void ModuleContext::setCurrentSource(const std::string& source) {

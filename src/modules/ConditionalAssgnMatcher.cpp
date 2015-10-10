@@ -36,10 +36,8 @@ void ConditionalAssgnMatcher::setupMatcher() {
 void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const ConditionalOperator* e = result.Nodes.getStmtAs<ConditionalOperator>("condassign");
 
-  auto& sm = context->getSourceManager();
   auto& ihandle = context->getIssueHandler();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, e, moduleName(), moduleDescription());
+  ihandle.addIssue(e, moduleName(), moduleDescription());
 }
 
 std::string ConditionalAssgnMatcher::moduleName() {
