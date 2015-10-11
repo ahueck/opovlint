@@ -27,6 +27,7 @@ void CSVReporter::addIssues(const TUIssuesMap& issues) {
 
 void CSVReporter::print(const TranslationUnitIssues& issue) {
   std::stringstream csv;
+  csv << "Main source;Module Name;File Path;Code;Line Start;Line End;Column Start;Column End\n";
   for (auto& i : issue.Issues) {
     csv << issue.MainSourceFile << ";";
     csv << i->getModuleName() << ";";

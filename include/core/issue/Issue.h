@@ -10,6 +10,8 @@
 
 #include "map/PropertyMap.h"
 
+#include <functional>
+
 namespace opov {
 
 class Issue {
@@ -19,9 +21,19 @@ class Issue {
  public:
   Issue() {
   }
+
   const property_map& properties() {
     return _properties;
   }
+
+  int hash() {
+    int hash = 7;
+    int pos_hash = getLineStart() ^ (getColumnStart() << 4) ^ (getLineEnd() << 8) ^ (getColumnEnd() << 16);
+    hash += std::hash<std::string>()(getFile());
+    hash = 17 * hash + std::hash<std::string>()(getModuleName());
+    return hash ^ pos_hash;
+  }
+
   int IssueProperty(LineStart);
   int IssueProperty(LineEnd);
   int IssueProperty(ColumnStart);
