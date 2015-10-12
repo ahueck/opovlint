@@ -76,7 +76,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
   }
 
   bool do_filter;
-  config->getValue("filter", do_filter, false);
+  config->getValue("global:filter", do_filter, false);
   TUIssuesMap& issuesMap = ihandler->getAllIssues();
 
   if(do_filter) {
@@ -103,7 +103,7 @@ int Application::executeOnCode(const std::string& source, const std::vector<std:
   }
 
   bool do_filter;
-  config->getValue("filter", do_filter, false);
+  config->getValue("global:filter", do_filter, false);
   TUIssuesMap& issuesMap = ihandler->getAllIssues();
 
   if(do_filter) {

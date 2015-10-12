@@ -37,7 +37,7 @@ void CSVReporter::addIssues(const filter::IssueSet& set) {
       csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd() << ";";
       csv << "+";
       for (auto& tunit : ifiltered.second.tunits) {
-        csv << "+";
+        csv << tunit << "+";
       }
       LOG_MSG(csv.str());
       csv.str("");
