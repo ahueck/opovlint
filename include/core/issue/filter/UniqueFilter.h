@@ -11,7 +11,7 @@ public:
 	UniqueFilter();
 	virtual ~UniqueFilter();
 
-    virtual FilterIssueMap apply(const FilterIssueMap& map) override;
+  virtual IssueSet apply(const TUIssuesMap& map) override;
 };
 
 }

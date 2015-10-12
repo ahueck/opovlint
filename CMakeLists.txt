@@ -20,7 +20,6 @@ src/core/configuration/JSONConfiguration.cpp
 include/external/IncludeDirectives.cpp
 include/external/ReplacementHandling.cpp
 src/core/issue/IssueHandler.cpp
-src/core/issue/filter/Filtering.cpp
 src/core/issue/filter/UniqueFilter.cpp
 src/core/reporting/ConsoleReporter.cpp
 src/core/reporting/CSVReporter.cpp

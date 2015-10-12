@@ -15,7 +15,6 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/issue/filter/IFilter.h>
 #include <core/issue/filter/UniqueFilter.h>
-#include <core/issue/filter/Filtering.h>
 #include <core/utility/Util.h>
 
 //#include <external/ReplacementHandling.h>
@@ -76,11 +75,17 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
     }
   }
 
+  bool do_filter;
+  config->getValue("filter", do_filter, false);
   TUIssuesMap& issuesMap = ihandler->getAllIssues();
-  filter::Filtering filtering(filter.get());
-  TUIssuesMap filteredMap = filtering.filter(issuesMap);
 
-  reporter->addIssues(filteredMap);
+  if(do_filter) {
+    auto filteredSet = filter->apply(issuesMap);
+    reporter->addIssues(filteredSet);
+  } else {
+    reporter->addIssues(issuesMap);
+  }
+
   ihandler->clear();
 
   return sig;
@@ -97,11 +102,17 @@ int Application::executeOnCode(const std::string& source, const std::vector<std:
     }
   }
 
+  bool do_filter;
+  config->getValue("filter", do_filter, false);
   TUIssuesMap& issuesMap = ihandler->getAllIssues();
-  filter::Filtering filtering(filter.get());
-  TUIssuesMap filteredMap = filtering.filter(issuesMap);
 
-  reporter->addIssues(filteredMap);
+  if(do_filter) {
+    auto filteredSet = filter->apply(issuesMap);
+    reporter->addIssues(filteredSet);
+  } else {
+    reporter->addIssues(issuesMap);
+  }
+
   ihandler->clear();
 
   return sig;

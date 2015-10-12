@@ -5,20 +5,23 @@
 
 #include <memory>
 #include <map>
+#include <vector>
 
 namespace opov {
 namespace filter {
 
-struct FilterIssue {
-	int id;
+struct IssuesFiltered {
 	std::shared_ptr<Issue> issue;
-
-	/*bool operator==(const FilterIssue& rhs) const {
-		return id == rhs.id && issue == rhs.issue;
-	}*/
+	std::vector<std::string> tunits;
 };
 
-typedef std::map<int, FilterIssue> FilterIssueMap;
+struct issue_compare {
+  bool operator() (const IssuesFiltered& a, const IssuesFiltered& b) {
+    return a.issue->hash() != b.issue->hash();
+  }
+};
+
+typedef std::map<int, IssuesFiltered> IssueSet;
 
 }
 }

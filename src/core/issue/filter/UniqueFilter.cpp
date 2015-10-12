@@ -14,24 +14,23 @@ UniqueFilter::~UniqueFilter() {
 
 }
 
-FilterIssueMap UniqueFilter::apply(const FilterIssueMap& map) {
-	std::map<int, int> duplicates;
-
-	FilterIssueMap filteredMap;
-
-	for (auto& filterIssue : map) {
-		int hash = filterIssue.second.issue->hash();
-		if (duplicates.find(hash) == duplicates.end()) {
-			filteredMap[filterIssue.first] = filterIssue.second;
-			duplicates[hash] = 0;
-		} else {
-			duplicates[hash]++;
-		}
-	}
-
-	// TODO: What happens to the meta data?
-	return filteredMap;
-
+IssueSet UniqueFilter::apply(const TUIssuesMap& unfilteredIssues) {
+  IssueSet unique_issues;
+  for(auto& tu_issues : unfilteredIssues) {
+    for(auto& issue : tu_issues.second.Issues) {
+      const int ihash =issue->hash();
+      auto result = unique_issues.find(ihash);
+      if(result != std::end(unique_issues)) {
+        result->second.tunits.push_back(tu_issues.second.MainSourceFile);
+      } else {
+        IssuesFiltered ifiltered;
+        ifiltered.issue = issue;
+        ifiltered.tunits.push_back(tu_issues.second.MainSourceFile);
+        unique_issues[ihash] = ifiltered;
+      }
+    }
+  }
+  return unique_issues;
 }
 
 }

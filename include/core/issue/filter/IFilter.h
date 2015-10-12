@@ -1,6 +1,7 @@
 #ifndef IFILTER_H
 #define IFILTER_H
 
+#include "../IssueHandlerStruct.h"
 #include "FilterIssueStruct.h"
 #include "../Issue.h"
 
@@ -9,7 +10,7 @@ namespace filter {
 
 class IFilter {
 public:
-    virtual FilterIssueMap apply(const FilterIssueMap& map) = 0;
+    virtual IssueSet apply(const TUIssuesMap& map) = 0;
     virtual ~IFilter() {
 
     }
