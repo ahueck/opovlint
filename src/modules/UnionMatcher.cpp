@@ -26,7 +26,6 @@ UnionMatcher::UnionMatcher() {
 }
 
 void UnionMatcher::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
   visitor = opov::util::make_unique<FieldDeclCollector>(type_s);
 }
 

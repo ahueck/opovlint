@@ -23,7 +23,6 @@ GlobalScope::GlobalScope() {
 }
 
 void GlobalScope::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
 }
 
 void GlobalScope::setupMatcher() {

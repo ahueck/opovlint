@@ -24,7 +24,6 @@ ConditionalAssgnMatcher::ConditionalAssgnMatcher() {
 }
 
 void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
 }
 
 void ConditionalAssgnMatcher::setupMatcher() {

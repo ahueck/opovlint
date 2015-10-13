@@ -26,7 +26,6 @@ ImplicitConversion::ImplicitConversion() {
 }
 
 void ImplicitConversion::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
 }
 
 void ImplicitConversion::setupMatcher() {
