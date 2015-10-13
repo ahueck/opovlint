@@ -36,10 +36,23 @@ inline std::string typeOf(NODE node) {
 }
 
 template <typename T>
-inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
+inline clang::FileID fileIDOf(const clang::SourceManager& sm, T node) {
   const auto range = locOf(sm, node);
-  const std::pair<clang::FileID, unsigned> DecomposedLocation = sm.getDecomposedLoc(range.getBegin());
-  const clang::FileEntry* Entry = sm.getFileEntryForID(DecomposedLocation.first);
+  return sm.getFileID(range.getBegin());
+}
+
+template <typename T>
+inline const clang::FileEntry* fileEntryOf(const clang::SourceManager& sm, T node) {
+  auto file_id = fileIDOf(sm, node);
+  return sm.getFileEntryForID(file_id);
+}
+
+template <typename T>
+inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
+  //const auto range = locOf(sm, node);
+  //const std::pair<clang::FileID, unsigned> DecomposedLocation = sm.getDecomposedLoc(range.getBegin());
+  //const clang::FileEntry* Entry = sm.getFileEntryForID(DecomposedLocation.first);
+  auto Entry = fileEntryOf(sm, node);
   if (Entry != NULL) {
     llvm::SmallString<256> FilePath(Entry->getName());
     auto EC = llvm::sys::fs::make_absolute(FilePath);

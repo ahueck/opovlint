@@ -74,19 +74,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
       // return sig;
     }
   }
-
-  bool do_filter;
-  config->getValue("global:filter", do_filter, false);
-  TUIssuesMap& issuesMap = ihandler->getAllIssues();
-
-  if(do_filter) {
-    auto filteredSet = filter->apply(issuesMap);
-    reporter->addIssues(filteredSet);
-  } else {
-    reporter->addIssues(issuesMap);
-  }
-
-  ihandler->clear();
+  report();
 
   return sig;
 }
@@ -101,7 +89,12 @@ int Application::executeOnCode(const std::string& source, const std::vector<std:
       return sig;
     }
   }
+  report();
 
+  return sig;
+}
+
+void Application::report() {
   bool do_filter;
   config->getValue("global:filter", do_filter, false);
   TUIssuesMap& issuesMap = ihandler->getAllIssues();
@@ -114,8 +107,6 @@ int Application::executeOnCode(const std::string& source, const std::vector<std:
   }
 
   ihandler->clear();
-
-  return sig;
 }
 
 void Application::addModule(Module* module) {

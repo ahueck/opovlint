@@ -40,10 +40,15 @@ class TransformationHandler {
   TransformationHandler();
   void setSource(const std::string& current);
   void initRewriter(clang::SourceManager& sm, const clang::LangOptions& langOpts);
+  void setIncludeDirectives(IncludeDirectives* include);
+
+  void addHeader(const std::string& header, clang::SourceLocation loc);
   void addReplacements(const clang::tooling::Replacement& replacement);
   void addReplacements(const std::vector<clang::tooling::Replacement>& replacements);
   TUReplacementsMap& getAllReplacements();
-  void setIncludeDirectives(IncludeDirectives* include);
+
+
+
   IncludeDirectives* getIncludeDirectives();
   clang::Rewriter& getRewriter();
   virtual ~TransformationHandler();

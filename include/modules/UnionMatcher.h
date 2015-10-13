@@ -20,7 +20,6 @@ class FieldDeclCollector;
 
 class UnionMatcher : public opov::ASTMatcherModule {
  private:
-  std::string type_s;
   std::unique_ptr<FieldDeclCollector> visitor;
 
  public:

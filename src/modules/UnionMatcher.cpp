@@ -36,7 +36,7 @@ void UnionMatcher::setupMatcher() {
 }
 
 void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const CXXRecordDecl* inv_union = result.Nodes.getDeclAs<CXXRecordDecl>("union");
+  const CXXRecordDecl* inv_union = result.Nodes.getNodeAs<CXXRecordDecl>("union");
   const bool is_anon = inv_union->isAnonymousStructOrUnion();
   auto fieldDecls = visitor->extractDecl(const_cast<CXXRecordDecl*>(inv_union));
 

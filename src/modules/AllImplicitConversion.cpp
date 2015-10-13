@@ -41,7 +41,7 @@ void AllImplicitConversion::setupMatcher() {
 }
 
 void AllImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>("conversion");
+  const CXXConstructExpr* expr = result.Nodes.getNodeAs<CXXConstructExpr>("conversion");
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(expr, moduleName(), moduleDescription());

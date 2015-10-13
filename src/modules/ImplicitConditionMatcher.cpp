@@ -12,6 +12,7 @@
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/configuration/Configuration.h>
+#include <core/transformation/TransformationUtil.h>
 
 #include <clang/Frontend/TextDiagnostic.h>
 #include <llvm/Support/raw_ostream.h>
@@ -26,7 +27,7 @@ ImplicitConditionMatcher::ImplicitConditionMatcher() {
 }
 
 void ImplicitConditionMatcher::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
+
 }
 
 void ImplicitConditionMatcher::setupMatcher() {
@@ -46,15 +47,19 @@ void ImplicitConditionMatcher::setupMatcher() {
 }
 
 void ImplicitConditionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const Expr* implicit_cast = result.Nodes.getStmtAs<Expr>("implicit");
-  const Expr* unary_op = result.Nodes.getStmtAs<Expr>("unary");
+  /*
+   * match unary nodes of "scalar" but only transform OperatorKind (UO_Not, UO_LNot)
+   */
+  const Expr* implicit_cast = result.Nodes.getNodeAs<Expr>("implicit");
+  const Expr* unary_op = result.Nodes.getNodeAs<Expr>("unary");
   const Expr* invalid = !implicit_cast ? unary_op : implicit_cast;
-  auto e = result.Nodes.getMap();
-  BoundNodes::IDToNodeMap::const_iterator BI;
-
-
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(invalid, moduleName(), moduleDescription());
+
+  if(transform) {
+    auto& thandle = context->getTransformationHandler();
+    thandle.addReplacements(trutil::addExplicitCompare(context->getASTContext(), invalid, type_s));
+  }
 }
 
 std::string ImplicitConditionMatcher::moduleName() {

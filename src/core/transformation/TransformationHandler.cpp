@@ -40,6 +40,10 @@ void TransformationHandler::addReplacements(const clang::tooling::Replacement& r
   */
 }
 
+void TransformationHandler::addHeader(const std::string& header, clang::SourceLocation loc) {
+  addReplacements(includes->addAngledInclude(loc, header));
+}
+
 void TransformationHandler::addReplacements(const std::vector<clang::tooling::Replacement>& replacements) {
   for (auto& r : replacements) {
     addReplacements(r);

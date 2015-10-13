@@ -1,6 +1,10 @@
 {
     "global" : {
+		"transform" : true,
         "filter" : true,
         "type" : "scalar"  
-    }
+    },
+	"ExplicitCast" : {
+		"header" : "recast.h"	
+	}
 }

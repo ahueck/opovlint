@@ -16,10 +16,7 @@ namespace opov {
 namespace module {
 
 class GlobalScope : public opov::ASTMatcherModule {
- private:
-  std::string type_s;
-
- public:
+public:
   GlobalScope();
   virtual void setupOnce(const Configuration* config) override;
   virtual void setupMatcher() override;

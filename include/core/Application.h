@@ -58,6 +58,7 @@ class Application {
   virtual int execute(const clang::tooling::CompilationDatabase& db, const std::vector<std::string>& sources);
   virtual int executeOnCode(const std::string& source,
                             const std::vector<std::string>& args = std::vector<std::string>());
+  virtual void report();
   virtual void addModule(Module* module);
   virtual std::string getApplicationName();
   virtual ~Application();

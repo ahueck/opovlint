@@ -19,10 +19,7 @@ namespace module {
 // class ConditionalAssgnVisitor;
 
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
- private:
-  std::string type_s;
-  // std::unique_ptr<ConditionalAssgnVisitor> visitor;
- public:
+public:
   ConditionalAssgnMatcher();
   virtual void setupOnce(const Configuration* config) override;
   virtual void setupMatcher() override;

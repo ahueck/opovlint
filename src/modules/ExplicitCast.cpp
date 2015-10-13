@@ -14,6 +14,7 @@
 #include <modules/ExplicitCastVisitor.h>
 #include <core/issue/IssueHandler.h>
 #include <core/configuration/Configuration.h>
+#include <core/transformation/TransformationUtil.h>
 
 namespace opov {
 namespace module {
@@ -25,7 +26,8 @@ ExplicitCast::ExplicitCast() {
 }
 
 void ExplicitCast::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
+  config->getValue("ExplicitCast:header", header_cast, "recast.h");
+  config->getValue("ExplicitCast:function", header_cast, "reCast");
 }
 
 void ExplicitCast::setupMatcher() {
@@ -45,11 +47,19 @@ void ExplicitCast::setupMatcher() {
 }
 
 void ExplicitCast::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const ExplicitCastExpr* e = result.Nodes.getStmtAs<ExplicitCastExpr>("cast");
-  auto ecast = const_cast<ExplicitCastExpr*>(e);
+  const ExplicitCastExpr* ecast = result.Nodes.getNodeAs<ExplicitCastExpr>("cast");
+  //auto ecast = const_cast<ExplicitCastExpr*>(e);
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(ecast, moduleName(), moduleDescription());
+
+  if(transform) {
+    LOG_MSG("Transforming - explicit");
+    auto& thandle = context->getTransformationHandler();
+    auto replace = trutil::reCast(context->getASTContext(), ecast, type_s);
+    thandle.addHeader(header_cast, clutil::locOf(context->getSourceManager(), ecast).getBegin());
+    thandle.addReplacements(replace);
+  }
 }
 
 std::string ExplicitCast::moduleName() {

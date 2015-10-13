@@ -34,7 +34,7 @@ void ConditionalAssgnMatcher::setupMatcher() {
 }
 
 void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const ConditionalOperator* e = result.Nodes.getStmtAs<ConditionalOperator>("condassign");
+  const ConditionalOperator* e = result.Nodes.getNodeAs<ConditionalOperator>("condassign");
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(e, moduleName(), moduleDescription());

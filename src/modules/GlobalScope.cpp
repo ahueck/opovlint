@@ -33,7 +33,7 @@ void GlobalScope::setupMatcher() {
 }
 
 void GlobalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const Expr* call = result.Nodes.getStmtAs<Expr>("global");
+  const Expr* call = result.Nodes.getNodeAs<Expr>("global");
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(call, moduleName(), moduleDescription());
