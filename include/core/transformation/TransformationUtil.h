@@ -91,7 +91,37 @@ inline clang::tooling::Replacement castTheExpr(const clang::ASTContext& ac, cons
   return Replacement(sm, expr, castStr);
 }
 
+template<typename T, typename U>
+inline clang::tooling::Replacement replaceStmt(const clang::ASTContext& ac, const T* stmt, const U* with) {
+  auto& sm = ac.getSourceManager();
+  return Replacement(sm, stmt, clutil::node2str(ac, with));
+}
 
+template<typename T>
+inline clang::tooling::Replacement replaceStmt(const clang::ASTContext& ac, const T* stmt, const std::string with) {
+  auto& sm = ac.getSourceManager();
+  return Replacement(sm, stmt, with);
+}
+
+template <typename T, typename U>
+inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_insert, U relative_to,
+                                              bool before = false, char endl = ';') {
+  auto& sm = ac.getSourceManager();
+  SourceRange range = locOf(sm, relative_to, 1);
+  std::string replacement_str;
+  if (before) {
+    replacement_str = clutil::node2str(ac, to_insert) + endl + "\n" + whitespaces(sm, relative_to).str();
+    return Replacement(sm, range.getBegin(), 0, replacement_str);
+  }
+  replacement_str = whitespaces(sm, relative_to).str() + "\n" + clutil::node2str(ac, to_insert) + endl;
+  return Replacement(sm, range.getEnd(), 0, replacement_str);
+}
+
+template <typename T>
+inline clang::tooling::Replacement removeNode(const clang::ASTContext& ac, T node) {
+  auto& sm = ac.getSourceManager();
+  return Replacement(sm, node, "");
+}
 
 /*
 //inline std::vector<clang::tooling::Replacement> addExplicitCompare(const
@@ -138,28 +168,7 @@ inline clang::tooling::Replacement castTheExpr(const clang::ASTContext& ac, cons
 //  return {Replacement(sm, range.getBegin(), 0, castStr), Replacement(sm, range.getEnd(), 0, ")")};
 //}
 //
-//template <typename T>
-//inline clang::tooling::Replacement removeNode(const clang::SourceManager& sm, T node) {
-//  // FIXME does not remove empty line
-//  SourceRange loc = locOf(sm, node, 1);
-//  CharSourceRange cast_crange = CharSourceRange::getCharRange(loc);
-//  return Replacement(sm, cast_crange, "");
-//}
 //
-//template <typename T, typename U>
-//inline clang::tooling::Replacement insertNode(const clang::SourceManager& sm, T to_insert, U relative_to,
-//                                              bool before = false, char endl = ';') {
-//  // FIXME does not preserve indentation
-//  SourceRange range = locOf(sm, relative_to, 1);
-//  StringRef replacement_str;
-//  if (before) {
-//    replacement_str = clutil::node2str(sm, to_insert) + endl + "\n" + whitespaces(sm, relative_to).str();
-//    return Replacement(sm, range.getBegin(), 0, replacement_str);
-//  }
-//  replacement_str = whitespaces(sm, relative_to).str() + "\n" + clutil::node2str(sm, to_insert) + endl;
-//  return Replacement(sm, range.getEnd(), 0, replacement_str);
-//}
-
 }
 }
 

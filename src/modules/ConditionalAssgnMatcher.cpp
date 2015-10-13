@@ -38,6 +38,12 @@ void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchR
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(e, moduleName(), moduleDescription());
+
+  if(transform) {
+    auto& thandle = context->getTransformationHandler();
+    auto& ast_ctx = context->getASTContext();
+    // TODO implement transformation
+  }
 }
 
 std::string ConditionalAssgnMatcher::moduleName() {

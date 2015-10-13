@@ -14,6 +14,7 @@
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/configuration/Configuration.h>
+#include <core/transformation/TransformationUtil.h>
 
 namespace opov {
 namespace module {
@@ -46,6 +47,25 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(inv_union, moduleName(), moduleDescription(), message.str());
+
+  // TODO improve by using a custom union traversal and slowly building a replacement string
+  if(transform) {
+    auto& thandle = context->getTransformationHandler();
+    auto& ast_ctx = context->getASTContext();
+    if(is_anon) {
+      const bool remove_union = std::distance(inv_union->field_begin(), inv_union->field_end()) == 1;
+      if(remove_union) {
+        thandle.addReplacements(trutil::replaceStmt(ast_ctx, inv_union, fieldDecls.front()));
+      } else {
+        for(auto fd : fieldDecls) {
+          thandle.addReplacements(trutil::removeNode(ast_ctx, fd));
+          thandle.addReplacements(trutil::insertNode(ast_ctx, fd, inv_union));
+        }
+      }
+    } else {
+      thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union->getLocStart(), 5, "struct"));
+    }
+  }
 }
 
 std::string UnionMatcher::moduleName() {
