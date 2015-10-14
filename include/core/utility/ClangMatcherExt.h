@@ -34,6 +34,14 @@ AST_MATCHER(Stmt, notABinaryExpr) {
   return !isa<BinaryOperator>(Node);
 }
 
+const internal::VariadicDynCastAllOfMatcher<
+  Stmt,
+  ParenExpr> parenExpr;
+
+//AST_MATCHER_P(ParenExpr, parenExpr, internal::Matcher<Expr>, InnerMatcher) {
+//  return InnerMatcher.matches(Node, Finder, Builder);;
+//}
+
 AST_MATCHER(TagDecl, isUnion) {
   return Node.isUnion();
 }

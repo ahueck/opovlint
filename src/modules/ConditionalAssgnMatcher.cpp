@@ -28,11 +28,30 @@ void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
 
 void ConditionalAssgnMatcher::setupMatcher() {
   // TODO use ofType instead of just typedef?
-  StatementMatcher condassign = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("condassign");
+  //StatementMatcher condassign = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("condassign");
+
+  auto conditional = conditionalOperator(hasDescendant(expr(isTypedef(type_s))));
+  //auto assign_operator = binaryOperator(hasOperatorName("="), hasRHS(ignoringParenImpCasts(conditional)));
+  //auto conditional_root = allOf(conditional, unless(anyOf(hasParent(conditional), hasParent(assign_operator), hasParent(parenExpr(hasParent(conditional))))));
+  //auto condassign = expr(anyOf(assign_operator
+  //                            , conditional_root)).bind("condassign");
+  auto condassign = stmt(hasParent(compoundStmt()), hasDescendant(conditional)).bind("condassign");
+
   this->addMatcher(condassign);
 }
 
 void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
+  auto* e = result.Nodes.getNodeAs<Expr>("condassign");
+  auto& ast_ctx = context->getASTContext();
+  if(isa<BinaryOperator>(e)) {
+    LOG_MSG("Binary operator matched: " << clutil::node2str(ast_ctx, e));
+  } else if(isa<ConditionalOperator>(e)) {
+    LOG_MSG("COnditional operator matched: " << clutil::node2str(ast_ctx, e));
+  } else {
+    LOG_MSG("Something else matched...: " << clutil::node2str(ast_ctx, e));
+  }
+
+  /*
   const ConditionalOperator* e = result.Nodes.getNodeAs<ConditionalOperator>("condassign");
 
   auto& ihandle = context->getIssueHandler();
@@ -43,6 +62,7 @@ void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchR
     auto& ast_ctx = context->getASTContext();
     // TODO implement transformation
   }
+  */
 }
 
 std::string ConditionalAssgnMatcher::moduleName() {
