@@ -38,9 +38,11 @@ const internal::VariadicDynCastAllOfMatcher<
   Stmt,
   ParenExpr> parenExpr;
 
-//AST_MATCHER_P(ParenExpr, parenExpr, internal::Matcher<Expr>, InnerMatcher) {
-//  return InnerMatcher.matches(Node, Finder, Builder);;
-//}
+#define descendant_or_self(NODE) \
+  anyOf(NODE, hasDescendant(NODE))
+
+#define ancestor_or_self(NODE) \
+  anyOf(NODE, hasAncestor(NODE))
 
 AST_MATCHER(TagDecl, isUnion) {
   return Node.isUnion();

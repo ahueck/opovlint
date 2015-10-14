@@ -11,7 +11,6 @@
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 #include <core/transformation/TransformationHandler.h>
-#include <modules/ExplicitCastVisitor.h>
 #include <core/issue/IssueHandler.h>
 #include <core/configuration/Configuration.h>
 #include <core/transformation/TransformationUtil.h>

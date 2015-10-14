@@ -29,6 +29,13 @@ inline std::vector<std::string> split(const std::string& input, char delimiter =
   return tokens;
 }
 
+template<typename T>
+std::string num2str(T val) {
+  std::stringstream sstream;
+  sstream << val;
+  return sstream.str();
+}
+
 /*
  inline std::vector<std::string> split_str(const std::string& input, const
  std::string& regex_match) {

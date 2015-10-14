@@ -103,18 +103,25 @@ inline clang::tooling::Replacement replaceStmt(const clang::ASTContext& ac, cons
   return Replacement(sm, stmt, with);
 }
 
-template <typename T, typename U>
-inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_insert, U relative_to,
-                                              bool before = false, char endl = ';') {
+template <typename U>
+inline clang::tooling::Replacement insertString(const clang::ASTContext& ac, const std::string& to_insert, U relative_to,
+                                              bool before = false, std::string endl = ";") {
   auto& sm = ac.getSourceManager();
   SourceRange range = locOf(sm, relative_to, 1);
   std::string replacement_str;
   if (before) {
-    replacement_str = clutil::node2str(ac, to_insert) + endl + "\n" + whitespaces(sm, relative_to).str();
+    replacement_str = whitespaces(sm, relative_to).str() + to_insert + endl + "\n";
     return Replacement(sm, range.getBegin(), 0, replacement_str);
   }
-  replacement_str = whitespaces(sm, relative_to).str() + "\n" + clutil::node2str(ac, to_insert) + endl;
+  replacement_str = whitespaces(sm, relative_to).str() + "\n" + to_insert + endl;
   return Replacement(sm, range.getEnd(), 0, replacement_str);
+}
+
+
+template <typename T, typename U>
+inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_insert, U relative_to,
+                                              bool before = false, std::string endl = ";") {
+  return insertString(ac, clutil::node2str(ac, to_insert), relative_to, before, endl);
 }
 
 template <typename T>
@@ -122,6 +129,7 @@ inline clang::tooling::Replacement removeNode(const clang::ASTContext& ac, T nod
   auto& sm = ac.getSourceManager();
   return Replacement(sm, node, "");
 }
+
 
 /*
 //inline std::vector<clang::tooling::Replacement> addExplicitCompare(const
