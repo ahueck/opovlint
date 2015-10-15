@@ -22,6 +22,8 @@ public:
   virtual std::string moduleName() override;
   virtual std::string moduleDescription() override;
   virtual ~IfElseAssign();
+private:
+  std::string toString(clang::ASTContext& ac, const clang::IfStmt* stmt, const clang::BinaryOperator* then, const clang::BinaryOperator* else_e);
 };
 
 } /* namespace module */

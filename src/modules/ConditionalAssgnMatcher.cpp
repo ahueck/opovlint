@@ -33,7 +33,8 @@ void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
 
 void ConditionalAssgnMatcher::setupMatcher() {
   // TODO use ofType instead of just typedef?
-  // we merely check for the existence of type scalar, ADOL-C speaks about all types being 'active', but we should warn more frequently.
+  // We warn whenever an active type is present for such code structures.
+  // Even if there is no assignement.
   auto conditional = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("conditional");
   auto condassign = stmt(hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
 
@@ -83,7 +84,8 @@ void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchR
     auto& thandle = context->getTransformationHandler();
     auto& ac = context->getASTContext();
     conditional_data cond_dat = buildReplacement(ac, conditional);
-    thandle.addReplacements(clang::tooling::Replacement(ac.getSourceManager(), conditional, cond_dat.variable));
+    // Delete if for some reason ?: has no assignement (root is equal to conditional pointer)
+    thandle.addReplacements(clang::tooling::Replacement(ac.getSourceManager(), conditional, root == conditional ? "" : cond_dat.variable));
     thandle.addReplacements(trutil::insertString(ac, cond_dat.replacement, root, true, ""));
   }
 }

@@ -35,6 +35,14 @@ inline std::string typeOf(NODE node) {
   return node->getType().getUnqualifiedType().getAsString();
 }
 
+inline std::string nameOf(const clang::NamedDecl* decl) {
+  return decl->getNameAsString();
+}
+
+inline std::string nameOf(const clang::DeclRefExpr* expr) {
+  return nameOf(expr->getDecl());
+}
+
 template <typename T>
 inline clang::FileID fileIDOf(const clang::SourceManager& sm, T node) {
   const auto range = locOf(sm, node);
