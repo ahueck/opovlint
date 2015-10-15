@@ -33,6 +33,7 @@ void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
 
 void ConditionalAssgnMatcher::setupMatcher() {
   // TODO use ofType instead of just typedef?
+  // we merely check for the existence of type scalar, ADOL-C speaks about all types being 'active', but we should warn more frequently.
   auto conditional = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("conditional");
   auto condassign = stmt(hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
 
@@ -45,12 +46,11 @@ void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, con
   auto cond = dyn_cast<ConditionalOperator>(e->IgnoreParenImpCasts());
   if(cond) {
     d.type = clutil::typeOf(e);
-    d.variable = "temp_00" + util::num2str(counter);
+    d.variable = "_oolint_t_" + util::num2str(cond);
     d.replacement = d.type + " " + d.variable + ";\n" + "condassign(" + d.variable
                                 + ", " + clutil::node2str(ac, cond->getCond())
                                 + ", "  + (d.lhs == "" ? clutil::node2str(ac, cond->getLHS()) : d.lhs)
                                 + ", "  + (d.rhs == "" ? clutil::node2str(ac, cond->getRHS()) : d.rhs) + ");";
-
   }
 }
 

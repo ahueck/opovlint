@@ -11,7 +11,6 @@
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
-#include <memory>
 
 namespace opov {
 namespace module {

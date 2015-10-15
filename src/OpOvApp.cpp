@@ -22,6 +22,7 @@
 #include <modules/ExplicitConstructor.h>
 #include <modules/AllImplicitConversion.h>
 #include <modules/GlobalScope.h>
+#include <modules/IfElseAssign.h>
 
 OpOvApp::OpOvApp(const std::string& config_path)
     : config_path(config_path) {
@@ -53,6 +54,7 @@ void OpOvApp::initModules() {
   addModule(new opov::module::ImplicitConversion());
   addModule(new opov::module::ImplicitConditionMatcher());
   addModule(new opov::module::ConditionalAssgnMatcher());
+  addModule(new opov::module::IfElseAssign());
 }
 
 OpOvApp::~OpOvApp() {
