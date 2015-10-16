@@ -1,26 +1,26 @@
 typedef double scalar;
 
 struct test {
-  scalar a;
   union {
-    ;
-    int c;
-  };  
-scalar b;
-  union {
-    ;
-    int e;
-    double f;
-  };  
-scalar d;
-  struct XX {
     scalar a;
   };
-  struct YY {
+  union {
     scalar b;
     int c;
   };
-  struct ZZ {
+  union {
+    scalar d;
+    int e;
+    double f;
+  };
+  union XX {
+    scalar a;
+  };
+  union YY {
+    scalar b;
+    int c;
+  };
+  union ZZ {
     scalar d;
     int e;
     double f;
