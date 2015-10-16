@@ -17,10 +17,13 @@
 
 #include <string>
 #include <sstream>
+#include <iterator>
 
 namespace opov {
 
 namespace clutil {
+
+inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl);
 
 template <typename T>
 inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned int offset = 0) {
@@ -29,6 +32,19 @@ inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned
   clang::SourceLocation end(clang::Lexer::getLocForEndOfToken(node->getLocEnd(), 0, sm, clang::LangOptions()));
   return {start, end.getLocWithOffset(offset)};
 }
+
+template <typename T>
+inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = false) {
+  clang::SourceLocation start(node->getLocStart());
+  clang::SourceLocation end(node->getLocEnd());
+  if(semicolon) {
+    clang::SourceLocation semi_end = findSemiAfterLocation(end, ac, llvm::isa<clang::Decl>(node));
+    return {start, semi_end.isValid() ? semi_end : end};
+  } else {
+    return {start, end};
+  }
+}
+
 
 template <typename NODE>
 inline std::string typeOf(NODE node) {
@@ -57,9 +73,6 @@ inline const clang::FileEntry* fileEntryOf(const clang::SourceManager& sm, T nod
 
 template <typename T>
 inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
-  //const auto range = locOf(sm, node);
-  //const std::pair<clang::FileID, unsigned> DecomposedLocation = sm.getDecomposedLoc(range.getBegin());
-  //const clang::FileEntry* Entry = sm.getFileEntryForID(DecomposedLocation.first);
   auto Entry = fileEntryOf(sm, node);
   if (Entry != NULL) {
     llvm::SmallString<256> FilePath(Entry->getName());
@@ -68,6 +81,11 @@ inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
   } else {
     return "";
   }
+}
+
+inline unsigned declCount(const clang::TagDecl* node) {
+  auto range = node->decls();
+  return std::distance(range.begin(), range.end());
 }
 
 /*
@@ -83,21 +101,6 @@ inline bool areSameExpr(clang::ASTContext* context, const clang::Expr* first, co
   second->Profile(SecondID, *context, true);
   return FirstID == SecondID;
 }
-
-/*
-inline std::string posOf(const clang::SourceManager& sm, const clang::Stmt*
-expr) {
-        std::stringstream ss;
-        ss << "Location -- Line (S/E): "
-                        << sm.getPresumedLineNumber(expr->getLocStart()) << "/"
-                        << sm.getPresumedLineNumber(expr->getLocEnd())
-                << " Column (S/E): "
-                        << sm.getPresumedColumnNumber(expr->getLocStart()) <<
-"/"
-                        << sm.getPresumedColumnNumber(expr->getLocEnd());
-        return ss.str();
-}
-*/
 
 template <typename T>
 inline std::tuple<unsigned, unsigned> rowOf(const clang::SourceManager& sm, T node) {
@@ -139,31 +142,50 @@ inline std::string node2str(const clang::ASTContext& ac, const clang::Decl* node
   return s.str();
 }
 
-/*
-template<typename NODE>
-inline std::string node2str(const clang::SourceManager& sm, NODE expr) {
+// Taken from File "Transform.cpp": lib/ARCMigrate/Transforms.cpp
+inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc,
+                                            clang::ASTContext &Ctx,
+                                            bool IsDecl) {
+  /// \brief \arg Loc is the end of a statement range. This returns the location
+  /// of the semicolon following the statement.
+  /// If no semicolon is found or the location is inside a macro, the returned
+  /// source location will be invalid.
+  using namespace clang;
+  using namespace llvm;
+  SourceManager &SM = Ctx.getSourceManager();
+  if (loc.isMacroID()) {
+    if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc))
+      return SourceLocation();
+  }
+  loc = Lexer::getLocForEndOfToken(loc, /*Offset=*/0, SM, Ctx.getLangOpts());
 
-        auto range = locOf(sm, expr);
-        auto startData = sm.getCharacterData(range.getBegin());
-        auto endData = sm.getCharacterData(range.getEnd());
-        const std::string source_code = std::string(startData, endData -
-startData);
+  // Break down the source location.
+  std::pair<FileID, unsigned> locInfo = SM.getDecomposedLoc(loc);
 
-        return source_code;
-//	auto range = locOf(sm, expr);
-//	auto p = sm.getDecomposedLoc(range.getBegin());
-//	auto pe = sm.getDecomposedLoc(range.getEnd());
-//
-//	std::string text =
-clang::Lexer::getSourceText(clang::CharSourceRange::getTokenRange(range), sm,
-clang::LangOptions(), 0);
-//    if (text.at(text.size()-1) == ',')
-//        return
-clang::Lexer::getSourceText(clang::CharSourceRange::getCharRange(range), sm,
-clang::LangOptions(), 0);
-//    return text;
+  // Try to load the file buffer.
+  bool invalidTemp = false;
+  StringRef file = SM.getBufferData(locInfo.first, &invalidTemp);
+  if (invalidTemp)
+    return SourceLocation();
+
+  const char *tokenBegin = file.data() + locInfo.second;
+
+  // Lex from the start of the given location.
+  Lexer lexer(SM.getLocForStartOfFile(locInfo.first),
+              Ctx.getLangOpts(),
+              file.begin(), tokenBegin, file.end());
+  Token tok;
+  lexer.LexFromRawLexer(tok);
+  if (tok.isNot(tok::semi)) {
+    if (!IsDecl)
+      return SourceLocation();
+    // Declaration may be followed with other tokens; such as an __attribute,
+    // before ending with a semicolon.
+    return findSemiAfterLocation(tok.getLocation(), Ctx, /*IsDecl*/true);
+  }
+
+  return tok.getLocation();
 }
-*/
 
 class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
  private:

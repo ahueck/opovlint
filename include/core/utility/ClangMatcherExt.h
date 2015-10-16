@@ -26,7 +26,6 @@ __CKIND(ConstructorConversion)
 
 AST_POLYMORPHIC_MATCHER_P(isTypedef, AST_POLYMORPHIC_SUPPORTED_TYPES_2(Expr, Decl), std::string, type) {
   const auto typeOf_expr = Node.getType().getUnqualifiedType().getAsString();
-  // LOG_DEBUG("isTypedef of '" << type << "' : " << typeOf_expr);
   return type == typeOf_expr;
 }
 
@@ -44,7 +43,7 @@ const internal::VariadicDynCastAllOfMatcher<
 #define ancestor_or_self(NODE) \
   anyOf(NODE, hasAncestor(NODE))
 
-/*
+
 AST_MATCHER_P(IfStmt, hasThen, internal::Matcher<Stmt>, InnerMatcher) {
   // Taken from the current version of Clangs ASTMatchers.h file: Line 2922
   const Stmt *const Then = Node.getThen();
@@ -56,7 +55,7 @@ AST_MATCHER_P(IfStmt, hasElse, internal::Matcher<Stmt>, InnerMatcher) {
   const Stmt *const Else = Node.getElse();
   return (Else != nullptr && InnerMatcher.matches(*Else, Finder, Builder));
 }
-*/
+
 
 AST_MATCHER(TagDecl, isUnion) {
   return Node.isUnion();

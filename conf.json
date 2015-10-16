@@ -5,6 +5,7 @@
         "type" : "scalar"  
     },
 	"ExplicitCast" : {
-		"header" : "recast.h"	
+		"header" : "reCast.h",
+		"function" : "reCast"
 	}
 }

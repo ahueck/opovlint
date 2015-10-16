@@ -54,12 +54,12 @@ inline StringRef whitespaces(const clang::SourceManager& sm, T node) {
   return spaces;
 }
 
-inline clang::tooling::Replacement reCast(const clang::ASTContext& ac, const clang::ExplicitCastExpr* expr, const std::string& cast_from) {
+inline clang::tooling::Replacement reCast(const clang::ASTContext& ac, const clang::ExplicitCastExpr* expr, const std::string& cast_from, const std::string& function) {
   auto& sm = ac.getSourceManager();
   //SourceRange range = locOf(sm, expr);
   //CharSourceRange cast_crange = CharSourceRange::getCharRange(range);
-  std::string text("reCast<");
-  text += typeOf(expr) + "," + cast_from + ">(" + clutil::node2str(ac, expr->getSubExprAsWritten()) + ")";
+  std::string text(function);
+  text += "<" + typeOf(expr) + "," + cast_from + ">(" + clutil::node2str(ac, expr->getSubExprAsWritten()) + ")";
   return Replacement(sm, expr, text);
 }
 
@@ -128,6 +128,15 @@ template <typename T>
 inline clang::tooling::Replacement removeNode(const clang::ASTContext& ac, T node) {
   auto& sm = ac.getSourceManager();
   return Replacement(sm, node, "");
+}
+
+template <typename T>
+inline bool removeNode_rew(clang::Rewriter& rw, T node) {
+  SourceRange range = locOf(rw.getSourceMgr(), node);
+  CharSourceRange crange = CharSourceRange::getCharRange(range);
+  clang::Rewriter::RewriteOptions opts;
+  opts.RemoveLineIfEmpty = true;
+  return rw.RemoveText(crange, opts);
 }
 
 

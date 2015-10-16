@@ -17,7 +17,7 @@
 
 
 #define HEADER "typedef double scalar;\n"
-#define VARS "scalar a = 10.0; scalar aa = 10.5; scalar ab = 11.0;\n"
+#define VARS "scalar a = 10.0; scalar aa = 10.5; scalar ab = 11.0; scalar* ptr = &a;\n"
 #define START_CODE "void container() {\nint res = 0.0;\n"
 #define END_CODE "\n};\n"
 #define MAKE_CODE(stmt) HEADER VARS START_CODE stmt ";" END_CODE
@@ -101,7 +101,7 @@ SCENARIO("Explicit casts with scalars/integers. Module looks for type double and
 #undef _TYPE_
 #undef VARS
 #define _TYPE_ "double"
-#define VARS "double a = 10.0; double aa = 10.5; double ab = 11.0;\n"
+#define VARS "double a = 10.0; double aa = 10.5; double ab = 11.0; double* ptr = &a;\n"
 SCENARIO("Explicit casts. Module produces one match for type " _TYPE_, "[" _TYPE_ "_match]") {
 	GIVEN("The 'ExplicitCast' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);

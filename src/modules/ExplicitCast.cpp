@@ -25,8 +25,8 @@ ExplicitCast::ExplicitCast() {
 }
 
 void ExplicitCast::setupOnce(const Configuration* config) {
-  config->getValue("ExplicitCast:header", header_cast, "recast.h");
-  config->getValue("ExplicitCast:function", header_cast, "reCast");
+  config->getValue("ExplicitCast:header", header_cast, "reCast.h");
+  config->getValue("ExplicitCast:function", stmt_cast, "reCast");
 }
 
 void ExplicitCast::setupMatcher() {
@@ -47,15 +47,13 @@ void ExplicitCast::setupMatcher() {
 
 void ExplicitCast::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const ExplicitCastExpr* ecast = result.Nodes.getNodeAs<ExplicitCastExpr>("cast");
-  //auto ecast = const_cast<ExplicitCastExpr*>(e);
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(ecast, moduleName(), moduleDescription());
 
   if(transform) {
-    LOG_MSG("Transforming - explicit");
     auto& thandle = context->getTransformationHandler();
-    auto replace = trutil::reCast(context->getASTContext(), ecast, type_s);
+    auto replace = trutil::reCast(context->getASTContext(), ecast, type_s, stmt_cast);
     thandle.addHeader(header_cast, clutil::locOf(context->getSourceManager(), ecast).getBegin());
     thandle.addReplacements(replace);
   }

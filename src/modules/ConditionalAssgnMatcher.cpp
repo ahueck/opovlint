@@ -34,7 +34,7 @@ void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
 void ConditionalAssgnMatcher::setupMatcher() {
   // TODO use ofType instead of just typedef?
   // We warn whenever an active type is present for such code structures.
-  // Even if there is no assignement.
+  // (Even if there is no assignement.)
   auto conditional = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("conditional");
   auto condassign = stmt(hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
 

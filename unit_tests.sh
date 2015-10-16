@@ -20,3 +20,4 @@ verify conditionalassgn
 verify explicitconstructor
 verify allimplicitconversion
 verify globalscope
+verify ifelse

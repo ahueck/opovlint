@@ -51,13 +51,18 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   if(transform) {
     auto& thandle = context->getTransformationHandler();
     auto& ast_ctx = context->getASTContext();
+    auto& rw = thandle.getRewriter();
     if(is_anon) {
       const bool remove_union = std::distance(inv_union->field_begin(), inv_union->field_end()) == 1;
+      //LOG_MSG("Count: " <<clutil::declCount(inv_union));
       if(remove_union) {
         thandle.addReplacements(trutil::replaceStmt(ast_ctx, inv_union, fieldDecls.front()));
       } else {
+        auto& sm = ast_ctx.getSourceManager();
         for(auto fd : fieldDecls) {
-          thandle.addReplacements(trutil::removeNode(ast_ctx, fd));
+          //thandle.addReplacements(trutil::removeNode(ast_ctx, fd));
+          //trutil::removeNode_rew(rw, fd);
+          thandle.addReplacements(clang::tooling::Replacement(sm, CharSourceRange::getCharRange(clutil::locOf(ast_ctx, fd, true)), ""));
           thandle.addReplacements(trutil::insertNode(ast_ctx, fd, inv_union));
         }
       }
