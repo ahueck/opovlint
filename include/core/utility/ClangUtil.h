@@ -23,6 +23,7 @@ namespace opov {
 
 namespace clutil {
 
+inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl);
 inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl);
 
 template <typename T>
@@ -38,7 +39,8 @@ inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = 
   clang::SourceLocation start(node->getLocStart());
   clang::SourceLocation end(node->getLocEnd());
   if(semicolon) {
-    clang::SourceLocation semi_end = findSemiAfterLocation(end, ac, llvm::isa<clang::Decl>(node));
+    clang::SourceLocation semi_end = findLocationAfterSemi(end, ac, llvm::isa<clang::Decl>(node));
+    //LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " << end.printToString(ac.getSourceManager()));
     return {start, semi_end.isValid() ? semi_end : end};
   } else {
     return {start, end};
@@ -103,20 +105,20 @@ inline bool areSameExpr(clang::ASTContext* context, const clang::Expr* first, co
 }
 
 template <typename T>
-inline std::tuple<unsigned, unsigned> rowOf(const clang::SourceManager& sm, T node) {
-  auto range = locOf(sm, node);
+inline std::tuple<unsigned, unsigned> rowOf(const clang::SourceManager& sm, T node, bool semicolon = false) {
+  auto range = locOf(sm, node, semicolon);
   return std::make_tuple(sm.getPresumedLineNumber(range.getBegin()), sm.getPresumedLineNumber(range.getEnd()));
 }
 
 template <typename T>
-inline std::tuple<unsigned, unsigned> colOf(const clang::SourceManager& sm, T node) {
-  auto range = locOf(sm, node);
+inline std::tuple<unsigned, unsigned> colOf(const clang::SourceManager& sm, T node, bool semicolon = false) {
+  auto range = locOf(sm, node, semicolon);
   return std::make_tuple(sm.getPresumedColumnNumber(range.getBegin()), sm.getPresumedColumnNumber(range.getEnd()));
 }
 
 template <typename T>
-inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::SourceManager& sm, T node) {
-  return std::tuple_cat(rowOf(sm, node), colOf(sm, node));
+inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::SourceManager& sm, T node, bool semicolon = false) {
+  return std::tuple_cat(rowOf(sm, node, semicolon), colOf(sm, node, semicolon));
 }
 
 template <typename T>
@@ -142,7 +144,17 @@ inline std::string node2str(const clang::ASTContext& ac, const clang::Decl* node
   return s.str();
 }
 
-// Taken from File "Transform.cpp": lib/ARCMigrate/Transforms.cpp
+
+// Both functions taken from File "Transform.cpp": lib/ARCMigrate/Transforms.cpp
+inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl) {
+  using namespace clang;
+  SourceLocation SemiLoc = findSemiAfterLocation(loc, Ctx, IsDecl);
+  if (SemiLoc.isInvalid()) {
+    return SourceLocation();
+  }
+  return SemiLoc.getLocWithOffset(1);
+}
+
 inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc,
                                             clang::ASTContext &Ctx,
                                             bool IsDecl) {

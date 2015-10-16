@@ -47,23 +47,30 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(inv_union, moduleName(), moduleDescription(), message.str());
 
-  // TODO improve by using a custom union traversal and slowly building a replacement string
   if(transform) {
     auto& thandle = context->getTransformationHandler();
     auto& ast_ctx = context->getASTContext();
-    auto& rw = thandle.getRewriter();
     if(is_anon) {
-      const bool remove_union = std::distance(inv_union->field_begin(), inv_union->field_end()) == 1;
-      //LOG_MSG("Count: " <<clutil::declCount(inv_union));
-      if(remove_union) {
-        thandle.addReplacements(trutil::replaceStmt(ast_ctx, inv_union, fieldDecls.front()));
+      const int scalar_count = std::distance(fieldDecls.begin(), fieldDecls.end());
+      const int decl_count = clutil::declCount(inv_union);
+      if(decl_count == 1) {
+        thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union), clutil::node2str(ast_ctx, fieldDecls.front())));
       } else {
-        auto& sm = ast_ctx.getSourceManager();
-        for(auto fd : fieldDecls) {
-          //thandle.addReplacements(trutil::removeNode(ast_ctx, fd));
-          //trutil::removeNode_rew(rw, fd);
-          thandle.addReplacements(clang::tooling::Replacement(sm, CharSourceRange::getCharRange(clutil::locOf(ast_ctx, fd, true)), ""));
-          thandle.addReplacements(trutil::insertNode(ast_ctx, fd, inv_union));
+        const auto union_end = clutil::locOf(ast_ctx, inv_union, true).getEnd();
+        if((decl_count - scalar_count) < 2) {
+          thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union), clutil::node2str(ast_ctx, *inv_union->field_begin())));
+          for(auto it = inv_union->field_begin(); it != inv_union->field_end(); ++it) {
+            if(it == inv_union->field_begin()) {
+              continue;
+            }
+            thandle.addReplacements(FixItHint::CreateInsertion(union_end, "\n" + clutil::node2str(ast_ctx, *it) + ";", true) );
+          }
+        } else {
+
+          for(auto fd : fieldDecls) {
+            thandle.addReplacements(FixItHint::CreateRemoval(clutil::locOf(ast_ctx, fd, true)));
+            thandle.addReplacements(FixItHint::CreateInsertion(union_end, "\n" + clutil::node2str(ast_ctx, fd) + ";", true) );
+          }
         }
       }
     } else {

@@ -45,6 +45,7 @@ class TransformationHandler {
   void addHeader(const std::string& header, clang::SourceLocation loc);
   void addReplacements(const clang::tooling::Replacement& replacement);
   void addReplacements(const std::vector<clang::tooling::Replacement>& replacements);
+  void addReplacements(const clang::FixItHint& Hint);
   TUReplacementsMap& getAllReplacements();
 
 

@@ -1,3 +1,5 @@
+#pragma clang diagnostic ignored "-Wnull-character"
+
 typedef double scalar;
 
 struct test {
