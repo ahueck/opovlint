@@ -29,7 +29,7 @@ inline std::vector<std::string> split(const std::string& input, char delimiter =
   return tokens;
 }
 
-template<typename T>
+template <typename T>
 std::string num2str(T val) {
   std::stringstream sstream;
   sstream << val;

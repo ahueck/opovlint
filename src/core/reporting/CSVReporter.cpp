@@ -28,21 +28,21 @@ void CSVReporter::addIssues(const TUIssuesMap& issues) {
 
 void CSVReporter::addIssues(const filter::IssueSet& set) {
   std::stringstream csv;
-    csv << "Module Name;File Path;Code;Line Start;Line End;Column Start;Column End;Files\n";
-    for (auto& ifiltered : set) {
-      auto i = ifiltered.second.issue;
-      csv << i->getModuleName() << ";";
-      csv << i->getFile() << ";";
-      csv << i->getCode() << ";";
-      csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd() << ";";
-      csv << "+";
-      for (auto& tunit : ifiltered.second.tunits) {
-        csv << tunit << "+";
-      }
-      LOG_MSG(csv.str());
-      csv.str("");
-      csv.clear();
+  csv << "Module Name;File Path;Code;Line Start;Line End;Column Start;Column End;Files\n";
+  for (auto& ifiltered : set) {
+    auto i = ifiltered.second.issue;
+    csv << i->getModuleName() << ";";
+    csv << i->getFile() << ";";
+    csv << i->getCode() << ";";
+    csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd() << ";";
+    csv << "+";
+    for (auto& tunit : ifiltered.second.tunits) {
+      csv << tunit << "+";
     }
+    LOG_MSG(csv.str());
+    csv.str("");
+    csv.clear();
+  }
 }
 
 void CSVReporter::print(const TranslationUnitIssues& issue) {

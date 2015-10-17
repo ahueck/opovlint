@@ -17,7 +17,7 @@ namespace opov {
 namespace module {
 
 class ImplicitConversion : public opov::ASTMatcherModule {
-public:
+ public:
   ImplicitConversion();
   virtual void setupOnce(const Configuration* config) override;
   virtual void setupMatcher() override;

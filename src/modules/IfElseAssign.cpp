@@ -23,56 +23,52 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 IfElseAssign::IfElseAssign() {
-
-
 }
 
 void IfElseAssign::setupOnce(const Configuration* config) {
-
 }
 
 void IfElseAssign::setupMatcher() {
-  // ADOL-C speaks about all types being 'active', we should warn whenever an active type is involved (scalar).
-  // Caveat:    We limit ourselves to conditionaloperator-like structures (as shown in ADOL-C tech paper)
-  //            That is if or if-else with each having exactly one assignment with an active type involved
-  //auto assign = binaryOperator(hasOperatorName("="), hasDescendant(expr(isTypedef(type_s)))).bind(BIND);
-  //auto single_expr = anyOf(compoundStmt(statementCountIs(1), has(assign)), assign);
+// ADOL-C speaks about all types being 'active', we should warn whenever an active type is involved (scalar).
+// Caveat:    We limit ourselves to conditionaloperator-like structures (as shown in ADOL-C tech paper)
+//            That is if or if-else with each having exactly one assignment with an active type involved
+// auto assign = binaryOperator(hasOperatorName("="), hasDescendant(expr(isTypedef(type_s)))).bind(BIND);
+// auto single_expr = anyOf(compoundStmt(statementCountIs(1), has(assign)), assign);
 #define assign_bind(BIND) \
   binaryOperator(hasOperatorName("="), hasLHS(declRefExpr()), hasDescendant(expr(isTypedef(type_s)))).bind(BIND)
-#define assign_expr(BIND) \
-  anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
+#define assign_expr(BIND) anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
 
-  auto conditional = ifStmt(anyOf(
-              allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else")))
-            , allOf(hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt()))))).bind("conditional");
+  auto conditional =
+      ifStmt(anyOf(allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else"))),
+                   allOf(hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt()))))).bind("conditional");
   this->addMatcher(conditional);
 }
 
-std::string IfElseAssign::toString(clang::ASTContext& ac, const IfStmt* stmt, const BinaryOperator* then, const BinaryOperator* else_e) {
-    auto then_ref = clutil::nameOf(dyn_cast<DeclRefExpr>(then->getLHS()->IgnoreImpCasts()));
+std::string IfElseAssign::toString(clang::ASTContext& ac, const IfStmt* stmt, const BinaryOperator* then,
+                                   const BinaryOperator* else_e) {
+  auto then_ref = clutil::nameOf(dyn_cast<DeclRefExpr>(then->getLHS()->IgnoreImpCasts()));
 
-    if(else_e && then_ref != clutil::nameOf(dyn_cast<DeclRefExpr>(else_e->getLHS()->IgnoreImpCasts()))) {
-      // only transform when in both blocks the same variable is assigned to!
-      return "";
-    }
+  if (else_e && then_ref != clutil::nameOf(dyn_cast<DeclRefExpr>(else_e->getLHS()->IgnoreImpCasts()))) {
+    // only transform when in both blocks the same variable is assigned to!
+    return "";
+  }
 
-    auto replacement = "condassign(" + then_ref
-                                + ", " + clutil::node2str(ac, stmt->getCond())
-                                + ", "  +clutil::node2str(ac, then->getRHS());
-    if(else_e) {
-      replacement += ", "  + clutil::node2str(ac, else_e->getRHS());
-    }
-    replacement += ")";
-    if((else_e && isa<CompoundStmt>(stmt->getElse())) || isa<CompoundStmt>(stmt->getThen())) {
-      /*
-       * For structures as:
-       * if(...)
-       *   a = b;
-       * the later Replacement does not remove the semicolon of "a = b;"
-       */
-      replacement += ";";
-    }
-    return replacement;
+  auto replacement = "condassign(" + then_ref + ", " + clutil::node2str(ac, stmt->getCond()) + ", " +
+                     clutil::node2str(ac, then->getRHS());
+  if (else_e) {
+    replacement += ", " + clutil::node2str(ac, else_e->getRHS());
+  }
+  replacement += ")";
+  if ((else_e && isa<CompoundStmt>(stmt->getElse())) || isa<CompoundStmt>(stmt->getThen())) {
+    /*
+     * For structures as:
+     * if(...)
+     *   a = b;
+     * the later Replacement does not remove the semicolon of "a = b;"
+     */
+    replacement += ";";
+  }
+  return replacement;
 }
 
 void IfElseAssign::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
@@ -83,10 +79,10 @@ void IfElseAssign::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(conditional, moduleName(), moduleDescription());
 
-  if(transform) {
+  if (transform) {
     auto& ac = context->getASTContext();
     auto replacement = toString(ac, conditional, then_expr, else_expr);
-    if(replacement != "") {
+    if (replacement != "") {
       auto& thandle = context->getTransformationHandler();
       thandle.addReplacements(clang::tooling::Replacement(context->getSourceManager(), conditional, replacement));
     }
@@ -102,7 +98,6 @@ std::string IfElseAssign::moduleDescription() {
 }
 
 IfElseAssign::~IfElseAssign() {
-
 }
 
 } /* namespace module */

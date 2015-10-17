@@ -32,8 +32,7 @@
 
 namespace opov {
 
-Application::Application()  {
-
+Application::Application() {
 }
 
 void Application::init() {
@@ -99,7 +98,7 @@ void Application::report() {
   config->getValue("global:filter", do_filter, false);
   TUIssuesMap& issuesMap = ihandler->getAllIssues();
 
-  if(do_filter) {
+  if (do_filter) {
     auto filteredSet = filter->apply(issuesMap);
     reporter->addIssues(filteredSet);
   } else {

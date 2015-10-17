@@ -38,7 +38,7 @@ bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::Strin
 }
 
 void AbstractFactory::handleEndSource() {
-  if(thandler->getRewriter().overwriteChangedFiles()) {
+  if (thandler->getRewriter().overwriteChangedFiles()) {
     LOG_ERROR("Error while writing source transformations to disk.");
   }
 }

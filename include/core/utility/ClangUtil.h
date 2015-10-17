@@ -23,8 +23,8 @@ namespace opov {
 
 namespace clutil {
 
-inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl);
-inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl);
+inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl);
+inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl);
 
 template <typename T>
 inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned int offset = 0) {
@@ -38,15 +38,15 @@ template <typename T>
 inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = false) {
   clang::SourceLocation start(node->getLocStart());
   clang::SourceLocation end(node->getLocEnd());
-  if(semicolon) {
+  if (semicolon) {
     clang::SourceLocation semi_end = findLocationAfterSemi(end, ac, llvm::isa<clang::Decl>(node));
-    //LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " << end.printToString(ac.getSourceManager()));
+    // LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " <<
+    // end.printToString(ac.getSourceManager()));
     return {start, semi_end.isValid() ? semi_end : end};
   } else {
     return {start, end};
   }
 }
-
 
 template <typename NODE>
 inline std::string typeOf(NODE node) {
@@ -117,7 +117,8 @@ inline std::tuple<unsigned, unsigned> colOf(const clang::SourceManager& sm, T no
 }
 
 template <typename T>
-inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::SourceManager& sm, T node, bool semicolon = false) {
+inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::SourceManager& sm, T node,
+                                                                bool semicolon = false) {
   return std::tuple_cat(rowOf(sm, node, semicolon), colOf(sm, node, semicolon));
 }
 
@@ -144,9 +145,8 @@ inline std::string node2str(const clang::ASTContext& ac, const clang::Decl* node
   return s.str();
 }
 
-
 // Both functions taken from File "Transform.cpp": lib/ARCMigrate/Transforms.cpp
-inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext &Ctx, bool IsDecl) {
+inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl) {
   using namespace clang;
   SourceLocation SemiLoc = findSemiAfterLocation(loc, Ctx, IsDecl);
   if (SemiLoc.isInvalid()) {
@@ -155,16 +155,14 @@ inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, cl
   return SemiLoc.getLocWithOffset(1);
 }
 
-inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc,
-                                            clang::ASTContext &Ctx,
-                                            bool IsDecl) {
+inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl) {
   /// \brief \arg Loc is the end of a statement range. This returns the location
   /// of the semicolon following the statement.
   /// If no semicolon is found or the location is inside a macro, the returned
   /// source location will be invalid.
   using namespace clang;
   using namespace llvm;
-  SourceManager &SM = Ctx.getSourceManager();
+  SourceManager& SM = Ctx.getSourceManager();
   if (loc.isMacroID()) {
     if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc))
       return SourceLocation();
@@ -180,12 +178,10 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc,
   if (invalidTemp)
     return SourceLocation();
 
-  const char *tokenBegin = file.data() + locInfo.second;
+  const char* tokenBegin = file.data() + locInfo.second;
 
   // Lex from the start of the given location.
-  Lexer lexer(SM.getLocForStartOfFile(locInfo.first),
-              Ctx.getLangOpts(),
-              file.begin(), tokenBegin, file.end());
+  Lexer lexer(SM.getLocForStartOfFile(locInfo.first), Ctx.getLangOpts(), file.begin(), tokenBegin, file.end());
   Token tok;
   lexer.LexFromRawLexer(tok);
   if (tok.isNot(tok::semi)) {
@@ -193,7 +189,7 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc,
       return SourceLocation();
     // Declaration may be followed with other tokens; such as an __attribute,
     // before ending with a semicolon.
-    return findSemiAfterLocation(tok.getLocation(), Ctx, /*IsDecl*/true);
+    return findSemiAfterLocation(tok.getLocation(), Ctx, /*IsDecl*/ true);
   }
 
   return tok.getLocation();

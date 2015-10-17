@@ -27,7 +27,6 @@ ImplicitConditionMatcher::ImplicitConditionMatcher() {
 }
 
 void ImplicitConditionMatcher::setupOnce(const Configuration* config) {
-
 }
 
 void ImplicitConditionMatcher::setupMatcher() {
@@ -40,8 +39,7 @@ void ImplicitConditionMatcher::setupMatcher() {
   /*auto typedef_condition =
       hasCondition(anyOf(unaryMatch, expr(hasDescendant(unaryMatch)), impl, expr(hasDescendant(impl))));*/
 
-  auto typedef_condition =
-        hasCondition(anyOf(descendant_or_self(unaryMatch), descendant_or_self(impl)));
+  auto typedef_condition = hasCondition(anyOf(descendant_or_self(unaryMatch), descendant_or_self(impl)));
 
   StatementMatcher all_cond =
       stmt(anyOf(ifStmt(typedef_condition), forStmt(typedef_condition), doStmt(typedef_condition),
@@ -60,7 +58,7 @@ void ImplicitConditionMatcher::run(const clang::ast_matchers::MatchFinder::Match
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(invalid, moduleName(), moduleDescription());
 
-  if(transform) {
+  if (transform) {
     auto& thandle = context->getTransformationHandler();
     thandle.addReplacements(trutil::addExplicitCompare(context->getASTContext(), invalid, type_s));
   }

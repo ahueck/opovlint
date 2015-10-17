@@ -16,7 +16,6 @@ namespace opov {
 namespace module {
 
 class UnionMatcher : public opov::ASTMatcherModule {
-
  public:
   UnionMatcher();
   virtual void setupOnce(const Configuration* config) override;

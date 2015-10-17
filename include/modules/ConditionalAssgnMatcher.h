@@ -18,13 +18,11 @@ namespace module {
 // class ConditionalAssgnVisitor;
 
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
-private:
+ private:
   unsigned var_counter;
-  typedef struct {
-    std::string type, variable, lhs, rhs, replacement;
-  } conditional_data;
+  typedef struct { std::string type, variable, lhs, rhs, replacement; } conditional_data;
 
-public:
+ public:
   ConditionalAssgnMatcher();
   virtual void setupOnce(const Configuration* config) override;
   virtual void setupMatcher() override;
@@ -32,7 +30,8 @@ public:
   virtual std::string moduleName() override;
   virtual std::string moduleDescription() override;
   virtual ~ConditionalAssgnMatcher();
-private:
+
+ private:
   void toString(clang::ASTContext& ac, const clang::Expr* e, conditional_data& d, int counter = 0);
   conditional_data buildReplacement(clang::ASTContext& ac, const clang::ConditionalOperator* e);
 };

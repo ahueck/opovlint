@@ -51,7 +51,7 @@ void ExplicitCast::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(ecast, moduleName(), moduleDescription());
 
-  if(transform) {
+  if (transform) {
     auto& thandle = context->getTransformationHandler();
     auto replace = trutil::reCast(context->getASTContext(), ecast, type_s, stmt_cast);
     thandle.addHeader(header_cast, clutil::locOf(context->getSourceManager(), ecast).getBegin());

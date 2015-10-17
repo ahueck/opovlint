@@ -26,17 +26,16 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 
 void GlobalScope::setupMatcher() {
-  //auto declref_matcher = declRefExpr(allOf(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+  // auto declref_matcher = declRefExpr(allOf(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
   //                                         has(nestedNameSpecifier()))).bind("global");
-  auto declref_matcher = declRefExpr(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s)))))
-                                      , has(nestedNameSpecifier(isGlobalNamespace()))
-                                    ).bind("global");
+  auto declref_matcher = declRefExpr(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+                                     has(nestedNameSpecifier(isGlobalNamespace()))).bind("global");
   this->addMatcher(declref_matcher);
 }
 
 void GlobalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const DeclRefExpr* call = result.Nodes.getNodeAs<DeclRefExpr>("global");
-  //const FunctionDecl* func_decl = result.Nodes.getNodeAs<FunctionDecl>("decl");
+  // const FunctionDecl* func_decl = result.Nodes.getNodeAs<FunctionDecl>("decl");
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(call, moduleName(), moduleDescription());

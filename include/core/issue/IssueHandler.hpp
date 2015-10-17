@@ -19,8 +19,7 @@
 namespace opov {
 
 template <typename T>
-void IssueHandler::addIssue(T node,
-                            const std::string& module, const std::string& module_descr, std::string message) {
+void IssueHandler::addIssue(T node, const std::string& module, const std::string& module_descr, std::string message) {
   auto& sm = ac->getSourceManager();
   std::shared_ptr<Issue> issue = std::make_shared<Issue>();
   std::string issue_file = clutil::fileOriginOf(sm, node);

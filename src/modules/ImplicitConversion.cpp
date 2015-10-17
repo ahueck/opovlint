@@ -41,7 +41,7 @@ void ImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(expr, moduleName(), moduleDescription());  //, message.str());
 
-  if(transform) {
+  if (transform) {
     auto& thandle = context->getTransformationHandler();
     thandle.addReplacements(trutil::castTheExpr(context->getASTContext(), expr, type_s));
   }

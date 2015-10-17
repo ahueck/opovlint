@@ -33,27 +33,23 @@ AST_MATCHER(Stmt, notABinaryExpr) {
   return !isa<BinaryOperator>(Node);
 }
 
-const internal::VariadicDynCastAllOfMatcher<
-  Stmt,
-  ParenExpr> parenExpr;
+const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
 
-#define descendant_or_self(NODE) \
-  anyOf(NODE, hasDescendant(NODE))
+#define descendant_or_self(NODE) anyOf(NODE, hasDescendant(NODE))
 
-#define ancestor_or_self(NODE) \
-  anyOf(NODE, hasAncestor(NODE))
+#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
 
 // TODO remove this code duplication (hasThen) once backwards compatibility is not necessary
 AST_MATCHER_P(IfStmt, hasThenStmt, internal::Matcher<Stmt>, InnerMatcher) {
   // Taken from the current version of Clangs ASTMatchers.h file: Line 2922
-  const Stmt *const Then = Node.getThen();
+  const Stmt* const Then = Node.getThen();
   return (Then != nullptr && InnerMatcher.matches(*Then, Finder, Builder));
 }
 
 // TODO remove this code duplication (hasElse) once backwards compatibility is not necessary
 AST_MATCHER_P(IfStmt, hasElseStmt, internal::Matcher<Stmt>, InnerMatcher) {
   // Taken from the current version of Clangs ASTMatchers.h file: Line 2934
-  const Stmt *const Else = Node.getElse();
+  const Stmt* const Else = Node.getElse();
   return (Else != nullptr && InnerMatcher.matches(*Else, Finder, Builder));
 }
 
@@ -64,7 +60,7 @@ AST_MATCHER(TagDecl, isUnion) {
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
-  //LOG_DEBUG("ofType: '" << type << "' : " << is_type);
+  // LOG_DEBUG("ofType: '" << type << "' : " << is_type);
   return is_type;
 }
 

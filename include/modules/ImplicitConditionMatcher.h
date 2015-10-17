@@ -15,7 +15,7 @@
 namespace opov {
 namespace module {
 class ImplicitConditionMatcher : public opov::ASTMatcherModule {
-public:
+ public:
   ImplicitConditionMatcher();
   virtual void setupOnce(const Configuration* config) override;
   virtual void setupMatcher() override;
