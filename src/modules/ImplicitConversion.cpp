@@ -31,11 +31,7 @@ void ImplicitConversion::setupOnce(const Configuration* config) {
 void ImplicitConversion::setupMatcher() {
   StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(
       constructExpr(hasImplicitConversion(type_s), unless(temporaryObjectExpr())).bind("conversion"))));
-  /*constructExpr(
-                  unless(hasParent(varDecl())) // TODO remove varDecl req.?
-                                  ,
-     hasImplicitConversion(type_s)).bind("conversion");
-  */
+
   this->addMatcher(impl_conversion);
 }
 

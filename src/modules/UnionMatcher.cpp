@@ -6,7 +6,6 @@
  */
 
 #include <modules/UnionMatcher.h>
-#include <modules/FieldDeclCollector.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/module/ModuleContext.h>
 #include <core/utility/ClangUtil.h>
@@ -15,6 +14,9 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/configuration/Configuration.h>
 #include <core/transformation/TransformationUtil.h>
+
+#include <algorithm>
+#include <vector>
 
 namespace opov {
 namespace module {
@@ -26,7 +28,7 @@ UnionMatcher::UnionMatcher() {
 }
 
 void UnionMatcher::setupOnce(const Configuration* config) {
-  visitor = opov::util::make_unique<FieldDeclCollector>(type_s);
+
 }
 
 void UnionMatcher::setupMatcher() {
@@ -38,14 +40,20 @@ void UnionMatcher::setupMatcher() {
 void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
   const CXXRecordDecl* inv_union = result.Nodes.getNodeAs<CXXRecordDecl>("union");
   const bool is_anon = inv_union->isAnonymousStructOrUnion();
-  auto fieldDecls = visitor->extractDecl(const_cast<CXXRecordDecl*>(inv_union));
+  std::vector<FieldDecl*> fieldDecls(inv_union->field_begin(), inv_union->field_end());
+  auto filter_end = std::remove_if(fieldDecls.begin(), fieldDecls.end(),
+                  [&](const FieldDecl* decl) {
+                    return clutil::typeOf(decl) != type_s;
+                  }
+                );
+  fieldDecls.erase(filter_end, fieldDecls.end());
 
   std::stringstream message;
   message << (is_anon ? "Anonymous union" : "Union") << " with typedef member. " << fieldDecls.size()
           << " fieldDecl violate the convention.";
 
   auto& ihandle = context->getIssueHandler();
-  ihandle.addIssue(inv_union, moduleName(), moduleDescription(), message.str());
+  ihandle.addIssue(inv_union, moduleName(), moduleDescription());
 
   if(transform) {
     auto& thandle = context->getTransformationHandler();

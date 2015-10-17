@@ -11,16 +11,11 @@
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
-#include <memory>
 
 namespace opov {
 namespace module {
 
-class FieldDeclCollector;
-
 class UnionMatcher : public opov::ASTMatcherModule {
- private:
-  std::unique_ptr<FieldDeclCollector> visitor;
 
  public:
   UnionMatcher();

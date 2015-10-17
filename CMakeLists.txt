@@ -31,7 +31,7 @@ set(PSOURCES
 src/AnalyzerFactory.cpp
 src/ModuleConsumer.cpp
 src/modules/ImplicitConditionMatcher.cpp
-src/modules/FieldDeclCollector.cpp
+#src/modules/FieldDeclCollector.cpp
 src/modules/UnionMatcher.cpp
 src/modules/ExplicitCast.cpp
 src/modules/ConditionalAssgnMatcher.cpp

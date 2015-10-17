@@ -43,19 +43,19 @@ const internal::VariadicDynCastAllOfMatcher<
 #define ancestor_or_self(NODE) \
   anyOf(NODE, hasAncestor(NODE))
 
-/*
-AST_MATCHER_P(IfStmt, hasThen, internal::Matcher<Stmt>, InnerMatcher) {
+// TODO remove this code duplication (hasThen) once backwards compatibility is not necessary
+AST_MATCHER_P(IfStmt, hasThenStmt, internal::Matcher<Stmt>, InnerMatcher) {
   // Taken from the current version of Clangs ASTMatchers.h file: Line 2922
   const Stmt *const Then = Node.getThen();
   return (Then != nullptr && InnerMatcher.matches(*Then, Finder, Builder));
 }
 
-AST_MATCHER_P(IfStmt, hasElse, internal::Matcher<Stmt>, InnerMatcher) {
+// TODO remove this code duplication (hasElse) once backwards compatibility is not necessary
+AST_MATCHER_P(IfStmt, hasElseStmt, internal::Matcher<Stmt>, InnerMatcher) {
   // Taken from the current version of Clangs ASTMatchers.h file: Line 2934
   const Stmt *const Else = Node.getElse();
   return (Else != nullptr && InnerMatcher.matches(*Else, Finder, Builder));
 }
-*/
 
 AST_MATCHER(TagDecl, isUnion) {
   return Node.isUnion();

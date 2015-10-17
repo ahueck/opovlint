@@ -43,8 +43,8 @@ void IfElseAssign::setupMatcher() {
   anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
 
   auto conditional = ifStmt(anyOf(
-              allOf(hasThen(assign_expr("then")), hasElse(assign_expr("else")))
-            , allOf(hasThen(assign_expr("then")), unless(hasElse(stmt()))))).bind("conditional");
+              allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else")))
+            , allOf(hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt()))))).bind("conditional");
   this->addMatcher(conditional);
 }
 
