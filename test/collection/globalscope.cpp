@@ -29,6 +29,7 @@ void call() {
   	::g(scalar(1.0));
 	::g(::b);
 	::g(::b*scalar(1));
+	::h(::b);
 	g(scalar(1.0));
 	ns::g(scalar(1.0));
 }

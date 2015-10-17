@@ -36,8 +36,12 @@ void ImplicitConditionMatcher::setupMatcher() {
   auto unaryMatch =
       unaryOperator(hasUnaryOperand(implicitCastExpr(isFloatingToBoolean(), hasSourceExpression(ofType(type_s)))))
           .bind("unary");
+
+  /*auto typedef_condition =
+      hasCondition(anyOf(unaryMatch, expr(hasDescendant(unaryMatch)), impl, expr(hasDescendant(impl))));*/
+
   auto typedef_condition =
-      hasCondition(anyOf(unaryMatch, expr(hasDescendant(unaryMatch)), impl, expr(hasDescendant(impl))));
+        hasCondition(anyOf(descendant_or_self(unaryMatch), descendant_or_self(impl)));
 
   StatementMatcher all_cond =
       stmt(anyOf(ifStmt(typedef_condition), forStmt(typedef_condition), doStmt(typedef_condition),
