@@ -34,10 +34,12 @@ class ModuleContext {
   clang::ASTContext* context;
   IssueHandler* ihandler;
   TransformationHandler* thandler;
+  std::string current_src;
 
  public:
   ModuleContext(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
-  void setASTContext(clang::ASTContext* context);
+  void initContext(clang::ASTContext* context);
+  void setCurrentSource(const std::string& source);
   clang::ASTContext& getASTContext();
   clang::SourceManager& getSourceManager();
   IssueHandler& getIssueHandler();

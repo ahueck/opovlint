@@ -24,6 +24,8 @@ class Configuration;
 class AbstractModule : public Module {
  protected:
   ModuleContext* context;
+  std::string type_s;
+  bool transform;
 
  public:
   AbstractModule();

@@ -17,10 +17,6 @@ namespace opov {
 namespace module {
 
 class ImplicitConversion : public opov::ASTMatcherModule {
- private:
-  std::string type_s;
-  // std::unique_ptr<ExplicitCastVisitor> visitor;
-
  public:
   ImplicitConversion();
   virtual void setupOnce(const Configuration* config) override;

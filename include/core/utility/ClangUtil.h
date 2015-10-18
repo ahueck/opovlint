@@ -13,13 +13,18 @@
 #include <clang/AST/AST.h>
 #include <clang/Lex/Lexer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
+#include <clang/Frontend/TextDiagnostic.h>
 
 #include <string>
 #include <sstream>
+#include <iterator>
 
 namespace opov {
 
 namespace clutil {
+
+inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl);
+inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl);
 
 template <typename T>
 inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned int offset = 0) {
@@ -29,16 +34,48 @@ inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned
   return {start, end.getLocWithOffset(offset)};
 }
 
+template <typename T>
+inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = false) {
+  clang::SourceLocation start(node->getLocStart());
+  clang::SourceLocation end(node->getLocEnd());
+  if (semicolon) {
+    clang::SourceLocation semi_end = findLocationAfterSemi(end, ac, llvm::isa<clang::Decl>(node));
+    // LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " <<
+    // end.printToString(ac.getSourceManager()));
+    return {start, semi_end.isValid() ? semi_end : end};
+  } else {
+    return {start, end};
+  }
+}
+
 template <typename NODE>
 inline std::string typeOf(NODE node) {
   return node->getType().getUnqualifiedType().getAsString();
 }
 
+inline std::string nameOf(const clang::NamedDecl* decl) {
+  return decl->getNameAsString();
+}
+
+inline std::string nameOf(const clang::DeclRefExpr* expr) {
+  return nameOf(expr->getDecl());
+}
+
+template <typename T>
+inline clang::FileID fileIDOf(const clang::SourceManager& sm, T node) {
+  const auto range = locOf(sm, node);
+  return sm.getFileID(range.getBegin());
+}
+
+template <typename T>
+inline const clang::FileEntry* fileEntryOf(const clang::SourceManager& sm, T node) {
+  auto file_id = fileIDOf(sm, node);
+  return sm.getFileEntryForID(file_id);
+}
+
 template <typename T>
 inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
-  const auto range = locOf(sm, node);
-  const std::pair<clang::FileID, unsigned> DecomposedLocation = sm.getDecomposedLoc(range.getBegin());
-  const clang::FileEntry* Entry = sm.getFileEntryForID(DecomposedLocation.first);
+  auto Entry = fileEntryOf(sm, node);
   if (Entry != NULL) {
     llvm::SmallString<256> FilePath(Entry->getName());
     auto EC = llvm::sys::fs::make_absolute(FilePath);
@@ -46,6 +83,11 @@ inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
   } else {
     return "";
   }
+}
+
+inline unsigned declCount(const clang::TagDecl* node) {
+  auto range = node->decls();
+  return std::distance(range.begin(), range.end());
 }
 
 /*
@@ -62,36 +104,22 @@ inline bool areSameExpr(clang::ASTContext* context, const clang::Expr* first, co
   return FirstID == SecondID;
 }
 
-/*
-inline std::string posOf(const clang::SourceManager& sm, const clang::Stmt*
-expr) {
-        std::stringstream ss;
-        ss << "Location -- Line (S/E): "
-                        << sm.getPresumedLineNumber(expr->getLocStart()) << "/"
-                        << sm.getPresumedLineNumber(expr->getLocEnd())
-                << " Column (S/E): "
-                        << sm.getPresumedColumnNumber(expr->getLocStart()) <<
-"/"
-                        << sm.getPresumedColumnNumber(expr->getLocEnd());
-        return ss.str();
-}
-*/
-
 template <typename T>
-inline std::tuple<unsigned, unsigned> rowOf(const clang::SourceManager& sm, T node) {
-  auto range = locOf(sm, node);
+inline std::tuple<unsigned, unsigned> rowOf(const clang::SourceManager& sm, T node, bool semicolon = false) {
+  auto range = locOf(sm, node, semicolon);
   return std::make_tuple(sm.getPresumedLineNumber(range.getBegin()), sm.getPresumedLineNumber(range.getEnd()));
 }
 
 template <typename T>
-inline std::tuple<unsigned, unsigned> colOf(const clang::SourceManager& sm, T node) {
-  auto range = locOf(sm, node);
+inline std::tuple<unsigned, unsigned> colOf(const clang::SourceManager& sm, T node, bool semicolon = false) {
+  auto range = locOf(sm, node, semicolon);
   return std::make_tuple(sm.getPresumedColumnNumber(range.getBegin()), sm.getPresumedColumnNumber(range.getEnd()));
 }
 
 template <typename T>
-inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::SourceManager& sm, T node) {
-  return std::tuple_cat(rowOf(sm, node), colOf(sm, node));
+inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::SourceManager& sm, T node,
+                                                                bool semicolon = false) {
+  return std::tuple_cat(rowOf(sm, node, semicolon), colOf(sm, node, semicolon));
 }
 
 template <typename T>
@@ -117,31 +145,55 @@ inline std::string node2str(const clang::ASTContext& ac, const clang::Decl* node
   return s.str();
 }
 
-/*
-template<typename NODE>
-inline std::string node2str(const clang::SourceManager& sm, NODE expr) {
-
-        auto range = locOf(sm, expr);
-        auto startData = sm.getCharacterData(range.getBegin());
-        auto endData = sm.getCharacterData(range.getEnd());
-        const std::string source_code = std::string(startData, endData -
-startData);
-
-        return source_code;
-//	auto range = locOf(sm, expr);
-//	auto p = sm.getDecomposedLoc(range.getBegin());
-//	auto pe = sm.getDecomposedLoc(range.getEnd());
-//
-//	std::string text =
-clang::Lexer::getSourceText(clang::CharSourceRange::getTokenRange(range), sm,
-clang::LangOptions(), 0);
-//    if (text.at(text.size()-1) == ',')
-//        return
-clang::Lexer::getSourceText(clang::CharSourceRange::getCharRange(range), sm,
-clang::LangOptions(), 0);
-//    return text;
+// Both functions taken from File "Transform.cpp": lib/ARCMigrate/Transforms.cpp
+inline clang::SourceLocation findLocationAfterSemi(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl) {
+  using namespace clang;
+  SourceLocation SemiLoc = findSemiAfterLocation(loc, Ctx, IsDecl);
+  if (SemiLoc.isInvalid()) {
+    return SourceLocation();
+  }
+  return SemiLoc.getLocWithOffset(1);
 }
-*/
+
+inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, clang::ASTContext& Ctx, bool IsDecl) {
+  /// \brief \arg Loc is the end of a statement range. This returns the location
+  /// of the semicolon following the statement.
+  /// If no semicolon is found or the location is inside a macro, the returned
+  /// source location will be invalid.
+  using namespace clang;
+  using namespace llvm;
+  SourceManager& SM = Ctx.getSourceManager();
+  if (loc.isMacroID()) {
+    if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc))
+      return SourceLocation();
+  }
+  loc = Lexer::getLocForEndOfToken(loc, /*Offset=*/0, SM, Ctx.getLangOpts());
+
+  // Break down the source location.
+  std::pair<FileID, unsigned> locInfo = SM.getDecomposedLoc(loc);
+
+  // Try to load the file buffer.
+  bool invalidTemp = false;
+  StringRef file = SM.getBufferData(locInfo.first, &invalidTemp);
+  if (invalidTemp)
+    return SourceLocation();
+
+  const char* tokenBegin = file.data() + locInfo.second;
+
+  // Lex from the start of the given location.
+  Lexer lexer(SM.getLocForStartOfFile(locInfo.first), Ctx.getLangOpts(), file.begin(), tokenBegin, file.end());
+  Token tok;
+  lexer.LexFromRawLexer(tok);
+  if (tok.isNot(tok::semi)) {
+    if (!IsDecl)
+      return SourceLocation();
+    // Declaration may be followed with other tokens; such as an __attribute,
+    // before ending with a semicolon.
+    return findSemiAfterLocation(tok.getLocation(), Ctx, /*IsDecl*/ true);
+  }
+
+  return tok.getLocation();
+}
 
 class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
  private:

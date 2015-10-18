@@ -11,11 +11,16 @@ namespace opov {
 
 IssueHandler::IssueHandler()
     : source("")
-    , issues() {
+    , issues()
+    , ac(nullptr) {
 }
 
 void IssueHandler::setSource(const std::string& current) {
   source = current;
+}
+
+void IssueHandler::init(clang::ASTContext* ac) {
+  this->ac = ac;
 }
 
 TUIssuesMap& IssueHandler::getAllIssues() {

@@ -1,5 +1,6 @@
 {
     "global" : {
+    	"filter" : false,
         "type" : "scalar"    
     }
 }

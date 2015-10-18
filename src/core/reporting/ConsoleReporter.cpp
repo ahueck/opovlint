@@ -23,6 +23,10 @@ void ConsoleReporter::addIssues(const TUIssuesMap& issues) {
   }
 }
 
+void ConsoleReporter::addIssues(const filter::IssueSet& set) {
+  LOG_ERROR("Not yet implemented!");
+}
+
 void ConsoleReporter::print(const TranslationUnitIssues& issue) {
   std::string module = "";
   LOG_MSG(issue.MainSourceFile << ":");

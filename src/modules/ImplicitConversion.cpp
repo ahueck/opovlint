@@ -14,6 +14,7 @@
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
 //#include <modules/ExplicitCastVisitor.h>
+#include <core/transformation/TransformationUtil.h>
 
 namespace opov {
 namespace module {
@@ -25,27 +26,25 @@ ImplicitConversion::ImplicitConversion() {
 }
 
 void ImplicitConversion::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
 }
 
 void ImplicitConversion::setupMatcher() {
   StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(
       constructExpr(hasImplicitConversion(type_s), unless(temporaryObjectExpr())).bind("conversion"))));
-  /*constructExpr(
-                  unless(hasParent(varDecl())) // TODO remove varDecl req.?
-                                  ,
-     hasImplicitConversion(type_s)).bind("conversion");
-  */
+
   this->addMatcher(impl_conversion);
 }
 
 void ImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>("conversion");
+  const CXXConstructExpr* expr = result.Nodes.getNodeAs<CXXConstructExpr>("conversion");
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());  //, message.str());
+  ihandle.addIssue(expr, moduleName(), moduleDescription());  //, message.str());
+
+  if (transform) {
+    auto& thandle = context->getTransformationHandler();
+    thandle.addReplacements(trutil::castTheExpr(context->getASTContext(), expr, type_s));
+  }
 }
 
 std::string ImplicitConversion::moduleName() {
