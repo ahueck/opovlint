@@ -41,12 +41,10 @@ void AllImplicitConversion::setupMatcher() {
 }
 
 void AllImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const CXXConstructExpr* expr = result.Nodes.getStmtAs<CXXConstructExpr>("conversion");
+  const CXXConstructExpr* expr = result.Nodes.getNodeAs<CXXConstructExpr>("conversion");
 
-  auto& sm = context->getSourceManager();
   auto& ihandle = context->getIssueHandler();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, expr, moduleName(), moduleDescription());
+  ihandle.addIssue(expr, moduleName(), moduleDescription());
 }
 
 std::string AllImplicitConversion::moduleName() {

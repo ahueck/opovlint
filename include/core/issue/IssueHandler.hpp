@@ -11,20 +11,20 @@
 #include <core/issue/Issue.h>
 #include <core/utility/ClangUtil.h>
 
-#include <clang/Basic/SourceManager.h>
 #include <clang/AST/ASTContext.h>
+#include <clang/Basic/SourceManager.h>
 
 #include <memory>
 
 namespace opov {
 
 template <typename T>
-void IssueHandler::addIssue(const clang::SourceManager& sm, const clang::ASTContext& ac, T node,
-                            const std::string& module, const std::string& module_descr, std::string message) {
+void IssueHandler::addIssue(T node, const std::string& module, const std::string& module_descr, std::string message) {
+  auto& sm = ac->getSourceManager();
   std::shared_ptr<Issue> issue = std::make_shared<Issue>();
   std::string issue_file = clutil::fileOriginOf(sm, node);
   auto pos = clutil::posOf(sm, node);
-  std::string node_source = clutil::node2str(ac, node);
+  std::string node_source = clutil::node2str(*ac, node);
   issue->setModuleName(module);
   issue->setModuleDescription(module_descr);
   issue->setDescription(message);

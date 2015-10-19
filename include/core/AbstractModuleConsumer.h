@@ -24,6 +24,7 @@ class AbstractModuleConsumer : public clang::ASTConsumer {
 
  public:
   AbstractModuleConsumer(Module* module, ModuleContext* mcontext);
+  virtual void Initialize(clang::ASTContext& Context) override;
   void HandleTranslationUnit(clang::ASTContext& Context) override;
   virtual ~AbstractModuleConsumer();
 };

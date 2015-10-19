@@ -19,6 +19,7 @@ class ConsoleReporter : public opov::IssueReporter {
   ConsoleReporter();
   virtual void addIssue(const TranslationUnitIssues& issue) override;
   virtual void addIssues(const TUIssuesMap& issues) override;
+  virtual void addIssues(const filter::IssueSet& issues) override;
   virtual ~ConsoleReporter();
 
  private:

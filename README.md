@@ -16,7 +16,7 @@ The status of this software is alpha level.
 License
 ------------
 
-Distributed under the MIT License. For details refer to the [LICENSE file](LICENSE)
+Distributed under the MIT License. For details refer to the [LICENSE](LICENSE)
 
 
 Motivation
@@ -34,12 +34,13 @@ and result in compile time errors.
     - “At most one user-defined conversion [...] is implicitly 
          applied to a single value.” –  [§12.3-4, C++03 Standard]
     - Subset: 
-        - Boolean Conversions: i.e., conditional statements
+        - Boolean Conversions, i.e., conditional statements
 - Unions
     - Incompatible with complex data classes [§9.5-1, C++03 Standard]
 - Explicit Conversions
     - Cast operation from a user-defined type to a built-in is often not possible
-- etc.
+- Friend functions and the Scope Resolution Operator (**::**)
+    - A combination of these two C++ features can cause problems in certain circumstances
 
 
 Goal
@@ -73,7 +74,7 @@ For Ubuntu/Debian, refer to the [Travis CI file](.travis.yml) for guidance.
 In the root folder of the project:
 
     mkdir build && cd build/
-    cmake -DCMAKE_BUILD_TYPE=Release ..
+    cmake -DCMAKE_BUILD_TYPE=Release -DMAKE_TEST=FALSE ..
     make
 
-The binary should be created in the project bin/ folder. 
+The binary should be created in the project folder *bin/*. 

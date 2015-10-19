@@ -15,10 +15,13 @@
 namespace opov {
 
 AbstractModule::AbstractModule()
-    : context(nullptr) {
+    : context(nullptr)
+    , transform(false) {
 }
 
 void AbstractModule::init(const Configuration* config) {
+  config->getValue("global:type", type_s);
+  config->getValue("global:transform", transform, false);
   setupOnce(config);
 }
 

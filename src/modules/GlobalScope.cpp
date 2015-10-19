@@ -23,22 +23,21 @@ GlobalScope::GlobalScope() {
 }
 
 void GlobalScope::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
 }
 
 void GlobalScope::setupMatcher() {
-  auto declref_matcher = declRefExpr(allOf(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
-                                           has(nestedNameSpecifier()))).bind("global");
-  this->addMatcher(declref_matcher);
+  auto declref_matcher = declRefExpr(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+                                     has(nestedNameSpecifier(isGlobalNamespace()))); /*.bind("global_ref");*/
+  auto call_matcher = callExpr(callee(expr(ignoringImpCasts(declref_matcher)))).bind("call");
+  this->addMatcher(call_matcher);
 }
 
 void GlobalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const Expr* call = result.Nodes.getStmtAs<Expr>("global");
+  //auto ref = result.Nodes.getNodeAs<DeclRefExpr>("global_ref");
+  auto call = result.Nodes.getNodeAs<CallExpr>("call");
 
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, call, moduleName(), moduleDescription());
+  ihandle.addIssue(call, moduleName(), moduleDescription());
 }
 
 std::string GlobalScope::moduleName() {

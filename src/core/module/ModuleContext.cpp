@@ -28,8 +28,16 @@ ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, Tran
   issues.reserve(100);
 }
 
-void ModuleContext::setASTContext(clang::ASTContext* context) {
+void ModuleContext::initContext(clang::ASTContext* context) {
   this->context = context;
+  thandler->initRewriter(context->getSourceManager(), context->getLangOpts());
+  ihandler->init(context);
+}
+
+void ModuleContext::setCurrentSource(const std::string& source) {
+  this->current_src = source;
+  this->thandler->setSource(current_src);
+  this->ihandler->setSource(current_src);
 }
 
 clang::ASTContext& ModuleContext::getASTContext() {

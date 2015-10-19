@@ -18,10 +18,13 @@ AbstractModuleConsumer::AbstractModuleConsumer(Module* module, ModuleContext* mc
     , mcontext(mcontext) {
 }
 
+void AbstractModuleConsumer::Initialize(clang::ASTContext& Context) {
+  mcontext->initContext(&Context);
+}
+
 void AbstractModuleConsumer::HandleTranslationUnit(clang::ASTContext& Context) {
   // std::shared_ptr<ModuleContext> m_context =
   // std::make_shared<ModuleContext>();
-  mcontext->setASTContext(&Context);
   LOG_DEBUG("AbstractModuleConsumer: Execute Module: " << module->moduleName());
   module->execute(mcontext);
 }

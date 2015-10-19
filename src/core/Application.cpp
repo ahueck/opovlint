@@ -13,9 +13,11 @@
 #include <core/reporting/IssueReporter.h>
 #include <core/logging/Logger.h>
 #include <core/transformation/TransformationHandler.h>
+#include <core/issue/filter/IFilter.h>
+#include <core/issue/filter/UniqueFilter.h>
 #include <core/utility/Util.h>
 
-#include <external/ReplacementHandling.h>
+//#include <external/ReplacementHandling.h>
 
 #include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -30,12 +32,13 @@
 
 namespace opov {
 
-// Application::Application() : executor(nullptr) {
-//}
+Application::Application() {
+}
 
 void Application::init() {
   loadConfig();
   createIssueHandler();
+  createFilter();
   createTransformationHandler();
   createReporter();
   createFactory();
@@ -51,23 +54,17 @@ void Application::createIssueHandler() {
   ihandler = util::make_unique<IssueHandler>();
 }
 
+void Application::createFilter() {
+  filter = util::make_unique<filter::UniqueFilter>();
+}
+
 void Application::createTransformationHandler() {
   thandler = util::make_unique<TransformationHandler>();
 }
 
 int Application::execute(const clang::tooling::CompilationDatabase& db, const std::vector<std::string>& sources) {
   clang::tooling::ClangTool tool(db, sources);
-  ReplacementHandling replacementHandler;
-  std::string replacement_loc;
-  bool apply_replacements;
-  config->getValue("replacement:location", replacement_loc);
-  config->getValue("replacement:apply", apply_replacements);
   int sig = 0;
-
-  if (!replacementHandler.findClangApplyReplacements("")) {
-    LOG_ERROR("Could not find clang-apply-replacement");
-  }
-
   for (auto module : modules) {
     executor->setModule(module);
     int sig = tool.run(actionFactory.get());
@@ -76,22 +73,8 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
       // return sig;
     }
   }
+  report();
 
-  reporter->addIssues(ihandler->getAllIssues());
-  ihandler->clear();
-  /*
-          replacementHandler.setDestinationDir(replacement_loc);
-          if(!replacementHandler.serializeReplacements(thandler->getAllReplacements()))
-     {
-                  LOG_DEBUG("Failed to serialize replacements");
-          }
-          if(apply_replacements) {
-                  if(!replacementHandler.applyReplacements()) {
-                          LOG_DEBUG("Failed to apply replacements");
-                  }
-          }
-          thandler->getAllReplacements().clear();
-  */
   return sig;
 }
 
@@ -105,11 +88,24 @@ int Application::executeOnCode(const std::string& source, const std::vector<std:
       return sig;
     }
   }
-
-  reporter->addIssues(ihandler->getAllIssues());
-  ihandler->clear();
+  report();
 
   return sig;
+}
+
+void Application::report() {
+  bool do_filter;
+  config->getValue("global:filter", do_filter, false);
+  TUIssuesMap& issuesMap = ihandler->getAllIssues();
+
+  if (do_filter) {
+    auto filteredSet = filter->apply(issuesMap);
+    reporter->addIssues(filteredSet);
+  } else {
+    reporter->addIssues(issuesMap);
+  }
+
+  ihandler->clear();
 }
 
 void Application::addModule(Module* module) {

@@ -12,6 +12,10 @@
 #include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/configuration/Configuration.h>
+#include <core/transformation/TransformationUtil.h>
+
+#include <clang/Frontend/TextDiagnostic.h>
+#include <llvm/Support/raw_ostream.h>
 
 namespace opov {
 namespace module {
@@ -23,7 +27,6 @@ ImplicitConditionMatcher::ImplicitConditionMatcher() {
 }
 
 void ImplicitConditionMatcher::setupOnce(const Configuration* config) {
-  config->getValue("global:type", type_s);
 }
 
 void ImplicitConditionMatcher::setupMatcher() {
@@ -32,8 +35,11 @@ void ImplicitConditionMatcher::setupMatcher() {
   auto unaryMatch =
       unaryOperator(hasUnaryOperand(implicitCastExpr(isFloatingToBoolean(), hasSourceExpression(ofType(type_s)))))
           .bind("unary");
-  auto typedef_condition =
-      hasCondition(anyOf(unaryMatch, expr(hasDescendant(unaryMatch)), impl, expr(hasDescendant(impl))));
+
+  /*auto typedef_condition =
+      hasCondition(anyOf(unaryMatch, expr(hasDescendant(unaryMatch)), impl, expr(hasDescendant(impl))));*/
+
+  auto typedef_condition = hasCondition(anyOf(descendant_or_self(unaryMatch), descendant_or_self(impl)));
 
   StatementMatcher all_cond =
       stmt(anyOf(ifStmt(typedef_condition), forStmt(typedef_condition), doStmt(typedef_condition),
@@ -43,14 +49,19 @@ void ImplicitConditionMatcher::setupMatcher() {
 }
 
 void ImplicitConditionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const Expr* implicit_cast = result.Nodes.getStmtAs<Expr>("implicit");
-  const Expr* unary_op = result.Nodes.getStmtAs<Expr>("unary");
+  /*
+   * match unary nodes of "scalar" but only transform OperatorKind (UO_Not, UO_LNot)
+   */
+  const Expr* implicit_cast = result.Nodes.getNodeAs<Expr>("implicit");
+  const Expr* unary_op = result.Nodes.getNodeAs<Expr>("unary");
   const Expr* invalid = !implicit_cast ? unary_op : implicit_cast;
-
   auto& ihandle = context->getIssueHandler();
-  auto& sm = context->getSourceManager();
-  auto& ac = context->getASTContext();
-  ihandle.addIssue(sm, ac, invalid, moduleName(), moduleDescription());
+  ihandle.addIssue(invalid, moduleName(), moduleDescription());
+
+  if (transform) {
+    auto& thandle = context->getTransformationHandler();
+    thandle.addReplacements(trutil::addExplicitCompare(context->getASTContext(), invalid, type_s));
+  }
 }
 
 std::string ImplicitConditionMatcher::moduleName() {

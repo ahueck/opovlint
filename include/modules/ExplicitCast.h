@@ -20,9 +20,8 @@ class ExplicitCastVisitor;
 
 class ExplicitCast : public opov::ASTMatcherModule {
  private:
-  std::string type_s;
   std::string header_cast;
-  std::string cast_stmt;
+  std::string stmt_cast;
   // std::unique_ptr<ExplicitCastVisitor> visitor;
 
  public:

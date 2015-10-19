@@ -11,7 +11,6 @@
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
-//#include <memory>
 
 namespace opov {
 namespace module {
@@ -20,8 +19,9 @@ namespace module {
 
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
  private:
-  std::string type_s;
-  // std::unique_ptr<ConditionalAssgnVisitor> visitor;
+  unsigned var_counter;
+  typedef struct { std::string type, variable, lhs, rhs, replacement; } conditional_data;
+
  public:
   ConditionalAssgnMatcher();
   virtual void setupOnce(const Configuration* config) override;
@@ -30,6 +30,10 @@ class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
   virtual std::string moduleName() override;
   virtual std::string moduleDescription() override;
   virtual ~ConditionalAssgnMatcher();
+
+ private:
+  void toString(clang::ASTContext& ac, const clang::Expr* e, conditional_data& d, int counter = 0);
+  conditional_data buildReplacement(clang::ASTContext& ac, const clang::ConditionalOperator* e);
 };
 
 } /* namespace module */

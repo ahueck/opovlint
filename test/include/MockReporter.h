@@ -46,6 +46,10 @@ public:
 		}
 	}
 
+	virtual void addIssues(const filter::IssueSet& issues) {
+	  LOG_DEBUG("Not supposed to be called!");
+	}
+
 	virtual ~MockReporter() {
 
 	}

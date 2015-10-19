@@ -11,18 +11,11 @@
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
-#include <memory>
 
 namespace opov {
 namespace module {
 
-class FieldDeclCollector;
-
 class UnionMatcher : public opov::ASTMatcherModule {
- private:
-  std::string type_s;
-  std::unique_ptr<FieldDeclCollector> visitor;
-
  public:
   UnionMatcher();
   virtual void setupOnce(const Configuration* config) override;

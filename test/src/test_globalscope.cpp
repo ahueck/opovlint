@@ -43,17 +43,17 @@ void h(double b);\n"
     ::a;\n\
     ::b;\n"
 
+#define NS_END \
+  "}\n\
+}"
+
 #define MAKE_CODE(stmt) PRAGMAS HEADER GLOBAL NS stmt NS_END
 
 #define CALL(ARG)  MAKE_CODE("::g(" ARG ");\n")
+#define CALLR(ARG) "::g(" ARG ")"
 #define CALLH(ARG)  MAKE_CODE("::h(" ARG ");\n")
 
-#define NS_END \
-	"}\n\
-}"
-
-
-KICKOFF_TEST(opov::module::GlobalScope, CALL("b"), "::g")
+KICKOFF_TEST(opov::module::GlobalScope, CALL("b"), CALLR("b"))
 
 
 SCENARIO("Global scope function calls with scalars. Module looks for type scalar and one match is produced.", "[scalar_match]") {
@@ -63,14 +63,19 @@ SCENARIO("Global scope function calls with scalars. Module looks for type scalar
 		app.addModule(new opov::module::GlobalScope());
 
 		SIMPLE_TEST1("A call with scalar argument."
-				, CALL("b"), "::g");
+				, CALL("b"), CALLR("b"));
 		SIMPLE_TEST1("A call with binary expression."
-				, CALL("b*b"), "::g");
+				, CALL("b*b"), CALLR("b*b"));
 		SIMPLE_TEST1("A simple call with int argument."
-				, CALL("a"), "::g");
+				, CALL("a"), CALLR("a"));
 		SIMPLE_TEST1("A simple call with double argument."
-				, CALL("c"), "::g");
-
+				, CALL("c"), CALLR("c"));
+    SIMPLE_TEST1("A simple call with a (cast) scalar argument."
+        , CALL("scalar(1)"), CALLR("scalar(1)"));
+    SIMPLE_TEST1("A call with scalar argument using namespace qualifier."
+            , CALL("::b"), CALLR("::b"));
+    SIMPLE_TEST1("A call with double argument using namespace qualifier."
+            , CALL("::a"), CALLR("::a"));
 	}
 }
 

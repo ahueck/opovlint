@@ -20,6 +20,7 @@ src/core/configuration/JSONConfiguration.cpp
 include/external/IncludeDirectives.cpp
 include/external/ReplacementHandling.cpp
 src/core/issue/IssueHandler.cpp
+src/core/issue/filter/UniqueFilter.cpp
 src/core/reporting/ConsoleReporter.cpp
 src/core/reporting/CSVReporter.cpp
 src/core/transformation/TransformationHandler.cpp
@@ -30,7 +31,7 @@ set(PSOURCES
 src/AnalyzerFactory.cpp
 src/ModuleConsumer.cpp
 src/modules/ImplicitConditionMatcher.cpp
-src/modules/FieldDeclCollector.cpp
+#src/modules/FieldDeclCollector.cpp
 src/modules/UnionMatcher.cpp
 src/modules/ExplicitCast.cpp
 src/modules/ConditionalAssgnMatcher.cpp
@@ -38,6 +39,7 @@ src/modules/ImplicitConversion.cpp
 src/modules/ExplicitConstructor.cpp
 src/modules/AllImplicitConversion.cpp
 src/modules/GlobalScope.cpp
+src/modules/IfElseAssign.cpp
 )
 
 add_library(libopov ${LSOURCES})
