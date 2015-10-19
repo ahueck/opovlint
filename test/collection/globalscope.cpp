@@ -30,7 +30,9 @@ void call() {
 	::g(::b);
 	::g(::b*scalar(1));
 	::h(::b);
+	::g(b);
 	g(scalar(1.0));
 	ns::g(scalar(1.0));
+	::ns::g(scalar(1.0));
 }
 }
