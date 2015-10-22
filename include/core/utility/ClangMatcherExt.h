@@ -35,9 +35,18 @@ AST_MATCHER(Stmt, notABinaryExpr) {
 
 const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
 
-#define descendant_or_self(NODE) anyOf(NODE, hasDescendant(NODE))
+//#define descendant_or_self(NODE) anyOf(NODE, hasDescendant(NODE))
+//#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
 
-#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
+template <typename T>
+inline auto ancestor_or_self(const T& node) -> decltype(anyOf(node, hasAncestor(node))) {
+  return anyOf(node, hasAncestor(node));
+}
+
+template <typename T>
+inline auto descendant_or_self(const T& node) -> decltype(anyOf(node, hasDescendant(node))) {
+  return anyOf(node, hasDescendant(node));
+}
 
 // TODO remove this code duplication (hasThen) once backwards compatibility is not necessary
 AST_MATCHER_P(IfStmt, hasThenStmt, internal::Matcher<Stmt>, InnerMatcher) {
