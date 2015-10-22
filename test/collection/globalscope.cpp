@@ -1,4 +1,8 @@
 #pragma clang diagnostic ignored "-Wunused-value"
+
+#include <vector>
+#include <cmath>
+
 typedef double scalar;
 
 class X;
@@ -34,5 +38,10 @@ void call() {
 	g(scalar(1.0));
 	ns::g(scalar(1.0));
 	::ns::g(scalar(1.0));
+	
+	std::vector<scalar> v;
+	v.push_back(::b);
+	::sqrt(::b);
+
 }
 }

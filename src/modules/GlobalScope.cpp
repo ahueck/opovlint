@@ -26,9 +26,12 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 
 void GlobalScope::setupMatcher() {
-  auto declref_matcher = declRefExpr(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
-                                     has(nestedNameSpecifier(isGlobalNamespace()))); /*.bind("global_ref");*/
-  auto call_matcher = callExpr(callee(expr(ignoringImpCasts(declref_matcher)))).bind("call");
+  //auto declref_matcher = declRefExpr(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+  //                                   has(nestedNameSpecifier(isGlobalNamespace()))); /*.bind("global_ref");*/
+  //auto call_matcher = callExpr(callee(expr(ignoringImpCasts(declref_matcher)))).bind("call");
+  auto call_matcher = callExpr(anyOf(callee(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))), hasAnyArgument(ignoringImpCasts(isTypedef(type_s))))
+                              , callee(expr(ignoringImpCasts(declRefExpr(has(nestedNameSpecifier(isGlobalNamespace()))))))).bind("call");
+
   this->addMatcher(call_matcher);
 }
 
