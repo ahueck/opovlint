@@ -1,11 +1,11 @@
 {
-    "global" : {
-		"transform" : true,
-        "filter" : true,
-        "type" : "scalar"  
-    },
-	"ExplicitCast" : {
-		"header" : "reCast.h",
-		"function" : "reCast"
-	}
+  "global" : {
+    "transform" : false,
+    "filter" : true,
+    "type" : "scalar"  
+  },
+  "ExplicitCast" : {
+    "header" : "reCast.h",
+    "function" : "reCast"
+  }
 }

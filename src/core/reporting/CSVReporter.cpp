@@ -8,6 +8,7 @@
 #include <core/reporting/CSVReporter.h>
 #include <core/issue/Issue.h>
 #include <core/logging/Logger.h>
+#include <core/utility/Util.h>
 
 #include <sstream>
 
@@ -33,7 +34,7 @@ void CSVReporter::addIssues(const filter::IssueSet& set) {
     auto i = ifiltered.second.issue;
     csv << i->getModuleName() << ";";
     csv << i->getFile() << ";";
-    csv << i->getCode() << ";";
+    csv << util::trim_rep(util::remove_nl(i->getCode())) << ";";
     csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd() << ";";
     csv << "+";
     for (auto& tunit : ifiltered.second.tunits) {
@@ -52,7 +53,7 @@ void CSVReporter::print(const TranslationUnitIssues& issue) {
     csv << issue.MainSourceFile << ";";
     csv << i->getModuleName() << ";";
     csv << i->getFile() << ";";
-    csv << i->getCode() << ";";
+    csv << util::trim_rep(util::remove_nl(i->getCode())) << ";";
     csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd();
     LOG_MSG(csv.str());
     csv.str("");

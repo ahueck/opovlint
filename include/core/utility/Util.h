@@ -13,6 +13,7 @@
 #include <type_traits>
 #include <utility>
 #include <sstream>
+#include <algorithm>
 //#include <regex>
 
 namespace opov {
@@ -34,6 +35,18 @@ std::string num2str(T val) {
   std::stringstream sstream;
   sstream << val;
   return sstream.str();
+}
+
+inline std::string remove_nl(std::string multi_line) {
+  auto end = std::remove(multi_line.begin(), multi_line.end(), '\n');
+  multi_line.erase(end, multi_line.end());
+  return multi_line;
+}
+
+inline std::string trim_rep(std::string str, char rep = ' ') {
+  auto end = std::unique(str.begin(), str.end(), [&](char a, char b) -> bool { return a == rep && (a == b); });
+  str.erase(end, str.end());
+  return str;
 }
 
 /*

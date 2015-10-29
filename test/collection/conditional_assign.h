@@ -8,10 +8,16 @@ inline scalar test_ret(scalar a) {
 
 inline void broken() {
   scalar a,b,c,d=1.0;
+  int j;
   if(b > 0) {
     a = c;
   } else {
     int i  = b;
+    }
+  if(b > 0) {
+    a = c;
+  } else {
+    j  = b;
     }
 /*
   a = b > 0 ? c : d;
