@@ -43,8 +43,8 @@ inline std::string remove_nl(std::string multi_line) {
   return multi_line;
 }
 
-inline std::string trim_rep(std::string str, char rep=' ') {
-  auto end = std::unique(str.begin(), str.end(), [&] (char a, char b) -> bool { return a == rep && (a == b); });
+inline std::string trim_rep(std::string str, char rep = ' ') {
+  auto end = std::unique(str.begin(), str.end(), [&](char a, char b) -> bool { return a == rep && (a == b); });
   str.erase(end, str.end());
   return str;
 }
