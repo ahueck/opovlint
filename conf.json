@@ -1,6 +1,6 @@
 {
     "global" : {
-		"transform" : true,
+        "transform" : false,
         "filter" : true,
         "type" : "scalar"  
     },
