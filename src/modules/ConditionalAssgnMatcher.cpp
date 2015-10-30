@@ -22,8 +22,7 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-ConditionalAssgnMatcher::ConditionalAssgnMatcher()
-    : var_counter(0) {
+ConditionalAssgnMatcher::ConditionalAssgnMatcher() {
 }
 
 void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
@@ -34,14 +33,15 @@ void ConditionalAssgnMatcher::setupMatcher() {
   // TODO use ofType instead of just typedef?
   // We warn whenever an active type is present for such code structures.
   // (Even if there is no assignement.)
-  auto conditional = conditionalOperator(has(expr(ofType(type_s)))).bind("conditional");
+  auto conditional = conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))
+                         .bind("conditional");
   auto condassign = stmt(hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
 
   this->addMatcher(condassign);
   this->addMatcher(conditional);
 }
 
-void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, conditional_data& d, int counter) {
+void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, conditional_data& d) {
   auto cond = dyn_cast<ConditionalOperator>(e->IgnoreParenImpCasts());
   if (cond) {
     d.type = clutil::typeOf(e);
@@ -58,11 +58,11 @@ ConditionalAssgnMatcher::conditional_data ConditionalAssgnMatcher::buildReplacem
 #define nl_str(STRUCT) (STRUCT.replacement == "" ? "" : (STRUCT.replacement + "\n"))
 
   conditional_data lhs_dat, rhs_dat, cond_dat;
-  toString(ac, conditional->getRHS(), rhs_dat, ++var_counter);
-  toString(ac, conditional->getLHS(), lhs_dat, ++var_counter);
+  toString(ac, conditional->getRHS(), rhs_dat);
+  toString(ac, conditional->getLHS(), lhs_dat);
   cond_dat.lhs = lhs_dat.variable;
   cond_dat.rhs = rhs_dat.variable;
-  toString(ac, conditional, cond_dat, ++var_counter);
+  toString(ac, conditional, cond_dat);
   cond_dat.replacement = nl_str(lhs_dat) + nl_str(rhs_dat) + cond_dat.replacement;
   return cond_dat;
 }

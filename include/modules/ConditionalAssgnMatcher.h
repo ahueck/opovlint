@@ -19,8 +19,9 @@ namespace module {
 
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
  private:
-  unsigned var_counter;
-  typedef struct { std::string type, variable, lhs, rhs, replacement; } conditional_data;
+  typedef struct {
+    std::string type, variable, lhs, rhs, replacement;
+  } conditional_data;
 
  public:
   ConditionalAssgnMatcher();
@@ -32,7 +33,7 @@ class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
   virtual ~ConditionalAssgnMatcher();
 
  private:
-  void toString(clang::ASTContext& ac, const clang::Expr* e, conditional_data& d, int counter = 0);
+  void toString(clang::ASTContext& ac, const clang::Expr* e, conditional_data& d);
   conditional_data buildReplacement(clang::ASTContext& ac, const clang::ConditionalOperator* e);
 };
 
