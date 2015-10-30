@@ -38,9 +38,12 @@ void IfElseAssign::setupMatcher() {
   binaryOperator(hasOperatorName("="), hasLHS(declRefExpr()), has(expr(ofType(type_s)))).bind(BIND)
 #define assign_expr(BIND) anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
 
-  auto conditional =
-      ifStmt(anyOf(allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else"))),
-                   allOf(hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt()))))).bind("conditional");
+  auto conditional = ifStmt(hasThenStmt(assign_expr("then")),
+                            anyOf(hasElseStmt(assign_expr("else")), unless(hasElseStmt(stmt())))).bind("conditional");
+
+  // auto conditional =
+  //    ifStmt(anyOf(allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else"))),
+  //                 hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt())))).bind("conditional");
   this->addMatcher(conditional);
 }
 
