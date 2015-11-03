@@ -35,7 +35,7 @@ void ConditionalAssgnMatcher::setupMatcher() {
   // (Even if there is no assignement.)
   auto conditional = conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))
                          .bind("conditional");
-  auto condassign = stmt(hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
+  auto condassign = stmt(unless(compoundStmt()), hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
 
   this->addMatcher(condassign);
   this->addMatcher(conditional);
