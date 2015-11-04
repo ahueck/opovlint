@@ -29,13 +29,14 @@ void CSVReporter::addIssues(const TUIssuesMap& issues) {
 
 void CSVReporter::addIssues(const filter::IssueSet& set) {
   std::stringstream csv;
-  csv << "Module Name;File Path;Code;Line Start;Line End;Column Start;Column End;Files\n";
+  csv << "Module Name;File Path;Code;Line Start;Line End;Column Start;Column End;File Count;Files\n";
   for (auto& ifiltered : set) {
     auto i = ifiltered.second.issue;
     csv << i->getModuleName() << ";";
     csv << i->getFile() << ";";
-    csv << util::trim_rep(util::remove_nl(i->getCode())) << ";";
+    csv << "\"" << util::trim_rep(util::remove_nl(i->getCode())) << "\";";
     csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd() << ";";
+    csv << ifiltered.second.tunits.size() << ";";
     csv << "+";
     for (auto& tunit : ifiltered.second.tunits) {
       csv << tunit << "+";
@@ -53,7 +54,7 @@ void CSVReporter::print(const TranslationUnitIssues& issue) {
     csv << issue.MainSourceFile << ";";
     csv << i->getModuleName() << ";";
     csv << i->getFile() << ";";
-    csv << util::trim_rep(util::remove_nl(i->getCode())) << ";";
+    csv << "\"" << util::trim_rep(util::remove_nl(i->getCode())) << "\";";
     csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd();
     LOG_MSG(csv.str());
     csv.str("");
