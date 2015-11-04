@@ -45,7 +45,8 @@ void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, con
   auto cond = dyn_cast<ConditionalOperator>(e->IgnoreParenImpCasts());
   if (cond) {
     d.type = clutil::typeOf(e);
-    d.variable = "_oolint_t_" + util::num2str(cond);
+    auto pos = clutil::posOf(ac.getSourceManager(), cond);
+    d.variable = "_oolint_t_"  + util::num2str(std::get<0>(pos)) + util::num2str(std::get<1>(pos)) + util::num2str(std::get<2>(pos)) + util::num2str(std::get<3>(pos));
     d.replacement = d.type + " " + d.variable + ";\n" + "condassign(" + d.variable + ", " +
                     clutil::node2str(ac, cond->getCond()) + ", " +
                     (d.lhs == "" ? clutil::node2str(ac, cond->getLHS()) : d.lhs) + ", " +

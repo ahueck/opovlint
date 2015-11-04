@@ -17,7 +17,7 @@
 #include <core/issue/filter/UniqueFilter.h>
 #include <core/utility/Util.h>
 
-//#include <external/ReplacementHandling.h>
+#include <external/ReplacementHandling.h>
 
 #include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -65,6 +65,18 @@ void Application::createTransformationHandler() {
 int Application::execute(const clang::tooling::CompilationDatabase& db, const std::vector<std::string>& sources) {
   clang::tooling::ClangTool tool(db, sources);
   int sig = 0;
+
+  ReplacementHandling replacementHandler;
+  bool apply_replacements;
+  std::string replacement_loc;
+  config->getValue("replacement:location", replacement_loc);
+  config->getValue("replacement:apply", apply_replacements);
+
+  if(!replacementHandler.findClangApplyReplacements("")) {
+          LOG_ERROR("Could not find clang-apply-replacement");
+          return 0;
+  }
+
   for (auto module : modules) {
     executor->setModule(module);
     int sig = tool.run(actionFactory.get());
@@ -74,6 +86,15 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
     }
   }
   report();
+  replacementHandler.setDestinationDir(replacement_loc);
+  if(!replacementHandler.serializeReplacements(thandler->getAllReplacements())) {
+      LOG_DEBUG("Failed to serialize replacements");
+  }
+  if(apply_replacements) {
+      if(!replacementHandler.applyReplacements()) {
+          LOG_DEBUG("Failed to apply replacements");
+      }
+  }
 
   return sig;
 }

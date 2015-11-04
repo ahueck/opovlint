@@ -1,11 +1,15 @@
 {
   "global" : {
-    "transform" : false,
+    "transform" : true,
     "filter" : true,
     "type" : "scalar"  
   },
+  "replacement" : {
+    "location" : "/home/ahueck/workspaces/workspace/opovlint/transform",
+    "apply" : true
+  },
   "ExplicitCast" : {
-    "header" : "reCast.h",
+    "header" : "recast.h",
     "function" : "reCast"
   }
 }

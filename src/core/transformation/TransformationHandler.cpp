@@ -30,14 +30,14 @@ void TransformationHandler::initRewriter(clang::SourceManager& sm, const clang::
 }
 
 void TransformationHandler::addReplacements(const clang::tooling::Replacement& replacement) {
-  replacement.apply(rewriter);
-  /*
+  //replacement.apply(rewriter);
+
   TranslationUnitReplacements& tunit = replacements[source];
   if (tunit.MainSourceFile.empty()) {
     tunit.MainSourceFile = source;
   }
   tunit.Replacements.push_back(replacement);
-  */
+
 }
 
 void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
