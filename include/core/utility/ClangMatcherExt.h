@@ -39,6 +39,11 @@ const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
 //#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
 
 template <typename T>
+inline auto children_or_self(const T& node) -> decltype(anyOf(node, has(node))) {
+  return anyOf(node, has(node));
+}
+
+template <typename T>
 inline auto ancestor_or_self(const T& node) -> decltype(anyOf(node, hasAncestor(node))) {
   return anyOf(node, hasAncestor(node));
 }

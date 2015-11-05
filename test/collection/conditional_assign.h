@@ -1,5 +1,19 @@
 typedef double scalar;
+
+scalar ret(scalar a) {
+    return a >0 ? a : 0.0;
+}
+
+scalar ret2(scalar b) {
+    return ret(b >0 ? b : 0.0);
+}
+
+
 inline void test(scalar a) {
+}
+
+
+inline void func(scalar a) {
 }
 
 inline scalar test_ret(scalar a) {
@@ -9,20 +23,19 @@ inline scalar test_ret(scalar a) {
 inline void broken() {
   scalar a,b,c,d=1.0;
   int j;
-  if(b > 0) {
-    a = c;
-  } else {
-    int i  = b;
-    }
-  if(b > 0) {
-    a = c;
-  } else {
-    j  = b;
-    }
-/*
-  a = b > 0 ? c : d;
+//  a = b > 0 ? c : d;
+  func(a = b > 0 ? c : d);
   func(b > 0 ? c : d);
   a = b > 0 ? (b > 0 ? c : d) : d;
   test(test_ret(b > 0 ? c : d));
-*/
+  if(a > 0) {
+    if(b > 0) {
+        a = b > 0 ? c : d;
+    }
+  }
+
+  if(a > 0) {
+    if(b > 0)
+        a = b > 0 ? c : d;
+  }
 }
