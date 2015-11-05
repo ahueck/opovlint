@@ -37,9 +37,10 @@ inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned
 template <typename T>
 inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = false) {
   clang::SourceLocation start(node->getLocStart());
-  clang::SourceLocation end(node->getLocEnd());
+  //clang::SourceLocation end(node->getLocEnd());
+  clang::SourceLocation end(clang::Lexer::getLocForEndOfToken(node->getLocEnd(), 0, ac.getSourceManager(), clang::LangOptions()));
   if (semicolon) {
-    clang::SourceLocation semi_end = findLocationAfterSemi(end, ac, llvm::isa<clang::Decl>(node));
+    clang::SourceLocation semi_end = findLocationAfterSemi(node->getLocEnd(), ac, llvm::isa<clang::Decl>(node));
     // LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " <<
     // end.printToString(ac.getSourceManager()));
     return {start, semi_end.isValid() ? semi_end : end};

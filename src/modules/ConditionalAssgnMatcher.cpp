@@ -30,11 +30,10 @@ void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
 }
 
 void ConditionalAssgnMatcher::setupMatcher() {
-  // TODO use ofType instead of just typedef?
-  // We warn whenever an active type is present for such code structures.
-  // (Even if there is no assignement.)
-  // Cases that need to be handled appropriately:
-  /*
+  /* We warn whenever an active type is present for such code structures.
+   * (Even if there is no assignement.)
+   *
+   * Cases that need to be handled appropriately:
    * 1.
    * if(a > 0)
    *  c = conditional_operator
