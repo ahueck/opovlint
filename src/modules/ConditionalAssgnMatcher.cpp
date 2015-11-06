@@ -22,11 +22,12 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-ConditionalAssgnMatcher::ConditionalAssgnMatcher() {
+ConditionalAssgnMatcher::ConditionalAssgnMatcher() : apply_transform(false) {
 }
 
 void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
   // transformer = util::make_unique<conditional::ConditionalTransformer>(type_s);
+  config->getValue("ConditionalAssgnMatcher:transform", apply_transform);
 }
 
 void ConditionalAssgnMatcher::setupMatcher() {
@@ -105,7 +106,7 @@ void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchR
     ihandle.addIssue(conditional, moduleName(), moduleDescription());
   }
 
-  if (transform && root && conditional) {
+  if (apply_transform && transform && root && conditional) {
     // We transform starting from root down to the last conditionalOperator
     auto& thandle = context->getTransformationHandler();
     auto& ac = context->getASTContext();

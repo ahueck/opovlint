@@ -1,6 +1,6 @@
 {
   "global" : {
-    "transform" : true,
+    "transform" : false,
     "filter" : true,
     "type" : "scalar"  
   },
@@ -11,5 +11,11 @@
   "ExplicitCast" : {
     "header" : "recast.h",
     "function" : "reCast"
+  },
+  "IfElseAssign" : {
+    "transform" : false
+  },
+  "ConditionalAssgnMatcher" : {
+    "transform" : false
   }
 }

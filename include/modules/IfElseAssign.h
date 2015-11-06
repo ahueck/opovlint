@@ -14,6 +14,8 @@ namespace opov {
 namespace module {
 
 class IfElseAssign : public opov::ASTMatcherModule {
+private:
+  bool apply_transform;
  public:
   IfElseAssign();
   virtual void setupOnce(const Configuration* config) override;

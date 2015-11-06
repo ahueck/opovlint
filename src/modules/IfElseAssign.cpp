@@ -22,10 +22,11 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-IfElseAssign::IfElseAssign() {
+IfElseAssign::IfElseAssign() : apply_transform(false) {
 }
 
 void IfElseAssign::setupOnce(const Configuration* config) {
+  config->getValue("IfElseAssign:transform", apply_transform);
 }
 
 void IfElseAssign::setupMatcher() {
@@ -36,9 +37,9 @@ void IfElseAssign::setupMatcher() {
 // auto single_expr = anyOf(compoundStmt(statementCountIs(1), has(assign)), assign);
 #define assign_bind(BIND) \
   binaryOperator(hasOperatorName("="), \
-  hasLHS(declRefExpr()), \
+  hasLHS(declRefExpr(ofType(type_s))), \
   unless(hasRHS(ignoringImpCasts(conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))))), \
-  has(expr(ofType(type_s)))).bind(BIND)
+  hasRHS(expr(ofType(type_s)))).bind(BIND)
 #define assign_expr(BIND) anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
 
   auto conditional = ifStmt(hasThenStmt(assign_expr("then")),
@@ -85,7 +86,7 @@ void IfElseAssign::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(conditional, moduleName(), moduleDescription());
 
-  if (transform) {
+  if (apply_transform && transform) {
     auto& ac = context->getASTContext();
     auto replacement = toString(ac, conditional, then_expr, else_expr);
     if (replacement != "") {
