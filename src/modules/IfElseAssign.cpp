@@ -35,7 +35,10 @@ void IfElseAssign::setupMatcher() {
 // auto assign = binaryOperator(hasOperatorName("="), hasDescendant(expr(isTypedef(type_s)))).bind(BIND);
 // auto single_expr = anyOf(compoundStmt(statementCountIs(1), has(assign)), assign);
 #define assign_bind(BIND) \
-  binaryOperator(hasOperatorName("="), hasLHS(declRefExpr()), unless(hasRHS(conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s)))))), has(expr(ofType(type_s)))).bind(BIND)
+  binaryOperator(hasOperatorName("="), \
+  hasLHS(declRefExpr()), \
+  unless(hasRHS(ignoringImpCasts(conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))))), \
+  has(expr(ofType(type_s)))).bind(BIND)
 #define assign_expr(BIND) anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
 
   auto conditional = ifStmt(hasThenStmt(assign_expr("then")),

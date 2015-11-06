@@ -124,10 +124,10 @@ inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::Sou
 }
 
 template <typename T>
-inline std::string ast2str(/*const clang::SourceManager& sm,*/ T node) {
+inline std::string ast2str(/*const clang::SourceManager& sm,*/ T&& node) {
   std::string exprStr;
   llvm::raw_string_ostream s(exprStr);
-  node->dump(s); /*, const_cast<clang::SourceManager&>(sm)); // FIXME const_cast
+  node.dump(s); /*, const_cast<clang::SourceManager&>(sm)); // FIXME const_cast
                     necessary for clang 3.5 */
   return s.str();
 }
@@ -246,7 +246,7 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
   inline bool terminate(clang::Expr* expr) {
     // TODO should we terminate on binary expr?
     const std::string typeOfE = typeOf(expr);
-    return ((clang::isa<clang::UnaryOperator>(expr) || clang::isa<clang::BinaryOperator>(expr)) &&
+    return ((clang::isa<clang::UnaryOperator>(expr) || clang::isa<clang::BinaryOperator>(expr) || clang::isa<clang::CallExpr>(expr) ) &&
             typeOfE == "_Bool") ||
            (clang::isa<clang::ExplicitCastExpr>(expr) && typeOfE != type);
   }

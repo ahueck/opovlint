@@ -74,7 +74,8 @@ AST_MATCHER(TagDecl, isUnion) {
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
-  // LOG_DEBUG("ofType: '" << type << "' : " << is_type);
+  //auto& ct = Finder->getASTContext();
+  //LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
   return is_type;
 }
 
