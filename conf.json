@@ -1,6 +1,6 @@
 {
   "global" : {
-    "transform" : false,
+    "transform" : true,
     "filter" : true,
     "type" : "scalar"  
   },
@@ -17,5 +17,9 @@
   },
   "ConditionalAssgnMatcher" : {
     "transform" : false
+  },
+  "LocalScope" : {
+    "namespace" : "Foam",
+    "keep_global" : true
   }
 }

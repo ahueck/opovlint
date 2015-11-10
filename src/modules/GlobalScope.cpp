@@ -26,10 +26,14 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 
 void GlobalScope::setupMatcher() {
-  // This matches calls to functions with scalar arguments but also functions with scalar parameters.
+  // This matches calls to functions with scalar arguments but also functions with scalar parameters and scalar return type.
   auto call_matcher =
-      callExpr(anyOf(callee(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
-                     hasAnyArgument(ignoringImpCasts(isTypedef(type_s)))),
+      callExpr(anyOf(
+                      callee(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+                      hasAnyArgument(ignoringImpCasts(isTypedef(type_s))),
+                      isTypedef(type_s)
+
+                    ),
                callee(expr(ignoringImpCasts(declRefExpr(has(nestedNameSpecifier(isGlobalNamespace()))))))).bind("call");
 
   this->addMatcher(call_matcher);

@@ -30,6 +30,10 @@ inline std::vector<std::string> split(const std::string& input, char delimiter =
   return tokens;
 }
 
+inline bool startsWith(const std::string& str, const std::string prefix) {
+  return std::equal(prefix.begin(), prefix.end(), str.begin());
+}
+
 template <typename T>
 std::string num2str(T val) {
   std::stringstream sstream;
