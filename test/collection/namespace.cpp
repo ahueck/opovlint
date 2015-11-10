@@ -13,6 +13,10 @@ struct adouble {
 
 namespace Foam {
 typedef double scalar;
+
+scalar mag(scalar c) {
+  return c;
+}
 scalar sin(double a) {
   return ::sin(a);
 }
@@ -35,6 +39,23 @@ scalar cos(scalar a) {
 }
 }
 
+class edge {
+public:
+scalar ns_test(scalar c);
+//scalar mag(const edge&);
+};
+
+
+class vec {
+public:
+scalar mag(const vec&);
+};
+
+scalar vec::mag(const vec& a) {
+  return 0.0;
+}
+
+
 void caller() {
   scalar a(10.0);
   Foam::sin(10.0);
@@ -48,8 +69,14 @@ void caller() {
   ::Foam::lower::cos(10.0);
   ::sin(a);
   sin(a);
+  edge e;
+  e.ns_test(10.0);
 }
 } // Foam
+
+Foam::scalar Foam::edge::ns_test(Foam::scalar c) {
+  return mag(c);
+}
 
 int main() {
   Foam::caller();

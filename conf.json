@@ -20,6 +20,6 @@
   },
   "LocalScope" : {
     "namespace" : "Foam",
-    "keep_global" : true
+    "keep_global" : false
   }
 }
