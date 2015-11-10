@@ -21,12 +21,16 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 LocalScope::LocalScope()
-: ns_s(""), keep_global(false) {
+: ns_s(""), keep_global(false), functions_wl() {
 }
 
 void LocalScope::setupOnce(const Configuration* config) {
   config->getValue("LocalScope:namespace", ns_s);
   config->getValue("LocalScope:keep_global", keep_global);
+
+  //std::vector<std::string> functions;
+  config->getVector("LocalScope:functions", functions_wl);
+  //functions_wl(functions.begin(), functions.end());
 }
 
 void LocalScope::setupMatcher() {
@@ -52,11 +56,16 @@ void LocalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result
     auto& thandle = context->getTransformationHandler();
     auto& ac = context->getASTContext();
     auto& sm = context->getSourceManager();
+
     auto name = clutil::node2str(ac, call);
     const unsigned offset = util::startsWith(name, "::") ? 4 : 2;
     const std::string replace_str((keep_global && offset == 4) ? "::" : "");
-    if(util::startsWith(name, "Foam::mag") || util::startsWith(name, "::Foam::mag")) { return; }
-    thandle.addReplacements(tooling::Replacement(sm, call->getLocStart(), ns_s.length() + offset,  replace_str));
+
+    std::string func_name = name.substr(ns_s.length() + offset);
+    auto ret = std::find_if (functions_wl.begin(), functions_wl.end(), [&](const std::string& wl_func) { return util::startsWith(func_name, wl_func); });
+    if(std::end(functions_wl) != ret) {
+      thandle.addReplacements(tooling::Replacement(sm, call->getLocStart(), ns_s.length() + offset,  replace_str));
+    }
   }
 }
 

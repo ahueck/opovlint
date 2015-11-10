@@ -11,6 +11,8 @@
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
+#include <vector>
+//#include <set>
 
 namespace opov {
 namespace module {
@@ -19,6 +21,7 @@ class LocalScope : public opov::ASTMatcherModule {
 private:
   std::string ns_s;
   bool keep_global;
+  std::vector<std::string> functions_wl;
  public:
   LocalScope();
   virtual void setupOnce(const Configuration* config) override;
