@@ -248,7 +248,7 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
     const std::string typeOfE = typeOf(expr);
     return ((clang::isa<clang::UnaryOperator>(expr) || clang::isa<clang::BinaryOperator>(expr) || clang::isa<clang::CallExpr>(expr) ) &&
             typeOfE == "_Bool")
-            || (clang::isa<clang::ExplicitCastExpr>(expr) && typeOfE != type);
+            || (clang::isa<clang::ExplicitCastExpr>(expr) && typeOfE != type)
             || (clang::isa<clang::CallExpr>(expr) && typeOfE != type);
   }
 };
