@@ -58,25 +58,32 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
       const int scalar_count = std::distance(fieldDecls.begin(), fieldDecls.end());
       const int decl_count = clutil::declCount(inv_union);
       if (decl_count == 1) {
-        thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
-                                                             clutil::node2str(ast_ctx, fieldDecls.front())));
+        /*thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
+                                                             clutil::node2str(ast_ctx, fieldDecls.front())));*/
+        thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union, clutil::node2str(ast_ctx, fieldDecls.front())));
       } else {
         const auto union_end = clutil::locOf(ast_ctx, inv_union, true).getEnd();
         if ((decl_count - scalar_count) < 2) {
-          thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
-                                                               clutil::node2str(ast_ctx, *inv_union->field_begin())));
+          //thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
+          //                                                     clutil::node2str(ast_ctx, *inv_union->field_begin())));
+          thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union, clutil::node2str(ast_ctx, *inv_union->field_begin())));
           for (auto it = inv_union->field_begin(); it != inv_union->field_end(); ++it) {
             if (it == inv_union->field_begin()) {
               continue;
             }
+            thandle.addReplacements(trutil::insertString(ast_ctx, clutil::node2str(ast_ctx, *it), inv_union));
+            /*
             thandle.addReplacements(
                 FixItHint::CreateInsertion(union_end, "\n" + clutil::node2str(ast_ctx, *it) + ";", true));
+              */
           }
         } else {
           for (auto fd : fieldDecls) {
-            thandle.addReplacements(FixItHint::CreateRemoval(clutil::locOf(ast_ctx, fd, true)));
-            thandle.addReplacements(
-                FixItHint::CreateInsertion(union_end, "\n" + clutil::node2str(ast_ctx, fd) + ";", true));
+            thandle.addReplacements(trutil::removeNode(ast_ctx, fd, true));
+            //thandle.addReplacements(FixItHint::CreateRemoval(clutil::locOf(ast_ctx, fd, true)));
+            thandle.addReplacements(trutil::insertString(ast_ctx, clutil::node2str(ast_ctx, fd), inv_union));
+            //thandle.addReplacements(
+            //    FixItHint::CreateInsertion(union_end, "\n" + clutil::node2str(ast_ctx, fd) + ";", true));
           }
         }
       }

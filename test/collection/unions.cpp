@@ -15,6 +15,13 @@ struct test {
     int e;
     double f;
   };
+  union {
+    scalar g;
+    scalar gg;
+    scalar ggg;
+    int h;
+    double i;
+  };
   union XX {
     scalar a;
   };

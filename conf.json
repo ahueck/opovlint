@@ -1,11 +1,26 @@
 {
   "global" : {
-    "transform" : false,
+    "transform" : true,
     "filter" : true,
     "type" : "scalar"  
   },
+  "replacement" : {
+    "location" : "/home/ahueck/workspaces/workspace/opovlint/transform",
+    "apply" : true
+  },
   "ExplicitCast" : {
-    "header" : "reCast.h",
+    "header" : "recast.h",
     "function" : "reCast"
+  },
+  "IfElseAssign" : {
+    "transform" : false
+  },
+  "ConditionalAssgnMatcher" : {
+    "transform" : false
+  },
+  "LocalScope" : {
+    "namespace" : "Foam",
+    "keep_global" : false,
+    "functions" : ["round", "fabs", "abs", "min", "max", "exp", "exp2", "exp10", "log", "log10", "log2", "logb", "sqrt", "cbrt", "expm1", "log1p", "sin", "cos", "tan", "sincos", "asin", "acos", "atan", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "erf", "erfc", "lgamma", "gamma", "j0", "j1", "y0", "y1", "yn", "jn", "pow", "hypot", "atan2", "min", "max"]
   }
 }

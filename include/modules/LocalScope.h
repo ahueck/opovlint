@@ -1,36 +1,38 @@
 /*
- * IfElseAssign.h
+ * LocalScope.h
  *
- *  Created on: Oct 15, 2015
+ *  Created on: June 09, 2015
  *      Author: ahueck
  */
 
-#ifndef IFELSEASSIGN_H_
-#define IFELSEASSIGN_H_
+#ifndef LocalScope_H_
+#define LocalScope_H_
 
 #include <core/module/ASTMatcherModule.h>
+
+#include <string>
+#include <vector>
+//#include <set>
 
 namespace opov {
 namespace module {
 
-class IfElseAssign : public opov::ASTMatcherModule {
+class LocalScope : public opov::ASTMatcherModule {
 private:
-  bool apply_transform;
+  std::string ns_s;
+  bool keep_global;
+  std::vector<std::string> functions_wl;
  public:
-  IfElseAssign();
+  LocalScope();
   virtual void setupOnce(const Configuration* config) override;
   virtual void setupMatcher() override;
   virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
   virtual std::string moduleName() override;
   virtual std::string moduleDescription() override;
-  virtual ~IfElseAssign();
-
- private:
-  std::string toString(clang::ASTContext& ac, const clang::IfStmt* stmt, const clang::BinaryOperator* then,
-                       const clang::BinaryOperator* else_e);
+  virtual ~LocalScope();
 };
 
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* IFELSEASSIGN_H_ */
+#endif /* LocalScope_H_ */

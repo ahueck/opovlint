@@ -39,6 +39,11 @@ const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
 //#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
 
 template <typename T>
+inline auto children_or_self(const T& node) -> decltype(anyOf(node, has(node))) {
+  return anyOf(node, has(node));
+}
+
+template <typename T>
 inline auto ancestor_or_self(const T& node) -> decltype(anyOf(node, hasAncestor(node))) {
   return anyOf(node, hasAncestor(node));
 }
@@ -69,7 +74,8 @@ AST_MATCHER(TagDecl, isUnion) {
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
-  // LOG_DEBUG("ofType: '" << type << "' : " << is_type);
+  //auto& ct = Finder->getASTContext();
+  //LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
   return is_type;
 }
 

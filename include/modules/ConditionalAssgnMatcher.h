@@ -19,6 +19,7 @@ namespace module {
 
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
  private:
+  bool apply_transform;
   typedef struct {
     std::string type, variable, lhs, rhs, replacement;
   } conditional_data;

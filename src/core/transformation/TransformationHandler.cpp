@@ -30,14 +30,14 @@ void TransformationHandler::initRewriter(clang::SourceManager& sm, const clang::
 }
 
 void TransformationHandler::addReplacements(const clang::tooling::Replacement& replacement) {
-  replacement.apply(rewriter);
-  /*
+  //replacement.apply(rewriter);
+
   TranslationUnitReplacements& tunit = replacements[source];
   if (tunit.MainSourceFile.empty()) {
     tunit.MainSourceFile = source;
   }
   tunit.Replacements.push_back(replacement);
-  */
+
 }
 
 void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
@@ -45,7 +45,7 @@ void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
   nl_opt.RemoveLineIfEmpty = true;
   if (Hint.CodeToInsert.empty()) {
     if (!Hint.InsertFromRange.isValid()) {
-      rewriter.RemoveText(Hint.RemoveRange, nl_opt);
+      //rewriter.RemoveText(Hint.RemoveRange, nl_opt);
       // rewriter.ReplaceText(Hint.RemoveRange.getAsRange(), "");
     }
     // if (Hint.InsertFromRange.isValid())
@@ -56,11 +56,11 @@ void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
   } else {
     if (Hint.RemoveRange.isTokenRange() || Hint.RemoveRange.getBegin() != Hint.RemoveRange.getEnd()) {
       // commit.replace(Hint.RemoveRange, Hint.CodeToInsert);
-      rewriter.ReplaceText(Hint.RemoveRange.getAsRange(), Hint.CodeToInsert);
+      //rewriter.ReplaceText(Hint.RemoveRange.getAsRange(), Hint.CodeToInsert);
     } else {
       // commit.insert(Hint.RemoveRange.getBegin(), Hint.CodeToInsert,/*afterToken=*/false,
       // Hint.BeforePreviousInsertions);
-      rewriter.InsertText(Hint.RemoveRange.getBegin(), Hint.CodeToInsert, Hint.BeforePreviousInsertions, true);
+      //rewriter.InsertText(Hint.RemoveRange.getBegin(), Hint.CodeToInsert, Hint.BeforePreviousInsertions, true);
       // rewriter.ReplaceText(Hint.RemoveRange.getBegin(),0, Hint.CodeToInsert);
     }
   }

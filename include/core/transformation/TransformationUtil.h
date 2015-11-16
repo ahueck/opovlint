@@ -125,9 +125,9 @@ inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_
 }
 
 template <typename T>
-inline clang::tooling::Replacement removeNode(const clang::ASTContext& ac, T node) {
+inline clang::tooling::Replacement removeNode(clang::ASTContext& ac, T node, bool with_semi = false) {
   auto& sm = ac.getSourceManager();
-  return Replacement(sm, node, "");
+  return Replacement(sm, clang::CharSourceRange::getCharRange(clutil::locOf(ac,node, with_semi)), "");
 }
 
 template <typename T>
