@@ -22,10 +22,11 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-IfElseAssign::IfElseAssign() {
+IfElseAssign::IfElseAssign() : apply_transform(false) {
 }
 
 void IfElseAssign::setupOnce(const Configuration* config) {
+  config->getValue("IfElseAssign:transform", apply_transform);
 }
 
 void IfElseAssign::setupMatcher() {
@@ -35,12 +36,18 @@ void IfElseAssign::setupMatcher() {
 // auto assign = binaryOperator(hasOperatorName("="), hasDescendant(expr(isTypedef(type_s)))).bind(BIND);
 // auto single_expr = anyOf(compoundStmt(statementCountIs(1), has(assign)), assign);
 #define assign_bind(BIND) \
-  binaryOperator(hasOperatorName("="), hasLHS(declRefExpr()), hasDescendant(expr(isTypedef(type_s)))).bind(BIND)
+  binaryOperator(hasOperatorName("="), \
+  hasLHS(declRefExpr(ofType(type_s))), \
+  unless(hasRHS(ignoringImpCasts(conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))))), \
+  hasRHS(expr(ofType(type_s)))).bind(BIND)
 #define assign_expr(BIND) anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
 
-  auto conditional =
-      ifStmt(anyOf(allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else"))),
-                   allOf(hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt()))))).bind("conditional");
+  auto conditional = ifStmt(hasThenStmt(assign_expr("then")),
+                            anyOf(hasElseStmt(assign_expr("else")), unless(hasElseStmt(stmt())))).bind("conditional");
+
+  // auto conditional =
+  //    ifStmt(anyOf(allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else"))),
+  //                 hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt())))).bind("conditional");
   this->addMatcher(conditional);
 }
 
@@ -79,7 +86,7 @@ void IfElseAssign::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(conditional, moduleName(), moduleDescription());
 
-  if (transform) {
+  if (apply_transform && transform) {
     auto& ac = context->getASTContext();
     auto replacement = toString(ac, conditional, then_expr, else_expr);
     if (replacement != "") {

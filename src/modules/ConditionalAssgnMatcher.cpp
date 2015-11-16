@@ -22,30 +22,59 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-ConditionalAssgnMatcher::ConditionalAssgnMatcher()
-    : var_counter(0) {
+ConditionalAssgnMatcher::ConditionalAssgnMatcher() : apply_transform(false) {
 }
 
 void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
   // transformer = util::make_unique<conditional::ConditionalTransformer>(type_s);
+  config->getValue("ConditionalAssgnMatcher:transform", apply_transform);
 }
 
 void ConditionalAssgnMatcher::setupMatcher() {
-  // TODO use ofType instead of just typedef?
-  // We warn whenever an active type is present for such code structures.
-  // (Even if there is no assignement.)
-  auto conditional = conditionalOperator(hasDescendant(expr(isTypedef(type_s)))).bind("conditional");
-  auto condassign = stmt(hasParent(compoundStmt()), descendant_or_self(conditional)).bind("conditional_root");
+  /* We warn whenever an active type is present for such code structures.
+   * (Even if there is no assignement.)
+   *
+   * Cases that need to be handled appropriately:
+   * 1.
+   * if(a > 0)
+   *  c = conditional_operator
+   *  "add brackets" -->
+   * if(a > 0) {
+   *  temp_var;
+   *  call
+   *  c = temp_var;
+   * }
+   *
+   * 2.
+   * find appropriate root statement
+   * 2.1 a = conditional_op
+   *    -> use assignment operator
+   *    -> Caveat: nested in a call expr...
+   *
+   */
+  auto conditional = conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))
+                         .bind("conditional");
+  //auto condassign = stmt(unless(compoundStmt()), hasParent(compoundStmt()), children_or_self(conditional)).bind("conditional_root");
+  //auto root = binaryOperator(hasOperatorName("="), hasEitherOperand(ignoringParenImpCasts(conditional)));
+
+  auto condassign = conditionalOperator(
+          anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))),
+          unless(hasAncestor(conditionalOperator())),
+          hasAncestor(stmt(unless(compoundStmt()), hasParent(compoundStmt())).bind("conditional_root"))
+        ).bind("conditional");
+
+  //auto condassign = stmt(unless(compoundStmt()), hasParent(compoundStmt()), children_or_self(conditional)).bind("conditional_root");
 
   this->addMatcher(condassign);
   this->addMatcher(conditional);
 }
 
-void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, conditional_data& d, int counter) {
+void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, conditional_data& d) {
   auto cond = dyn_cast<ConditionalOperator>(e->IgnoreParenImpCasts());
   if (cond) {
-    d.type = clutil::typeOf(e);
-    d.variable = "_oolint_t_" + util::num2str(cond);
+    d.type = type_s; // We matched, so it should be a scalar type. clutil::typeOf(e);
+    auto pos = clutil::posOf(ac.getSourceManager(), cond);
+    d.variable = "_oolint_t_"  + util::num2str(std::get<0>(pos)) + util::num2str(std::get<1>(pos)) + util::num2str(std::get<2>(pos)) + util::num2str(std::get<3>(pos));
     d.replacement = d.type + " " + d.variable + ";\n" + "condassign(" + d.variable + ", " +
                     clutil::node2str(ac, cond->getCond()) + ", " +
                     (d.lhs == "" ? clutil::node2str(ac, cond->getLHS()) : d.lhs) + ", " +
@@ -58,11 +87,11 @@ ConditionalAssgnMatcher::conditional_data ConditionalAssgnMatcher::buildReplacem
 #define nl_str(STRUCT) (STRUCT.replacement == "" ? "" : (STRUCT.replacement + "\n"))
 
   conditional_data lhs_dat, rhs_dat, cond_dat;
-  toString(ac, conditional->getRHS(), rhs_dat, ++var_counter);
-  toString(ac, conditional->getLHS(), lhs_dat, ++var_counter);
+  toString(ac, conditional->getRHS(), rhs_dat);
+  toString(ac, conditional->getLHS(), lhs_dat);
   cond_dat.lhs = lhs_dat.variable;
   cond_dat.rhs = rhs_dat.variable;
-  toString(ac, conditional, cond_dat, ++var_counter);
+  toString(ac, conditional, cond_dat);
   cond_dat.replacement = nl_str(lhs_dat) + nl_str(rhs_dat) + cond_dat.replacement;
   return cond_dat;
 }
@@ -77,7 +106,7 @@ void ConditionalAssgnMatcher::run(const clang::ast_matchers::MatchFinder::MatchR
     ihandle.addIssue(conditional, moduleName(), moduleDescription());
   }
 
-  if (transform && root && conditional) {
+  if (apply_transform && transform && root && conditional) {
     // We transform starting from root down to the last conditionalOperator
     auto& thandle = context->getTransformationHandler();
     auto& ac = context->getASTContext();

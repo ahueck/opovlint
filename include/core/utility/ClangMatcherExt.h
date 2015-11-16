@@ -35,9 +35,23 @@ AST_MATCHER(Stmt, notABinaryExpr) {
 
 const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
 
-#define descendant_or_self(NODE) anyOf(NODE, hasDescendant(NODE))
+//#define descendant_or_self(NODE) anyOf(NODE, hasDescendant(NODE))
+//#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
 
-#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
+template <typename T>
+inline auto children_or_self(const T& node) -> decltype(anyOf(node, has(node))) {
+  return anyOf(node, has(node));
+}
+
+template <typename T>
+inline auto ancestor_or_self(const T& node) -> decltype(anyOf(node, hasAncestor(node))) {
+  return anyOf(node, hasAncestor(node));
+}
+
+template <typename T>
+inline auto descendant_or_self(const T& node) -> decltype(anyOf(node, hasDescendant(node))) {
+  return anyOf(node, hasDescendant(node));
+}
 
 // TODO remove this code duplication (hasThen) once backwards compatibility is not necessary
 AST_MATCHER_P(IfStmt, hasThenStmt, internal::Matcher<Stmt>, InnerMatcher) {
@@ -60,7 +74,8 @@ AST_MATCHER(TagDecl, isUnion) {
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
-  // LOG_DEBUG("ofType: '" << type << "' : " << is_type);
+  //auto& ct = Finder->getASTContext();
+  //LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
   return is_type;
 }
 

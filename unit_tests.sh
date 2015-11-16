@@ -1,23 +1,27 @@
 #!/bin/bash
 
-debug=1
+failed=0
 
 function verify() {
-    if [ $debug -eq 1 ] ; then
-        local suffix="Debug";
-    fi
-    echo -e "Test '$1' \c"
-    ./bin/test_$1$suffix > /dev/shm/out_opov.log
-    grep -q 'All tests passed' /dev/shm/out_opov.log && echo "succeeded." || (echo "failed!" && exit 1)
+  # returns ret indicating whether the test succeeded or failed
+  ret=0
+  local name=${1#.*_}
+  echo -e "Test '${name%Debug}' \c"
+  "$1" > /dev/shm/out_opov.log
+  grep -q 'All tests passed' /dev/shm/out_opov.log && echo "succeeded."
+  if [ ! $? -eq 0 ] ; then
+    echo "failed!"
+    ret=1    
+  fi
 }
 
-verify system
-verify union_matcher
-verify implicitconversion
-verify implicitcond_matcher
-verify explicitcast
-verify conditionalassgn
-verify explicitconstructor
-verify allimplicitconversion
-verify globalscope
-verify ifelse
+for test in ./bin/test_* ; do
+  verify $test
+  if [ $ret -eq 1 ] ; then
+    ((failed++))
+  fi
+done
+
+if [ $failed -eq 1 ] ; then
+  echo "# of failed tests:" $failed && exit 1
+fi

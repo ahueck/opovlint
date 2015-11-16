@@ -54,10 +54,11 @@ inline StringRef whitespaces(const clang::SourceManager& sm, T node) {
   return spaces;
 }
 
-inline clang::tooling::Replacement reCast(const clang::ASTContext& ac, const clang::ExplicitCastExpr* expr, const std::string& cast_from, const std::string& function) {
+inline clang::tooling::Replacement reCast(const clang::ASTContext& ac, const clang::ExplicitCastExpr* expr,
+                                          const std::string& cast_from, const std::string& function) {
   auto& sm = ac.getSourceManager();
-  //SourceRange range = locOf(sm, expr);
-  //CharSourceRange cast_crange = CharSourceRange::getCharRange(range);
+  // SourceRange range = locOf(sm, expr);
+  // CharSourceRange cast_crange = CharSourceRange::getCharRange(range);
   std::string text(function);
   text += "<" + typeOf(expr) + "," + cast_from + ">(" + clutil::node2str(ac, expr->getSubExprAsWritten()) + ")";
   return Replacement(sm, expr, text);
@@ -70,42 +71,42 @@ inline clang::tooling::Replacement removeCastFromExpr(const clang::ASTContext& a
   return Replacement(sm, expr, replacement_str);
 }
 
-inline clang::tooling::Replacement addExplicitCompare(const clang::ASTContext& ac,
-                                                                   const clang::Expr* expr, const std::string& with_type) {
+inline clang::tooling::Replacement addExplicitCompare(const clang::ASTContext& ac, const clang::Expr* expr,
+                                                      const std::string& with_type) {
   auto& sm = ac.getSourceManager();
   bool unary = isa<UnaryOperator>(expr);
   auto texpr = unary ? llvm::dyn_cast<UnaryOperator>(expr)->getSubExpr() : expr;
   std::string expr_str = clutil::node2str(ac, texpr) + " == " + with_type + "(0.0)";
 
-  if(unary) {
-    return Replacement(sm, texpr, "(" + expr_str  + ")");
+  if (unary) {
+    return Replacement(sm, texpr, "(" + expr_str + ")");
   }
   return Replacement(sm, texpr, expr_str);
 }
 
 inline clang::tooling::Replacement castTheExpr(const clang::ASTContext& ac, const clang::Expr* expr,
-                                                            const std::string& type) {
+                                               const std::string& type) {
   auto& sm = ac.getSourceManager();
   std::string castStr = type;
   castStr += "(" + clutil::node2str(ac, expr) + ")";
   return Replacement(sm, expr, castStr);
 }
 
-template<typename T, typename U>
+template <typename T, typename U>
 inline clang::tooling::Replacement replaceStmt(const clang::ASTContext& ac, const T* stmt, const U* with) {
   auto& sm = ac.getSourceManager();
   return Replacement(sm, stmt, clutil::node2str(ac, with));
 }
 
-template<typename T>
+template <typename T>
 inline clang::tooling::Replacement replaceStmt(const clang::ASTContext& ac, const T* stmt, const std::string with) {
   auto& sm = ac.getSourceManager();
   return Replacement(sm, stmt, with);
 }
 
 template <typename U>
-inline clang::tooling::Replacement insertString(const clang::ASTContext& ac, const std::string& to_insert, U relative_to,
-                                              bool before = false, std::string endl = ";") {
+inline clang::tooling::Replacement insertString(const clang::ASTContext& ac, const std::string& to_insert,
+                                                U relative_to, bool before = false, std::string endl = ";") {
   auto& sm = ac.getSourceManager();
   SourceRange range = locOf(sm, relative_to, 1);
   std::string replacement_str;
@@ -117,7 +118,6 @@ inline clang::tooling::Replacement insertString(const clang::ASTContext& ac, con
   return Replacement(sm, range.getEnd(), 0, replacement_str);
 }
 
-
 template <typename T, typename U>
 inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_insert, U relative_to,
                                               bool before = false, std::string endl = ";") {
@@ -125,9 +125,9 @@ inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_
 }
 
 template <typename T>
-inline clang::tooling::Replacement removeNode(const clang::ASTContext& ac, T node) {
+inline clang::tooling::Replacement removeNode(clang::ASTContext& ac, T node, bool with_semi = false) {
   auto& sm = ac.getSourceManager();
-  return Replacement(sm, node, "");
+  return Replacement(sm, clang::CharSourceRange::getCharRange(clutil::locOf(ac,node, with_semi)), "");
 }
 
 template <typename T>
@@ -138,7 +138,6 @@ inline bool removeNode_rew(clang::Rewriter& rw, T node) {
   opts.RemoveLineIfEmpty = true;
   return rw.RemoveText(crange, opts);
 }
-
 
 /*
 //inline std::vector<clang::tooling::Replacement> addExplicitCompare(const
@@ -152,7 +151,8 @@ inline bool removeNode_rew(clang::Rewriter& rw, T node) {
 //Replacement(sm, range.getEnd(), 0, replace)};
 //}
 //*/
-//inline clang::tooling::Replacement insertString(const clang::SourceManager& sm, const clang::Stmt* expr, StringRef str,
+// inline clang::tooling::Replacement insertString(const clang::SourceManager& sm, const clang::Stmt* expr, StringRef
+// str,
 //                                                bool before = false) {
 //  SourceRange range = locOf(sm, expr);
 //  std::string formattedStr;
@@ -166,7 +166,7 @@ inline bool removeNode_rew(clang::Rewriter& rw, T node) {
 //  return Replacement(sm, before ? range.getBegin() : range.getEnd(), 0, formattedStr);
 //}
 //
-//inline std::vector<clang::tooling::Replacement> castTheExpr(const clang::SourceManager& sm, const clang::Expr* expr,
+// inline std::vector<clang::tooling::Replacement> castTheExpr(const clang::SourceManager& sm, const clang::Expr* expr,
 //                                                            const StringRef type,
 //                                                            int cast = Expr::CXXFunctionalCastExprClass) {
 //  SmallString<32> castStr;

@@ -8,6 +8,7 @@
 #include <core/reporting/ConsoleReporter.h>
 #include <core/issue/Issue.h>
 #include <core/logging/Logger.h>
+#include <core/utility/Util.h>
 
 namespace opov {
 

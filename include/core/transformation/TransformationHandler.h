@@ -48,8 +48,6 @@ class TransformationHandler {
   void addReplacements(const clang::FixItHint& Hint);
   TUReplacementsMap& getAllReplacements();
 
-
-
   IncludeDirectives* getIncludeDirectives();
   clang::Rewriter& getRewriter();
   virtual ~TransformationHandler();

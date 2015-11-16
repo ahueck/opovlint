@@ -37,9 +37,10 @@ inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned
 template <typename T>
 inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = false) {
   clang::SourceLocation start(node->getLocStart());
-  clang::SourceLocation end(node->getLocEnd());
+  //clang::SourceLocation end(node->getLocEnd());
+  clang::SourceLocation end(clang::Lexer::getLocForEndOfToken(node->getLocEnd(), 0, ac.getSourceManager(), clang::LangOptions()));
   if (semicolon) {
-    clang::SourceLocation semi_end = findLocationAfterSemi(end, ac, llvm::isa<clang::Decl>(node));
+    clang::SourceLocation semi_end = findLocationAfterSemi(node->getLocEnd(), ac, llvm::isa<clang::Decl>(node));
     // LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " <<
     // end.printToString(ac.getSourceManager()));
     return {start, semi_end.isValid() ? semi_end : end};
@@ -123,10 +124,10 @@ inline std::tuple<unsigned, unsigned, unsigned, unsigned> posOf(const clang::Sou
 }
 
 template <typename T>
-inline std::string ast2str(/*const clang::SourceManager& sm,*/ T node) {
+inline std::string ast2str(/*const clang::SourceManager& sm,*/ T&& node) {
   std::string exprStr;
   llvm::raw_string_ostream s(exprStr);
-  node->dump(s); /*, const_cast<clang::SourceManager&>(sm)); // FIXME const_cast
+  node.dump(s); /*, const_cast<clang::SourceManager&>(sm)); // FIXME const_cast
                     necessary for clang 3.5 */
   return s.str();
 }
@@ -245,9 +246,10 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
   inline bool terminate(clang::Expr* expr) {
     // TODO should we terminate on binary expr?
     const std::string typeOfE = typeOf(expr);
-    return ((clang::isa<clang::UnaryOperator>(expr) || clang::isa<clang::BinaryOperator>(expr)) &&
-            typeOfE == "_Bool") ||
-           (clang::isa<clang::ExplicitCastExpr>(expr) && typeOfE != type);
+    return ((clang::isa<clang::UnaryOperator>(expr) || clang::isa<clang::BinaryOperator>(expr) || clang::isa<clang::CallExpr>(expr) ) &&
+            typeOfE == "_Bool")
+            || (clang::isa<clang::ExplicitCastExpr>(expr) && typeOfE != type)
+            || (clang::isa<clang::CallExpr>(expr) && typeOfE != type);
   }
 };
 

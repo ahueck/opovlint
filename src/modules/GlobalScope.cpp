@@ -26,14 +26,21 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 
 void GlobalScope::setupMatcher() {
-  auto declref_matcher = declRefExpr(hasDeclaration(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
-                                     has(nestedNameSpecifier(isGlobalNamespace()))); /*.bind("global_ref");*/
-  auto call_matcher = callExpr(callee(expr(ignoringImpCasts(declref_matcher)))).bind("call");
+  // This matches calls to functions with scalar arguments but also functions with scalar parameters and scalar return type.
+  auto call_matcher =
+      callExpr(anyOf(
+                      callee(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
+                      hasAnyArgument(ignoringImpCasts(isTypedef(type_s))),
+                      isTypedef(type_s)
+
+                    ),
+               callee(expr(ignoringImpCasts(declRefExpr(has(nestedNameSpecifier(isGlobalNamespace()))))))).bind("call");
+
   this->addMatcher(call_matcher);
 }
 
 void GlobalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  //auto ref = result.Nodes.getNodeAs<DeclRefExpr>("global_ref");
+  // auto ref = result.Nodes.getNodeAs<DeclRefExpr>("global_ref");
   auto call = result.Nodes.getNodeAs<CallExpr>("call");
 
   auto& ihandle = context->getIssueHandler();

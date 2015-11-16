@@ -40,6 +40,7 @@ src/modules/ExplicitConstructor.cpp
 src/modules/AllImplicitConversion.cpp
 src/modules/GlobalScope.cpp
 src/modules/IfElseAssign.cpp
+src/modules/LocalScope.cpp
 )
 
 add_library(libopov ${LSOURCES})

@@ -23,6 +23,7 @@
 #include <modules/AllImplicitConversion.h>
 #include <modules/GlobalScope.h>
 #include <modules/IfElseAssign.h>
+#include <modules/LocalScope.h>
 
 OpOvApp::OpOvApp(const std::string &config_path)
     : config_path(config_path) {
@@ -48,13 +49,16 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
+  /*
   addModule(new opov::module::GlobalScope());
   addModule(new opov::module::ExplicitCast());
   addModule(new opov::module::UnionMatcher());
   addModule(new opov::module::ImplicitConversion());
   addModule(new opov::module::ImplicitConditionMatcher());
   addModule(new opov::module::ConditionalAssgnMatcher());
-  addModule(new opov::module::IfElseAssign());
+  addModule(new opov::module::IfElseAssign());*/
+//  addModule(new opov::module::GlobalScope());
+  addModule(new opov::module::LocalScope());
 }
 
 OpOvApp::~OpOvApp() {

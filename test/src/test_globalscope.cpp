@@ -52,6 +52,7 @@ void h(double b);\n"
 #define CALL(ARG)  MAKE_CODE("::g(" ARG ");\n")
 #define CALLR(ARG) "::g(" ARG ")"
 #define CALLH(ARG)  MAKE_CODE("::h(" ARG ");\n")
+#define CALLHR(ARG) "::h(" ARG ")"
 
 KICKOFF_TEST(opov::module::GlobalScope, CALL("b"), CALLR("b"))
 
@@ -76,6 +77,8 @@ SCENARIO("Global scope function calls with scalars. Module looks for type scalar
             , CALL("::b"), CALLR("::b"));
     SIMPLE_TEST1("A call with double argument using namespace qualifier."
             , CALL("::a"), CALLR("::a"));
+    SIMPLE_TEST1("A simple call with scalar argument."
+        , CALLH("b"), CALLHR("b"));
 	}
 }
 
@@ -89,8 +92,6 @@ SCENARIO("Global scope function calls with scalars. Module looks for type scalar
 				, CALLH("a"));
 		SIMPLE_TEST0("A simple call with double argument."
 				, CALLH("c"));
-		SIMPLE_TEST0("A simple call with scalar argument."
-				, CALLH("b"));
 	}
 }
 
