@@ -49,16 +49,14 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
-  /*
-  addModule(new opov::module::GlobalScope());
   addModule(new opov::module::ExplicitCast());
   addModule(new opov::module::UnionMatcher());
   addModule(new opov::module::ImplicitConversion());
   addModule(new opov::module::ImplicitConditionMatcher());
   addModule(new opov::module::ConditionalAssgnMatcher());
-  addModule(new opov::module::IfElseAssign());*/
-//  addModule(new opov::module::GlobalScope());
+  addModule(new opov::module::IfElseAssign());
   addModule(new opov::module::LocalScope());
+  addModule(new opov::module::GlobalScope());
 }
 
 OpOvApp::~OpOvApp() {
