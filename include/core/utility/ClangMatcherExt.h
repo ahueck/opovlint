@@ -23,6 +23,7 @@ namespace ast_matchers {
 
 __CKIND(FloatingToBoolean)
 __CKIND(ConstructorConversion)
+__CKIND(LValueToRValue)
 
 AST_POLYMORPHIC_MATCHER_P(isTypedef, AST_POLYMORPHIC_SUPPORTED_TYPES_2(Expr, Decl), std::string, type) {
   const auto typeOf_expr = Node.getType().getUnqualifiedType().getAsString();

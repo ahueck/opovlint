@@ -32,11 +32,19 @@ void ImplicitConversion::setupMatcher() {
   StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(
       constructExpr(hasImplicitConversion(type_s), unless(temporaryObjectExpr())).bind("conversion"))));
 
+  auto impl_assign = implicitCastExpr(
+                hasSourceExpression(
+                    allOf(ofType(type_s), unless(anyOf(floatLiteral(), ignoringParenImpCasts(explicitCastExpr()))))
+                ), unless(anyOf(isLValueToRValue(), isTypedef(type_s)))).bind("impl_assign");
+
   this->addMatcher(impl_conversion);
+  this->addMatcher(impl_assign);
 }
 
 void ImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
-  const CXXConstructExpr* expr = result.Nodes.getNodeAs<CXXConstructExpr>("conversion");
+  const Expr* expr = result.Nodes.getNodeAs<Expr>("conversion") == nullptr
+                      ? result.Nodes.getNodeAs<Expr>("impl_assign")
+                          : result.Nodes.getNodeAs<Expr>("conversion");
 
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(expr, moduleName(), moduleDescription());  //, message.str());
