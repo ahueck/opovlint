@@ -49,9 +49,13 @@ inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = 
   }
 }
 
-template <typename NODE>
-inline std::string typeOf(NODE node) {
-  return node->getType().getUnqualifiedType().getAsString();
+template <typename T>
+inline std::string typeOf(T&& node) {
+  auto type = node->getType();
+  if(!type.isNull()) {
+    return type.getUnqualifiedType().getAsString();
+  }
+  return "";
 }
 
 inline std::string nameOf(const clang::NamedDecl* decl) {
