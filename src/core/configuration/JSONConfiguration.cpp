@@ -58,8 +58,6 @@ void JSONConfiguration::getVector(const std::string& id, std::vector<bool>& vec)
   vec = getVec<bool>(id);
 }
 
-JSONConfiguration::~JSONConfiguration() {
-
-}
+JSONConfiguration::~JSONConfiguration() = default;
 
 } /* namespace opov */

@@ -13,7 +13,7 @@ public:
   virtual ~UniqueFilter();
 };
 
-} // namespace filter
-} // namespace opov
+} /* namespace filter */
+} /* namespace opov */
 
 #endif
