@@ -10,13 +10,9 @@ UniqueFilter::UniqueFilter() {
 
 }
 
-UniqueFilter::~UniqueFilter() {
-
-}
-
-IssueSet UniqueFilter::apply(const TUIssuesMap& unfilteredIssues) {
+IssueSet UniqueFilter::apply(const TUIssuesMap& map) {
   IssueSet unique_issues;
-  for(auto& tu_issues : unfilteredIssues) {
+  for(auto& tu_issues : map) {
     for(auto& issue : tu_issues.second.Issues) {
       const int ihash =issue->hash();
       auto result = unique_issues.find(ihash);
@@ -32,6 +28,8 @@ IssueSet UniqueFilter::apply(const TUIssuesMap& unfilteredIssues) {
   }
   return unique_issues;
 }
+
+UniqueFilter::~UniqueFilter() = default;
 
 }
 }

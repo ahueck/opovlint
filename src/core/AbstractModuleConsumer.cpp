@@ -29,7 +29,6 @@ void AbstractModuleConsumer::HandleTranslationUnit(clang::ASTContext& Context) {
   module->execute(mcontext);
 }
 
-AbstractModuleConsumer::~AbstractModuleConsumer() {
-}
+AbstractModuleConsumer::~AbstractModuleConsumer() = default;
 
 } /* namespace opov */

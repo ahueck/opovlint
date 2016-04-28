@@ -24,8 +24,7 @@ class Configuration {
   virtual void getVector(const std::string& id, std::vector<double>& vec) const = 0;
   virtual void getVector(const std::string& id, std::vector<int>& vec) const = 0;
   virtual void getVector(const std::string& id, std::vector<bool>& vec) const = 0;
-  virtual ~Configuration() {
-  }
+  virtual ~Configuration() = default;
 };
 
 }  // namespace opov

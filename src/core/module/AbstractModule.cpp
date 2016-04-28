@@ -25,11 +25,15 @@ void AbstractModule::init(const Configuration* config) {
   setupOnce(config);
 }
 
+void AbstractModule::setupOnce(const Configuration* config) {
+
+}
+
+
 void AbstractModule::execute(ModuleContext* context) {
   this->context = context;
 }
 
-AbstractModule::~AbstractModule() {
-}
+AbstractModule::~AbstractModule() = default;
 
 } /* namespace opov */

@@ -58,8 +58,7 @@ std::string ExplicitConstructor::moduleDescription() {
          "implicit conversions.";
 }
 
-ExplicitConstructor::~ExplicitConstructor() {
-}
+ExplicitConstructor::~ExplicitConstructor() = default;
 
 } /* namespace module */
 } /* namespace opov */

@@ -12,6 +12,7 @@
 namespace opov {
 
 ASTMatcherModule::ASTMatcherModule() {
+
 }
 
 void ASTMatcherModule::init(const Configuration* config) {
@@ -27,7 +28,6 @@ void ASTMatcherModule::execute(ModuleContext* context) {
   finder.matchAST(context->getASTContext());
 }
 
-ASTMatcherModule::~ASTMatcherModule() {
-}
+ASTMatcherModule::~ASTMatcherModule() = default;
 
 } /* namespace opov */

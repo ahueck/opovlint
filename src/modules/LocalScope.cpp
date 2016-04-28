@@ -56,7 +56,6 @@ void LocalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result
     auto& thandle = context->getTransformationHandler();
     auto& ac = context->getASTContext();
     auto& sm = context->getSourceManager();
-
     auto name = clutil::node2str(ac, call);
     const unsigned offset = util::startsWith(name, "::") ? 4 : 2;
     const std::string replace_str((keep_global && offset == 4) ? "::" : "");
@@ -77,8 +76,7 @@ std::string LocalScope::moduleDescription() {
   return "Remove qualified lookup.";
 }
 
-LocalScope::~LocalScope() {
-}
+LocalScope::~LocalScope() = default;
 
 } /* namespace module */
 } /* namespace opov */

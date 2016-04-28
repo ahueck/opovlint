@@ -33,7 +33,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 	# Release build with debug symbols
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3")
 	# Debug Build
-	set(CMAKE_CXX_FLAGS_DEBUG "-Og")
+	set(CMAKE_CXX_FLAGS_DEBUG "-g")
 	# Release build optimized for size
 	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os")
 

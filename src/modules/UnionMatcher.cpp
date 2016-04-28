@@ -25,11 +25,13 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 UnionMatcher::UnionMatcher() {
+
 }
 
+/*
 void UnionMatcher::setupOnce(const Configuration* config) {
 }
-
+*/
 void UnionMatcher::setupMatcher() {
   DeclarationMatcher invalid_unions = recordDecl(isUnion(), hasDescendant(fieldDecl(isTypedef(type_s)))).bind("union");
 
@@ -102,8 +104,7 @@ std::string UnionMatcher::moduleDescription() {
          "etc.).";
 }
 
-UnionMatcher::~UnionMatcher() {
-}
+UnionMatcher::~UnionMatcher() = default;
 
 } /* namespace module */
 } /* namespace opov */

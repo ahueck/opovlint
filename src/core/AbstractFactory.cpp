@@ -51,7 +51,6 @@ void AbstractFactory::init() {
   this->context = opov::util::make_unique<ModuleContext>(this->config, this->ihandler, this->thandler);
 }
 
-AbstractFactory::~AbstractFactory() {
-}
+AbstractFactory::~AbstractFactory() = default;
 
 } /* namespace opov */

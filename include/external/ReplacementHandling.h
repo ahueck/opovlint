@@ -18,10 +18,7 @@
 
 #include "llvm/ADT/StringRef.h"
 #include <clang/Tooling/Refactoring.h>
-
-
-typedef llvm::StringMap<clang::tooling::TranslationUnitReplacements>
-TUReplacementsMap;
+typedef llvm::StringMap<clang::tooling::TranslationUnitReplacements> TUReplacementsMap;
 
 class ReplacementHandling {
 public:

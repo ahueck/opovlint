@@ -20,11 +20,13 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 GlobalScope::GlobalScope() {
+
 }
 
+/*
 void GlobalScope::setupOnce(const Configuration* config) {
 }
-
+*/
 void GlobalScope::setupMatcher() {
   // This matches calls to functions with scalar arguments but also functions with scalar parameters and scalar return type.
   auto call_matcher =
@@ -55,8 +57,7 @@ std::string GlobalScope::moduleDescription() {
   return "Qualified lookup with ::.";
 }
 
-GlobalScope::~GlobalScope() {
-}
+GlobalScope::~GlobalScope() = default;
 
 } /* namespace module */
 } /* namespace opov */

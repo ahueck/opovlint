@@ -55,6 +55,9 @@ TransformationHandler& ModuleContext::getTransformationHandler() {
 IssueHandler& ModuleContext::getIssueHandler() {
   return *ihandler;
 }
+
+ModuleContext::~ModuleContext() = default;
+
 /*
 std::vector<Issue*>& ModuleContext::getIssues() {
         return issues;
@@ -71,7 +74,5 @@ std::vector<Issue*>& ModuleContext::getIssues() {
  return issues;
  }
  */
-ModuleContext::~ModuleContext() {
-}
 
 } /* namespace opov */

@@ -8,13 +8,12 @@ namespace filter {
 
 class UniqueFilter: public IFilter {
 public:
-	UniqueFilter();
-	virtual ~UniqueFilter();
-
+  UniqueFilter();
   virtual IssueSet apply(const TUIssuesMap& map) override;
+  virtual ~UniqueFilter();
 };
 
-}
-}
+} // namespace filter
+} // namespace opov
 
 #endif

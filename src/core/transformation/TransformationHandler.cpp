@@ -74,7 +74,7 @@ void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
 }
 
 void TransformationHandler::addHeader(const std::string& header, clang::SourceLocation loc) {
-  addReplacements(includes->addAngledInclude(loc, header));
+  // FIXME addReplacements(includes->addAngledInclude(loc, header));
 }
 
 void TransformationHandler::addReplacements(const std::vector<clang::tooling::Replacement>& replacements) {
@@ -99,7 +99,6 @@ TUReplacementsMap& TransformationHandler::getAllReplacements() {
   return replacements;
 }
 
-TransformationHandler::~TransformationHandler() {
-}
+TransformationHandler::~TransformationHandler() = default;
 
 } /* namespace opov */

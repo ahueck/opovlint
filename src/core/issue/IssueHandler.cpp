@@ -32,7 +32,6 @@ void IssueHandler::clear() {
   issues.clear();
 }
 
-IssueHandler::~IssueHandler() {
-}
+IssueHandler::~IssueHandler() = default;
 
 } /* namespace opov */

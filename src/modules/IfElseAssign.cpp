@@ -55,18 +55,18 @@ std::string IfElseAssign::toString(clang::ASTContext& ac, const IfStmt* stmt, co
                                    const BinaryOperator* else_e) {
   auto then_ref = clutil::nameOf(dyn_cast<DeclRefExpr>(then->getLHS()->IgnoreImpCasts()));
 
-  if (else_e && then_ref != clutil::nameOf(dyn_cast<DeclRefExpr>(else_e->getLHS()->IgnoreImpCasts()))) {
+  if (else_e != nullptr && then_ref != clutil::nameOf(dyn_cast<DeclRefExpr>(else_e->getLHS()->IgnoreImpCasts()))) {
     // only transform when in both blocks the same variable is assigned to!
     return "";
   }
 
   auto replacement = "condassign(" + then_ref + ", " + clutil::node2str(ac, stmt->getCond()) + ", " +
                      clutil::node2str(ac, then->getRHS());
-  if (else_e) {
+  if (else_e != nullptr) {
     replacement += ", " + clutil::node2str(ac, else_e->getRHS());
   }
   replacement += ")";
-  if ((else_e && isa<CompoundStmt>(stmt->getElse())) || isa<CompoundStmt>(stmt->getThen())) {
+  if ((else_e != nullptr && isa<CompoundStmt>(stmt->getElse())) || isa<CompoundStmt>(stmt->getThen())) {
     /*
      * For structures as:
      * if(...)
@@ -104,8 +104,7 @@ std::string IfElseAssign::moduleDescription() {
   return "Conditional assignments through if-else are not allowed with ADOL-C.";
 }
 
-IfElseAssign::~IfElseAssign() {
-}
+IfElseAssign::~IfElseAssign() = default;
 
 } /* namespace module */
 } /* namespace opov */

@@ -19,7 +19,7 @@ class AnalyzerFactory : public AbstractFactory {
   AnalyzerFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
   virtual bool handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) override;
   virtual void handleEndSource() override;
-  virtual clang::ASTConsumer* newASTConsumer() override;
+  virtual std::unique_ptr<clang::ASTConsumer> newASTConsumer() override;
   virtual ~AnalyzerFactory();
 };
 

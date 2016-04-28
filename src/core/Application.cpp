@@ -32,8 +32,7 @@
 
 namespace opov {
 
-Application::Application() {
-}
+Application::Application() = default;
 
 void Application::init() {
   loadConfig();
@@ -73,12 +72,12 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
   config->getValue("replacement:apply", apply_replacements);
 
   if(!replacementHandler.findClangApplyReplacements("")) {
-          LOG_ERROR("Could not find clang-apply-replacement");
-          return 0;
+	  LOG_ERROR("Could not find clang-apply-replacement");
+	  return 0;
   }
 
-  for (auto module : modules) {
-    executor->setModule(module);
+  for (auto& module : modules) {
+    executor->setModule(module.get());
     int sig = tool.run(actionFactory.get());
     if (sig == 1) {
       /*LOG_ERROR("Module '" << module->moduleName() << "' failed.");*/
@@ -100,18 +99,17 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
 }
 
 int Application::executeOnCode(const std::string& source, const std::vector<std::string>& args) {
-  int sig = 0;
-  for (auto module : modules) {
-    executor->setModule(module);
-    int sig = clang::tooling::runToolOnCodeWithArgs(actionFactory->create(), source, args);
-    if (sig < 1) {
+  for (auto& module : modules) {
+    executor->setModule(module.get());
+    const bool success = clang::tooling::runToolOnCodeWithArgs(actionFactory->create(), source, args);
+    if (!success) {
       LOG_DEBUG("Module '" << module->moduleName() << "' failed.");
-      return sig;
+      return -1;
     }
   }
   report();
 
-  return sig;
+  return 0;
 }
 
 void Application::report() {
@@ -128,26 +126,22 @@ void Application::report() {
 
   ihandler->clear();
 }
-
+/*
 void Application::addModule(Module* module) {
   LOG_DEBUG("Add module: " << module->moduleName());
   modules.push_back(module);
   module->init(config.get());
 }
+*/
 
 void Application::cleanUp() {
-  for (auto module : modules) {
-    delete module;
-  }
-  modules.clear();
+
 }
 
 std::string Application::getApplicationName() {
   return "GenericApplication";
 }
 
-Application::~Application() {
-  cleanUp();
-}
+Application::~Application() = default;
 
 } /* namespace opov */

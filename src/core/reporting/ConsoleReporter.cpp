@@ -13,6 +13,7 @@
 namespace opov {
 
 ConsoleReporter::ConsoleReporter() {
+
 }
 
 void ConsoleReporter::addIssue(const TranslationUnitIssues& issue) {
@@ -24,7 +25,7 @@ void ConsoleReporter::addIssues(const TUIssuesMap& issues) {
   }
 }
 
-void ConsoleReporter::addIssues(const filter::IssueSet& set) {
+void ConsoleReporter::addIssues(const filter::IssueSet& issues) {
   LOG_ERROR("Not yet implemented!");
 }
 
@@ -48,7 +49,6 @@ void ConsoleReporter::print(const TranslationUnitIssues& issue) {
   }
 }
 
-ConsoleReporter::~ConsoleReporter() {
-}
+ConsoleReporter::~ConsoleReporter() = default;
 
 } /* namespace opov */

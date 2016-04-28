@@ -60,9 +60,9 @@ class IncludeDirectivesPPCallback : public clang::PPCallbacks {
 public:
   IncludeDirectivesPPCallback(IncludeDirectives *Self)
       : Self(Self), Guard(nullptr) {}
+  virtual ~IncludeDirectivesPPCallback() {}
 
 private:
-  virtual ~IncludeDirectivesPPCallback() {}
   void InclusionDirective(SourceLocation HashLoc, const Token &IncludeTok,
                           StringRef FileName, bool IsAngled,
                           CharSourceRange FilenameRange, const FileEntry *File,
@@ -116,7 +116,8 @@ private:
     // checking for equality because it can also be part of the preamble if the
     // preamble is the whole file.
     unsigned Preamble =
-        Lexer::ComputePreamble(SM.getBuffer(Guard.FID), LangOpts).first;
+        Lexer::ComputePreamble(SM.getBuffer(Guard.FID)->getBuffer(), LangOpts)
+            .first;
     unsigned IfndefOffset = SM.getFileOffset(Guard.IfndefLoc);
     if (IfndefOffset > (Preamble + 1))
       return;
@@ -177,7 +178,7 @@ private:
     }
   }
 
-  virtual void Endif(SourceLocation Loc, SourceLocation IfLoc) override {
+  void Endif(SourceLocation Loc, SourceLocation IfLoc) override {
     Guard->Count++;
 
     // If it's the #endif corresponding to the top-most #ifndef
@@ -219,7 +220,7 @@ private:
                      const MacroDirective *) override {
     Guard->Count++;
   }
-  virtual void Else(SourceLocation, SourceLocation) override {
+  void Else(SourceLocation, SourceLocation) override {
     Guard->Count++;
   }
 
@@ -310,7 +311,8 @@ static std::pair<unsigned, bool> findDirectiveEnd(SourceLocation HashLoc,
 IncludeDirectives::IncludeDirectives(clang::CompilerInstance &CI)
     : CI(CI), Sources(CI.getSourceManager()) {
   // addPPCallbacks takes ownership of the callback
-  CI.getPreprocessor().addPPCallbacks(new IncludeDirectivesPPCallback(this));
+  CI.getPreprocessor().addPPCallbacks(
+                          llvm::make_unique<IncludeDirectivesPPCallback>(this));
 }
 
 bool IncludeDirectives::lookForInclude(const FileEntry *File,
@@ -387,10 +389,6 @@ Replacement IncludeDirectives::addAngledInclude(llvm::StringRef File,
   const FileEntry *Entry = Sources.getFileManager().getFile(File);
   assert(Entry && "Invalid file given!");
   return addAngledInclude(Entry, Include);
-}
-
-Replacement IncludeDirectives::addAngledInclude(clang::SourceLocation loc, llvm::StringRef Include) {
-	return addAngledInclude(Sources.getFileEntryForID(Sources.getFileID(loc)), Include);
 }
 
 std::pair<unsigned, unsigned>

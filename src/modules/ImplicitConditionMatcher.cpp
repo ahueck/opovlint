@@ -24,10 +24,13 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 ImplicitConditionMatcher::ImplicitConditionMatcher() {
+
 }
 
+/*
 void ImplicitConditionMatcher::setupOnce(const Configuration* config) {
 }
+*/
 
 void ImplicitConditionMatcher::setupMatcher() {
   auto impl = implicitCastExpr(isFloatingToBoolean(), unless(hasParent(binaryOperator())),
@@ -54,7 +57,7 @@ void ImplicitConditionMatcher::run(const clang::ast_matchers::MatchFinder::Match
    */
   const Expr* implicit_cast = result.Nodes.getNodeAs<Expr>("implicit");
   const Expr* unary_op = result.Nodes.getNodeAs<Expr>("unary");
-  const Expr* invalid = !implicit_cast ? unary_op : implicit_cast;
+  const Expr* invalid = implicit_cast == nullptr ? unary_op : implicit_cast;
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(invalid, moduleName(), moduleDescription());
 
@@ -73,8 +76,7 @@ std::string ImplicitConditionMatcher::moduleDescription() {
          "with a complex object.";
 }
 
-ImplicitConditionMatcher::~ImplicitConditionMatcher() {
-}
+ImplicitConditionMatcher::~ImplicitConditionMatcher() = default;
 
 } /* namespace module */
 } /* namespace opov */

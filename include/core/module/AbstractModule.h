@@ -29,8 +29,8 @@ class AbstractModule : public Module {
 
  public:
   AbstractModule();
-  virtual void init(const Configuration* config);
-  virtual void setupOnce(const Configuration* config) = 0;
+  virtual void init(const Configuration* config) override;
+  virtual void setupOnce(const Configuration* config);
   virtual void execute(ModuleContext* context) override;
   virtual ~AbstractModule();
 };

@@ -23,10 +23,13 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 ImplicitConversion::ImplicitConversion() {
+
 }
 
+/*
 void ImplicitConversion::setupOnce(const Configuration* config) {
 }
+*/
 
 void ImplicitConversion::setupMatcher() {
   StatementMatcher impl_conversion = materializeTemporaryExpr(hasTemporary(ignoringImpCasts(
@@ -74,8 +77,7 @@ std::string ImplicitConversion::moduleDescription() {
          "can be easily violated.";
 }
 
-ImplicitConversion::~ImplicitConversion() {
-}
+ImplicitConversion::~ImplicitConversion() = default;
 
 } /* namespace module */
 } /* namespace opov */

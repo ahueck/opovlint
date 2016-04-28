@@ -11,9 +11,7 @@ namespace filter {
 class IFilter {
 public:
     virtual IssueSet apply(const TUIssuesMap& map) = 0;
-    virtual ~IFilter() {
-
-    }
+    virtual ~IFilter() = default;
 };
 
 }

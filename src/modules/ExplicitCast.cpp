@@ -22,6 +22,7 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 ExplicitCast::ExplicitCast() {
+
 }
 
 void ExplicitCast::setupOnce(const Configuration* config) {
@@ -67,8 +68,7 @@ std::string ExplicitCast::moduleDescription() {
   return "C++ explicit casts of a complex object are not possible.";
 }
 
-ExplicitCast::~ExplicitCast() {
-}
+ExplicitCast::~ExplicitCast() = default;
 
 } /* namespace module */
 } /* namespace opov */

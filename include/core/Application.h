@@ -40,7 +40,7 @@ class Application {
   std::unique_ptr<IssueHandler> ihandler;
   std::unique_ptr<TransformationHandler> thandler;
   std::unique_ptr<filter::IFilter> filter;
-  std::vector<Module*> modules;
+  std::vector<std::unique_ptr<Module>> modules;
 
   virtual void loadConfig() = 0;
   virtual void createReporter() = 0;
@@ -59,11 +59,15 @@ class Application {
   virtual int executeOnCode(const std::string& source,
                             const std::vector<std::string>& args = std::vector<std::string>());
   virtual void report();
-  virtual void addModule(Module* module);
   virtual std::string getApplicationName();
+  template<typename T, typename... Args>
+  void addModule(Args&&... arguments);
   virtual ~Application();
+
 };
 
 } /* namespace opov */
+
+#include "Application.hpp"
 
 #endif /* APPLICATION_H_ */

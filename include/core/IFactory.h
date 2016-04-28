@@ -25,9 +25,8 @@ class IFactory : public clang::tooling::SourceFileCallbacks {
  public:
   virtual void init() = 0;
   virtual void setModule(Module* m) = 0;
-  virtual clang::ASTConsumer* newASTConsumer() = 0;
-  virtual ~IFactory() {
-  }
+  virtual std::unique_ptr<clang::ASTConsumer> newASTConsumer() = 0;
+  virtual ~IFactory() = default;
 };
 
 } /* namespace opov */

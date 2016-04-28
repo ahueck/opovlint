@@ -20,12 +20,13 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 AllImplicitConversion::AllImplicitConversion() {
-  // TODO Auto-generated constructor stub
+
 }
 
+/*
 void AllImplicitConversion::setupOnce(const Configuration* config) {
 }
-
+*/
 void AllImplicitConversion::setupMatcher() {
   StatementMatcher impl_conversion = materializeTemporaryExpr(
       hasTemporary(ignoringImpCasts(constructExpr(unless(temporaryObjectExpr())).bind("conversion"))));
@@ -55,9 +56,7 @@ std::string AllImplicitConversion::moduleDescription() {
   return "Detects *all* implicit conversions.";
 }
 
-AllImplicitConversion::~AllImplicitConversion() {
-  // TODO Auto-generated destructor stub
-}
+AllImplicitConversion::~AllImplicitConversion() = default;
 
 } /* namespace module */
 } /* namespace opov */

@@ -22,8 +22,7 @@ class Module {
   virtual void execute(ModuleContext* context) = 0;
   virtual std::string moduleName() = 0;
   virtual std::string moduleDescription() = 0;
-  virtual ~Module() {
-  }
+  virtual ~Module() = default;
 };
 
 }  // namespace opov

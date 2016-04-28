@@ -21,8 +21,7 @@ class IssueReporter {
   virtual void addIssue(const TranslationUnitIssues& issue) = 0;
   virtual void addIssues(const TUIssuesMap& issues) = 0;
   virtual void addIssues(const filter::IssueSet& issues) = 0;
-  virtual ~IssueReporter() {
-  }
+  virtual ~IssueReporter() = default;
 };
 
 }  // namespace opov

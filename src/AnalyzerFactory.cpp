@@ -11,6 +11,7 @@
 #include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/reporting/IssueReporter.h>
+#include <core/utility/Util.h>
 
 #include <clang/AST/ASTConsumer.h>
 #include <clang/Frontend/CompilerInstance.h>
@@ -32,9 +33,9 @@ void AnalyzerFactory::handleEndSource() {
   LOG_DEBUG("Called AnalyzerFactory endsource.");
 }
 
-clang::ASTConsumer *AnalyzerFactory::newASTConsumer() {
+std::unique_ptr<clang::ASTConsumer> AnalyzerFactory::newASTConsumer() {
   LOG_DEBUG("Called AnalyzerFactory: " << this);
-  return new ModuleConsumer(module, context.get());
+  return util::make_unique<ModuleConsumer>(module, context.get());
 }
 
 AnalyzerFactory::~AnalyzerFactory() {
