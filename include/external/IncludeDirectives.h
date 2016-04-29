@@ -13,8 +13,8 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef CLANG_MODERNIZE_INCLUDE_DIRECTIVES_H
-#define CLANG_MODERNIZE_INCLUDE_DIRECTIVES_H
+#ifndef EXTERNAL_INCLUDEDIRECTIVES_H
+#define EXTERNAL_INCLUDEDIRECTIVES_H
 
 #include "clang/Basic/SourceLocation.h"
 #include "clang/Tooling/Refactoring.h"
@@ -138,4 +138,4 @@ private:
   HeaderToGuardMap HeaderToGuard;
 };
 
-#endif // CLANG_MODERNIZE_INCLUDE_DIRECTIVES_H
+#endif // EXTERNAL_INCLUDEDIRECTIVES_H

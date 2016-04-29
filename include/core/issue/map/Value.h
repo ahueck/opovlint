@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef VALUE_H_
-#define VALUE_H_
+#ifndef CORE_ISSUE_MAP_VALUE_H
+#define CORE_ISSUE_MAP_VALUE_H
 
 #include "ValueTraits.h"
 
@@ -42,4 +42,4 @@ class Value {
 
 } /* namespace opov */
 
-#endif /* VALUE_H_ */
+#endif // CORE_ISSUE_MAP_VALUE_H

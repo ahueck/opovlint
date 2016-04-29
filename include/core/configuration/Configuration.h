@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef CONFIGURATION_H_
-#define CONFIGURATION_H_
+#ifndef CORE_CONFIGURATION_CONFIGURATION_H
+#define CORE_CONFIGURATION_CONFIGURATION_H
 
 #include <string>
 #include <vector>
@@ -29,4 +29,4 @@ class Configuration {
 
 } /* namespace opov */
 
-#endif /* CONFIGURATION_H_ */
+#endif // CORE_CONFIGURATION_CONFIGURATION_H

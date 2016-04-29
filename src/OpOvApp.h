@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef OPOVAPP_H_
-#define OPOVAPP_H_
+#ifndef _SRC_OPOVAPP_H
+#define _SRC_OPOVAPP_H
 
 #include <core/Application.h>
 
@@ -28,4 +28,4 @@ class OpOvApp : public opov::Application {
   ~OpOvApp() override = default;
 };
 
-#endif /* OPOVAPP_H_ */
+#endif // _SRC_OPOVAPP_H

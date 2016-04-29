@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef TRANSFORMATIONHANDLER_H_
-#define TRANSFORMATIONHANDLER_H_
+#ifndef CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
+#define CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
 
 #include <clang/Rewrite/Core/Rewriter.h>
 
@@ -55,4 +55,4 @@ class TransformationHandler {
 
 } /* namespace opov */
 
-#endif /* TRANSFORMATIONHANDLER_H_ */
+#endif // CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef EXPLICITCAST_H_
-#define EXPLICITCAST_H_
+#ifndef MODULES_EXPLICITCAST_H
+#define MODULES_EXPLICITCAST_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -37,4 +37,4 @@ class ExplicitCast : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* EXPLICITCAST_H_ */
+#endif // MODULES_EXPLICITCAST_H

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ALLIMPLICITCONVERSION_H_
-#define ALLIMPLICITCONVERSION_H_
+#ifndef MODULES_ALLIMPLICITCONVERSION_H
+#define MODULES_ALLIMPLICITCONVERSION_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -27,4 +27,4 @@ class AllImplicitConversion : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* ALLIMPLICITCONVERSION_H_ */
+#endif // MODULES_ALLIMPLICITCONVERSION_H

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef CSVREPORTER_H_
-#define CSVREPORTER_H_
+#ifndef CORE_REPORTING_CSVREPORTER_H
+#define CORE_REPORTING_CSVREPORTER_H
 
 #include "IssueReporter.h"
 
@@ -28,4 +28,4 @@ class CSVReporter : public opov::IssueReporter {
 
 } /* namespace opov */
 
-#endif /* CSVREPORTER_H_ */
+#endif // CORE_REPORTING_CSVREPORTER_H

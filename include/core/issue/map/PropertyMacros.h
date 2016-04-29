@@ -5,8 +5,8 @@
  *      Author:
  */
 
-#ifndef PROPERTY_H_
-#define PROPERTY_H_
+#ifndef CORE_ISSUE_MAP_PROPERTYMACROS_H
+#define CORE_ISSUE_MAP_PROPERTYMACROS_H
 
 namespace opov {
 
@@ -57,4 +57,4 @@ namespace opov {
 
 } /* namespace opov */
 
-#endif /* PROPERTY_H_ */
+#endif // CORE_ISSUE_MAP_PROPERTYMACROS_H

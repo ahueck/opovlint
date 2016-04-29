@@ -73,7 +73,7 @@ using null = decltype(nullptr);
 template<typename T>
 struct is_null : std::is_same<T, null> {};
 
-class value;
+struct value;
 
 template<typename T>
 struct is_value : public std::is_same<T, value> {};

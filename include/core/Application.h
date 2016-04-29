@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef APPLICATION_H_
-#define APPLICATION_H_
+#ifndef CORE_APPLICATION_H
+#define CORE_APPLICATION_H
 
 #include <string>
 #include <vector>
@@ -70,4 +70,4 @@ class Application {
 
 #include "Application.hpp"
 
-#endif /* APPLICATION_H_ */
+#endif // CORE_APPLICATION_H

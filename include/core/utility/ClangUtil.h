@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef CLANGUTIL_H_
-#define CLANGUTIL_H_
+#ifndef CORE_UTILITY_CLANGUTIL_H
+#define CORE_UTILITY_CLANGUTIL_H
 
 #include <core/logging/Logger.h>
 
@@ -259,4 +259,4 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
 } /* namespace clutil */
 } /* namespace opov */
 
-#endif /* CLANGUTIL_H_ */
+#endif // CORE_UTILITY_CLANGUTIL_H

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef TRANSFORMATIONUTIL_H_
-#define TRANSFORMATIONUTIL_H_
+#ifndef CORE_TRANSFORMATION_TRANSFORMATIONUTIL_H
+#define CORE_TRANSFORMATION_TRANSFORMATIONUTIL_H
 
 #include <core/utility/ClangUtil.h>
 
@@ -190,4 +190,4 @@ inline bool removeNode_rew(clang::Rewriter& rw, T node) {
 } /* namespace trutil*/
 } /* namespace opov */
 
-#endif /* TRANSFORMATIONUTIL_H_ */
+#endif // CORE_TRANSFORMATION_TRANSFORMATIONUTIL_H

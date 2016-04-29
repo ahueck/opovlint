@@ -1,5 +1,5 @@
-#ifndef IFILTER_H
-#define IFILTER_H
+#ifndef CORE_ISSUE_FILTER_IFILTER_H
+#define CORE_ISSUE_FILTER_IFILTER_H
 
 #include "../IssueHandlerStruct.h"
 #include "FilterIssueStruct.h"

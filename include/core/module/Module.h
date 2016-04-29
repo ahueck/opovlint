@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef MODULE_H_
-#define MODULE_H_
+#ifndef CORE_MODULE_MODULE_H
+#define CORE_MODULE_MODULE_H
 
 #include <string>
 #include <memory>
@@ -27,4 +27,4 @@ class Module {
 
 } /* namespace opov */
 
-#endif /* MODULE_H_ */
+#endif // CORE_MODULE_MODULE_H

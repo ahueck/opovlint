@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef GLOBALSCOPE_H_
-#define GLOBALSCOPE_H_
+#ifndef MODULES_GLOBALSCOPE_H
+#define MODULES_GLOBALSCOPE_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -29,4 +29,4 @@ class GlobalScope : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* GLOBALSCOPE_H_ */
+#endif // MODULES_GLOBALSCOPE_H

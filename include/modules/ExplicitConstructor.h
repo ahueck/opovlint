@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef EXPLICITCONSTRUCTOR_H_
-#define EXPLICITCONSTRUCTOR_H_
+#ifndef MODULES_EXPLICITCONSTRUCTOR_H
+#define MODULES_EXPLICITCONSTRUCTOR_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -30,4 +30,4 @@ class ExplicitConstructor : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* EXPLICITCONSTRUCTOR_H_ */
+#endif // MODULES_EXPLICITCONSTRUCTOR_H

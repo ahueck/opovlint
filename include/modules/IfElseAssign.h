@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef IFELSEASSIGN_H_
-#define IFELSEASSIGN_H_
+#ifndef MODULES_IFELSEASSIGN_H
+#define MODULES_IFELSEASSIGN_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -33,4 +33,4 @@ private:
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* IFELSEASSIGN_H_ */
+#endif // MODULES_IFELSEASSIGN_H

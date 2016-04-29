@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ABSTRACTFACTORY_H_
-#define ABSTRACTFACTORY_H_
+#ifndef CORE_ABSTRACTFACTORY_H
+#define CORE_ABSTRACTFACTORY_H
 
 #include "IFactory.h"
 
@@ -49,4 +49,4 @@ class AbstractFactory : public IFactory {
 
 } /* namespace opov */
 
-#endif /* ABSTRACTFACTORY_H_ */
+#endif // CORE_ABSTRACTFACTORY_H

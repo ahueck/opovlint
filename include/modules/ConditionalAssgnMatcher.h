@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef CONDITIONALASSGNMATCHER_H_
-#define CONDITIONALASSGNMATCHER_H_
+#ifndef MODULES_CONDITIONALASSGNMATCHER_H
+#define MODULES_CONDITIONALASSGNMATCHER_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -41,4 +41,4 @@ class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* CONDITIONALASSGNMATCHER_H_ */
+#endif // MODULES_CONDITIONALASSGNMATCHER_H

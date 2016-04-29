@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef LOGGER_H_
-#define LOGGER_H_
+#ifndef CORE_LOGGING_LOGGER_H
+#define CORE_LOGGING_LOGGER_H
 
 #include <llvm/Support/raw_ostream.h>
 
@@ -38,4 +38,4 @@
 #define LOG_FATAL(MSG) _OO_LOG_LEVEL_MSG(0, "Fatal", MSG)
 #define LOG_MSG(MSG) llvm::outs() << MSG << "\n"
 
-#endif /* LOGGER_H_ */
+#endif // CORE_LOGGING_LOGGER_H

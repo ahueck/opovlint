@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUEREPORTER_H_
-#define ISSUEREPORTER_H_
+#ifndef CORE_REPORTING_ISSUEREPORTER_H
+#define CORE_REPORTING_ISSUEREPORTER_H
 
 #include "../issue/IssueHandlerStruct.h"
 #include "../issue/filter/FilterIssueStruct.h"
@@ -26,4 +26,4 @@ class IssueReporter {
 
 } /* namespace opov */
 
-#endif /* ISSUEREPORTER_H_ */
+#endif // CORE_REPORTING_ISSUEREPORTER_H

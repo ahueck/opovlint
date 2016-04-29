@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef LocalScope_H_
-#define LocalScope_H_
+#ifndef MODULES_LOCALSCOPE_H
+#define MODULES_LOCALSCOPE_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -35,4 +35,4 @@ private:
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* LocalScope_H_ */
+#endif // MODULES_LOCALSCOPE_H

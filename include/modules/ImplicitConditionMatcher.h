@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef IMPLICITCONDITIONMATCHER_H_
-#define IMPLICITCONDITIONMATCHER_H_
+#ifndef MODULES_IMPLICITCONDITIONMATCHER_H
+#define MODULES_IMPLICITCONDITIONMATCHER_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -28,4 +28,4 @@ class ImplicitConditionMatcher : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* IMPLICITCONDITIONMATCHER_H_ */
+#endif // MODULES_IMPLICITCONDITIONMATCHER_H

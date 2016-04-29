@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef PROPERTYMAP_H_
-#define PROPERTYMAP_H_
+#ifndef CORE_ISSUE_MAP_PROPERTYMAP_H
+#define CORE_ISSUE_MAP_PROPERTYMAP_H
 
 #include "Value.h"
 #include "PropertyMacros.h"
@@ -33,4 +33,4 @@ typedef std::map<std::string, Value> property_map;
 
 } /* namespace opov */
 
-#endif /* PROPERTYMAP_H_ */
+#endif // CORE_ISSUE_MAP_PROPERTYMAP_H

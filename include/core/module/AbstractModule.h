@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ABSTRACTMODULE_H_
-#define ABSTRACTMODULE_H_
+#ifndef CORE_MODULE_ABSTRACTMODULE_H
+#define CORE_MODULE_ABSTRACTMODULE_H
 
 #include "Module.h"
 
@@ -33,4 +33,4 @@ class AbstractModule : public Module {
 
 } /* namespace opov */
 
-#endif /* ABSTRACTMODULE_H_ */
+#endif // CORE_MODULE_ABSTRACTMODULE_H

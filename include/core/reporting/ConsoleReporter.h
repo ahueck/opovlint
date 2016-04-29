@@ -5,8 +5,8 @@
  *      Author: zeitgeist
  */
 
-#ifndef CONSOLEREPORTER_H_
-#define CONSOLEREPORTER_H_
+#ifndef CORE_REPORTING_CONSOLEREPORTER_H
+#define CORE_REPORTING_CONSOLEREPORTER_H
 
 #include "IssueReporter.h"
 
@@ -28,4 +28,4 @@ class ConsoleReporter : public opov::IssueReporter {
 
 } /* namespace opov */
 
-#endif /* CONSOLEREPORTER_H_ */
+#endif // CORE_REPORTING_CONSOLEREPORTER_H

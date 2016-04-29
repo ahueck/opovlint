@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef UNIONMATCHER_H_
-#define UNIONMATCHER_H_
+#ifndef MODULES_UNIONMATCHER_H
+#define MODULES_UNIONMATCHER_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -29,4 +29,4 @@ class UnionMatcher : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* UNIONMATCHER_H_ */
+#endif // MODULES_UNIONMATCHER_H

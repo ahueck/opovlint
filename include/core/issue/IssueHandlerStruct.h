@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUEHANDLERSTRUCT_H_
-#define ISSUEHANDLERSTRUCT_H_
+#ifndef CORE_ISSUE_ISSUEHANDLERSTRUCT_H
+#define CORE_ISSUE_ISSUEHANDLERSTRUCT_H
 
 #include <llvm/ADT/StringMap.h>
 
@@ -26,4 +26,4 @@ typedef llvm::StringMap<TranslationUnitIssues> TUIssuesMap;
 
 } /* namespace opov */
 
-#endif /* ISSUEHANDLERSTRUCT_H_ */
+#endif // CORE_ISSUE_ISSUEHANDLERSTRUCT_H

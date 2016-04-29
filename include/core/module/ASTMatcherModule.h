@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ASTMATCHERMODULE_H_
-#define ASTMATCHERMODULE_H_
+#ifndef CORE_MODULE_ASTMATCHERMODULE_H
+#define CORE_MODULE_ASTMATCHERMODULE_H
 
 #include "AbstractModule.h"
 
@@ -32,4 +32,4 @@ class ASTMatcherModule : public opov::AbstractModule, public clang::ast_matchers
 
 #include "ASTMatcherModule.hpp"
 
-#endif /* ASTMATCHERMODULE_H_ */
+#endif // CORE_MODULE_ASTMATCHERMODULE_H

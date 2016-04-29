@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef IFACTORY_H_
-#define IFACTORY_H_
+#ifndef CORE_IFACTORY_H
+#define CORE_IFACTORY_H
 
 #include <clang/Tooling/Tooling.h>
 
@@ -28,4 +28,4 @@ class IFactory : public clang::tooling::SourceFileCallbacks {
 
 } /* namespace opov */
 
-#endif /* IFACTORY_H_ */
+#endif // CORE_IFACTORY_H

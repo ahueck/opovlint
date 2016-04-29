@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUE_H_
-#define ISSUE_H_
+#ifndef CORE_ISSUE_ISSUE_H
+#define CORE_ISSUE_ISSUE_H
 
 #include "map/PropertyMap.h"
 
@@ -47,4 +47,4 @@ class Issue {
 
 } /* namespace opov */
 
-#endif /* ISSUE_H_ */
+#endif // CORE_ISSUE_ISSUE_H

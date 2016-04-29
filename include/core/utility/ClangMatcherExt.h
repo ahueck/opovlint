@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef CLANGMATCHEREXT_H_
-#define CLANGMATCHEREXT_H_
+#ifndef CORE_UTILITY_CLANGMATCHEREXT_H
+#define CORE_UTILITY_CLANGMATCHEREXT_H
 
 #include <core/utility/ClangUtil.h>
 #include <core/logging/Logger.h>
@@ -119,4 +119,4 @@ AST_MATCHER(NestedNameSpecifier, isGlobalNamespace) {
 } /* namespace ast_matchers */
 } /* namespace clang */
 
-#endif /* CLANGMATCHEREXT_H_ */
+#endif // CORE_UTILITY_CLANGMATCHEREXT_H

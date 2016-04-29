@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef JSONCONFIGURATION_H_
-#define JSONCONFIGURATION_H_
+#ifndef CORE_CONFIGURATION_JSONCONFIGURATION_H
+#define CORE_CONFIGURATION_JSONCONFIGURATION_H
 
 #include "Configuration.h"
 
@@ -43,4 +43,4 @@ class JSONConfiguration : public opov::Configuration {
 
 #include "JSONConfiguration.hpp"
 
-#endif /* JSONCONFIGURATION_H_ */
+#endif // CORE_CONFIGURATION_JSONCONFIGURATION_H

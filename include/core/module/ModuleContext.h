@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef MODULECONTEXT_H_
-#define MODULECONTEXT_H_
+#ifndef CORE_MODULE_MODULECONTEXT_H
+#define CORE_MODULE_MODULECONTEXT_H
 
 #include <memory>
 #include <vector>
@@ -49,4 +49,4 @@ class ModuleContext {
 
 } /* namespace opov */
 
-#endif /* MODULECONTEXT_H_ */
+#endif // CORE_MODULE_MODULECONTEXT_H

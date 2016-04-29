@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUEHANDLER_H_
-#define ISSUEHANDLER_H_
+#ifndef CORE_ISSUE_ISSUEHANDLER_H
+#define CORE_ISSUE_ISSUEHANDLER_H
 
 #include "IssueHandlerStruct.h"
 
@@ -42,4 +42,4 @@ class IssueHandler {
 
 #include "IssueHandler.hpp"
 
-#endif /* ISSUEHANDLER_H_ */
+#endif // CORE_ISSUE_ISSUEHANDLER_H

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef UTIL_H_
-#define UTIL_H_
+#ifndef CORE_UTILITY_UTIL_H
+#define CORE_UTILITY_UTIL_H
 
 #include <cstddef>
 #include <memory>
@@ -99,4 +99,4 @@ typename _Unique_if<T>::_Known_bound make_unique(Args&&...) = delete;
 } /* namespace util */
 } /* namespace opov */
 
-#endif /* UTIL_H_ */
+#endif // CORE_UTILITY_UTIL_H
