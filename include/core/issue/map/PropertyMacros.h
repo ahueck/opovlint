@@ -8,8 +8,6 @@
 #ifndef PROPERTY_H_
 #define PROPERTY_H_
 
-#include <exception>
-
 namespace opov {
 
 /**
@@ -41,7 +39,7 @@ namespace opov {
 // inner macro for preceding type typedef
 #define DS_PRECEEDING_TYPE_TYPEDEF_(NAME)                 \
   static DS_PRECEEDING_TYPE_TYPEDEF_HELPER_NAME(NAME)() { \
-    throw std::exception();                               \
+    return {};                                            \
   };                                                      \
   typedef decltype(DS_PRECEEDING_TYPE_TYPEDEF_HELPER_NAME(NAME)())
 
@@ -57,6 +55,6 @@ namespace opov {
 //
 #define _as DS_PRECEEDING_TYPE_TYPEDEF_(DS_CONCAT(__, __LINE__))
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* PROPERTY_H_ */

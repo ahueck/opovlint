@@ -24,6 +24,6 @@ class IssueReporter {
   virtual ~IssueReporter() = default;
 };
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* ISSUEREPORTER_H_ */

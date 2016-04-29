@@ -21,11 +21,11 @@ class ASTMatcherModule : public opov::AbstractModule, public clang::ast_matchers
  public:
   ASTMatcherModule();
   template <typename T>
-  void addMatcher(const T& nodeMatch);
-  virtual void init(const Configuration* config) override;
+  void addMatcher(const T &matcher);
+  void init(const Configuration *config) override;
   virtual void setupMatcher() = 0;
-  virtual void execute(ModuleContext* context) override;
-  virtual ~ASTMatcherModule();
+  void execute(ModuleContext *context) override;
+  ~ASTMatcherModule() override;
 };
 
 } /* namespace opov */

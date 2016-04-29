@@ -31,5 +31,5 @@ IssueSet UniqueFilter::apply(const TUIssuesMap& map) {
 
 UniqueFilter::~UniqueFilter() = default;
 
-} /* filter */
-} /* opov */
+} /* namespace filter */
+} /* namespace opov */

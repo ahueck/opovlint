@@ -23,6 +23,6 @@ void Application::addModule(Args&&... arguments) {
 	modules.push_back(std::move(module));
 }
 
-}
+} /* namespace opov */
 
 #endif /* INCLUDE_APPLICATION_HPP_ */

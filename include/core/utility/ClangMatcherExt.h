@@ -82,7 +82,7 @@ AST_MATCHER_P(Stmt, ofType, std::string, type) {
 
 AST_MATCHER_P(CastExpr, hasSubExpr, internal::Matcher<Expr>, InnerMatcher) {
   const Expr* const SubExpression = Node.getSubExpr()->IgnoreParenImpCasts();
-  return (SubExpression != NULL && InnerMatcher.matches(*SubExpression, Finder, Builder));
+  return (SubExpression != nullptr && InnerMatcher.matches(*SubExpression, Finder, Builder));
 }
 
 AST_MATCHER_P(CXXConstructExpr, hasImplicitConversion, std::string, type) {
@@ -116,7 +116,7 @@ AST_MATCHER(NestedNameSpecifier, isGlobalNamespace) {
   return Node.getKind() == NestedNameSpecifier::SpecifierKind::Global;
 }
 
-}  // end namespace ast_matchers
-}  // end namespace clang
+} /* namespace ast_matchers */
+} /* namespace clang */
 
 #endif /* CLANGMATCHEREXT_H_ */

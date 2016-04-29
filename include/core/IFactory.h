@@ -10,12 +10,9 @@
 
 #include <clang/Tooling/Tooling.h>
 
-// Forward decl. of several clang classes
-// class CompilerInstance;
-// class StringRef;
 namespace clang {
 class AstConsumer;
-}
+} /* namespace clang */
 
 namespace opov {
 
@@ -26,7 +23,7 @@ class IFactory : public clang::tooling::SourceFileCallbacks {
   virtual void init() = 0;
   virtual void setModule(Module* m) = 0;
   virtual std::unique_ptr<clang::ASTConsumer> newASTConsumer() = 0;
-  virtual ~IFactory() = default;
+  ~IFactory() override = default;
 };
 
 } /* namespace opov */

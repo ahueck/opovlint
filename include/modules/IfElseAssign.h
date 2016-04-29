@@ -18,12 +18,12 @@ private:
   bool apply_transform;
  public:
   IfElseAssign();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~IfElseAssign();
+  void setupOnce(const Configuration* config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~IfElseAssign() override;
 
  private:
   std::string toString(clang::ASTContext& ac, const clang::IfStmt* stmt, const clang::BinaryOperator* then,

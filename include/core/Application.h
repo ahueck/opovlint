@@ -16,8 +16,8 @@ namespace clang {
 namespace tooling {
 class FrontendActionFactory;
 class CompilationDatabase;
-}
-}
+} /* namespace tooling */
+} /* namespace clang */
 
 namespace opov {
 
@@ -29,7 +29,7 @@ class TransformationHandler;
 class Module;
 namespace filter {
 class IFilter;
-}
+} /* namespace filter */
 
 class Application {
  protected:

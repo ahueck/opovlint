@@ -186,7 +186,8 @@ inline bool removeNode_rew(clang::Rewriter& rw, T node) {
 //}
 //
 //
-}
-}
+
+} /* namespace trutil*/
+} /* namespace opov */
 
 #endif /* TRANSFORMATIONUTIL_H_ */

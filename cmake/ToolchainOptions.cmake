@@ -26,7 +26,7 @@ endif()
 # Setup general compiler options
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
   # Ignore for now: ${LLVM_COMPILE_FLAGS}
-	set(CXX_ONLY_FLAGS "-std=c++11 -Wall -Wextra -pedantic -Wunreachable-code -Wwrite-strings -Wpointer-arith -Wcast-align -Wcast-qual -Wno-unused-parameter -fPIC -fexceptions -fno-rtti ${CXX_ONLY_FLAGS}")
+	set(CXX_ONLY_FLAGS "-std=c++11 -Wall -Wextra -pedantic -Wunreachable-code -Wwrite-strings -Wpointer-arith -Wcast-align -Wcast-qual -Wno-unused-parameter -fPIC -fno-rtti ${CXX_ONLY_FLAGS}")
 
 	# Release build
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")

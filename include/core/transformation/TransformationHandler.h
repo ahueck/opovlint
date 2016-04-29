@@ -21,9 +21,9 @@ class SourceManager;
 class LangOptions;
 namespace tooling {
 class Replacement;
-class TranslationUnitReplacements;
-}
-}
+struct TranslationUnitReplacements;
+} /* namespace tooling */
+} /* namespace clang */
 
 namespace opov {
 

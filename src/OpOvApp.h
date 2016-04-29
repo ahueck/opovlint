@@ -25,7 +25,7 @@ class OpOvApp : public opov::Application {
  public:
   OpOvApp(const std::string& config_path);
 
-  virtual ~OpOvApp() = default;
+  ~OpOvApp() override = default;
 };
 
 #endif /* OPOVAPP_H_ */

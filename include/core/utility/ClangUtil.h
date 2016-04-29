@@ -44,9 +44,8 @@ inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = 
     // LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " <<
     // end.printToString(ac.getSourceManager()));
     return {start, semi_end.isValid() ? semi_end : end};
-  } else {
-    return {start, end};
   }
+  return {start, end};
 }
 
 template <typename T>
@@ -81,13 +80,12 @@ inline const clang::FileEntry* fileEntryOf(const clang::SourceManager& sm, T nod
 template <typename T>
 inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
   auto Entry = fileEntryOf(sm, node);
-  if (Entry != NULL) {
+  if (Entry != nullptr) {
     llvm::SmallString<256> FilePath(Entry->getName());
     auto EC = llvm::sys::fs::make_absolute(FilePath);
     return EC ? FilePath.c_str() : Entry->getName();
-  } else {
-    return "";
   }
+  return {""};
 }
 
 inline unsigned declCount(const clang::TagDecl* node) {
@@ -100,7 +98,7 @@ inline unsigned declCount(const clang::TagDecl* node) {
  * 	see: http://clang.llvm.org/docs/LibASTMatchersTutorial.html
  */
 inline bool areSameExpr(clang::ASTContext* context, const clang::Expr* first, const clang::Expr* second) {
-  if (!first || !second) {
+  if (first == nullptr || second == nullptr) {
     return false;
   }
   llvm::FoldingSetNodeID FirstID, SecondID;
@@ -139,7 +137,7 @@ inline std::string ast2str(/*const clang::SourceManager& sm,*/ T&& node) {
 inline std::string node2str(const clang::ASTContext& ac, const clang::Stmt* node) {
   std::string exprStr;
   llvm::raw_string_ostream s(exprStr);
-  node->printPretty(s, 0, ac.getPrintingPolicy());
+  node->printPretty(s, nullptr, ac.getPrintingPolicy());
   return s.str();
 }
 
@@ -180,9 +178,9 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   // Try to load the file buffer.
   bool invalidTemp = false;
   StringRef file = SM.getBufferData(locInfo.first, &invalidTemp);
-  if (invalidTemp)
+  if (invalidTemp) {
     return SourceLocation();
-
+  }
   const char* tokenBegin = file.data() + locInfo.second;
 
   // Lex from the start of the given location.
@@ -190,8 +188,9 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   Token tok;
   lexer.LexFromRawLexer(tok);
   if (tok.isNot(tok::semi)) {
-    if (!IsDecl)
+    if (!IsDecl) {
       return SourceLocation();
+    }
     // Declaration may be followed with other tokens; such as an __attribute,
     // before ending with a semicolon.
     return findSemiAfterLocation(tok.getLocation(), Ctx, /*IsDecl*/ true);
@@ -207,7 +206,7 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
   bool is_builtin;
 
  public:
-  TypeDeducer(const std::string& type)
+  explicit TypeDeducer(const std::string& type)
       : subtreeHasType(false)
       , type(type)
       , is_builtin(isBuiltin(type)) {
@@ -257,7 +256,7 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
   }
 };
 
-}  // namespace clutil
-}  // namespace opov
+} /* namespace clutil */
+} /* namespace opov */
 
 #endif /* CLANGUTIL_H_ */

@@ -24,6 +24,6 @@ struct TranslationUnitIssues {
 
 typedef llvm::StringMap<TranslationUnitIssues> TUIssuesMap;
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* ISSUEHANDLERSTRUCT_H_ */

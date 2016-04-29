@@ -26,12 +26,12 @@ class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
 
  public:
   ConditionalAssgnMatcher();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~ConditionalAssgnMatcher();
+  void setupOnce(const Configuration* config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~ConditionalAssgnMatcher() override;
 
  private:
   void toString(clang::ASTContext& ac, const clang::Expr* e, conditional_data& d);

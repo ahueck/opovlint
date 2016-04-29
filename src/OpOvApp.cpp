@@ -56,13 +56,4 @@ void OpOvApp::initModules() {
   addModule<opov::module::IfElseAssign>();
   addModule<opov::module::LocalScope>();
   addModule<opov::module::GlobalScope>();
-  /*
-  addModule(new opov::module::UnionMatcher());
-  addModule(new opov::module::ImplicitConversion());
-  addModule(new opov::module::ImplicitConditionMatcher());
-  addModule(new opov::module::ConditionalAssgnMatcher());
-  addModule(new opov::module::IfElseAssign());
-  addModule(new opov::module::LocalScope());
-  addModule(new opov::module::GlobalScope());
-  */
 }

@@ -14,6 +14,9 @@
 
 namespace opov {
 
+/*
+ * Caveat: copy-constructor has share semantic w.r.t. data bhind shared-ptr
+ */
 class Value {
  private:
   std::string type;
@@ -26,33 +29,17 @@ class Value {
   }
 
   template <typename T>
-  Value(const T& val)
+  explicit Value(const T& val)
       : type(PropertyType<T>::name())
       , value(std::make_shared<T>(val)) {
   }
 
-  Value(const Value& other)
-      : type(other.type)
-      , value(other.value) {
-  }
-
-  Value& operator=(const Value& other) {
-    if (this != &other) {
-      this->type = other.type;
-      this->value = other.value;
-    }
-    return *this;
-  }
-
   template <typename T>
-  const T& get() {
+  const T& get() const {
     return *((T*)value.get());
-  }
-
-  ~Value() {
   }
 };
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* VALUE_H_ */

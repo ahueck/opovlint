@@ -17,7 +17,7 @@
 namespace clang {
 class SourceManager;
 class ASTContext;
-}
+} /* namespace clang */
 
 namespace opov {
 

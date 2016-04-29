@@ -25,6 +25,6 @@ class Module {
   virtual ~Module() = default;
 };
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* MODULE_H_ */

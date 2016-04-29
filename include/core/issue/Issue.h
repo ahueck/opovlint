@@ -45,6 +45,6 @@ class Issue {
   std::string IssueProperty(ModuleDescription);
 };
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* ISSUE_H_ */

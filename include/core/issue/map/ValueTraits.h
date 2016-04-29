@@ -73,6 +73,6 @@ struct PropertyType<unsigned int> {
   }
 };
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* ISSUETRAITS_H_ */

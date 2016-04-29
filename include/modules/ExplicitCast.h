@@ -26,12 +26,12 @@ class ExplicitCast : public opov::ASTMatcherModule {
 
  public:
   ExplicitCast();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~ExplicitCast();
+  void setupOnce(const Configuration *config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~ExplicitCast() override;
 };
 
 } /* namespace module */

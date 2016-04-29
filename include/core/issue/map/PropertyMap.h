@@ -14,6 +14,7 @@
 #include <map>
 
 namespace opov {
+
 typedef std::map<std::string, Value> property_map;
 
 // creates a getter and setter using a std::map<std::string, Value> called
@@ -29,6 +30,7 @@ typedef std::map<std::string, Value> property_map;
       return PropertyType<DS_CONCAT(NAME, PropertyType)>::DefaultValue(); \
     return it->second.get<DS_CONCAT(NAME, PropertyType)>();               \
   }
-}
+
+} /* namespace opov */
 
 #endif /* PROPERTYMAP_H_ */

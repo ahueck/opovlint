@@ -14,7 +14,7 @@ public:
     virtual ~IFilter() = default;
 };
 
-}
-}
+} /* namespace filter */
+} /* namespace opov */
 
 #endif

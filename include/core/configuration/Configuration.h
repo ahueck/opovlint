@@ -27,6 +27,6 @@ class Configuration {
   virtual ~Configuration() = default;
 };
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* CONFIGURATION_H_ */

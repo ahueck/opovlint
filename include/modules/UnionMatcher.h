@@ -19,14 +19,14 @@ class UnionMatcher : public opov::ASTMatcherModule {
  public:
   UnionMatcher();
   //virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~UnionMatcher();
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~UnionMatcher() override;
 };
 
-}  // namespace module
+} /* namespace module */
 } /* namespace opov */
 
 #endif /* UNIONMATCHER_H_ */
