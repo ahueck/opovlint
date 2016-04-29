@@ -53,6 +53,7 @@ void OpOvApp::initModules() {
   addModule<opov::module::ExplicitCast>();
   addModule<opov::module::UnionMatcher>();
   addModule<opov::module::ImplicitConversion>();
+  addModule<opov::module::ImplicitConditionMatcher>();
   addModule<opov::module::ConditionalAssgnMatcher>();
   addModule<opov::module::IfElseAssign>();
   addModule<opov::module::LocalScope>();

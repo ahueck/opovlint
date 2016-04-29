@@ -61,7 +61,7 @@ SCENARIO("Global scope function calls with scalars. Module looks for type scalar
 	GIVEN("The 'GlobalScope' module with type: scalar") {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::GlobalScope());
+		app.addModule<opov::module::GlobalScope>();
 
 		SIMPLE_TEST1("A call with scalar argument."
 				, CALL("b"), CALLR("b"));
@@ -86,7 +86,7 @@ SCENARIO("Global scope function calls with scalars. Module looks for type scalar
 	GIVEN("The 'GlobalScope' module with type: scalar") {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::GlobalScope());
+		app.addModule<opov::module::GlobalScope>();
 
 		SIMPLE_TEST0("A simple call with int argument."
 				, CALLH("a"));

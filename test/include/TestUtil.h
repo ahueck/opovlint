@@ -34,7 +34,7 @@ SCENARIO("Test the system (state) with " T_STRINGIFY(_MODULE_) " executed 2 time
 	GIVEN("The static analyzer with the '" T_STRINGIFY(_MODULE_) "' module.") {\
 		opov::test::TestApp app;\
 		app.init();\
-		app.addModule(new _MODULE_);\
+		app.addModule<_MODULE_>();\
 		WHEN("A simple code example.") {\
 			std::string code =_CODE_MACRO_;\
 			app.executeOnCode(code);\

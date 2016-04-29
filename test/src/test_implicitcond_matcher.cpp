@@ -17,7 +17,7 @@ SCENARIO("Implicit conversions. Module produces one match for type " _TYPE_, "["
 	GIVEN("The 'ImplicitConditionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::ImplicitConditionMatcher());
+		app.addModule<opov::module::ImplicitConditionMatcher>();
 #include "tests/ImplicitConditionMatchSet.inl"
 	}
 }
@@ -26,7 +26,7 @@ SCENARIO("Implicit conversions. Module produces no match for type " _TYPE_, "[" 
 	GIVEN("The 'ImplicitConditionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::ImplicitConditionMatcher());
+		app.addModule<opov::module::ImplicitConditionMatcher>();
 #include "tests/ImplicitConditionNoMatchSet.inl"
 	}
 }
@@ -41,7 +41,7 @@ SCENARIO("Implicit conversions. Module produces one match for type " _TYPE_, "["
 	GIVEN("The 'ImplicitConditionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ImplicitConditionMatcher());
+		app.addModule<opov::module::ImplicitConditionMatcher>();
 #include "tests/ImplicitConditionMatchSet.inl"
 	}
 }
@@ -50,7 +50,7 @@ SCENARIO("Implicit conversions. Module produces no match for type " _TYPE_, "[" 
 	GIVEN("The 'ImplicitConditionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ImplicitConditionMatcher());
+		app.addModule<opov::module::ImplicitConditionMatcher>();
 #include "tests/ImplicitConditionNoMatchSet.inl"
 	}
 }

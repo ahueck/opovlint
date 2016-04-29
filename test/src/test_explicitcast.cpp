@@ -28,14 +28,14 @@
 #define SCAST_TYPE(TYPE, CODE) MAKE_CODE(TYPE " cres = " SCAST_T(TYPE, CODE))
 #define SCAST_S(CODE) SCAST_T("int", CODE)
 
-KICKOFF_TEST(opov::module::ExplicitCast(), SCAST("a"), SCAST_S("a"))
+KICKOFF_TEST(opov::module::ExplicitCast, SCAST("a"), SCAST_S("a"))
 
 #define _TYPE_ "scalar"
 SCENARIO("Explicit casts. Module produces one match for type " _TYPE_, "[" _TYPE_ "_match]") {
 	GIVEN("The 'ExplicitCast' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::ExplicitCast());
+		app.addModule<opov::module::ExplicitCast>();
 #include "tests/ExplicitCastMatchSet.inl"
 	}
 }
@@ -43,7 +43,7 @@ SCENARIO("Explicit casts. Module produces no match for type " _TYPE_, "[" _TYPE_
 	GIVEN("The 'ExplicitCast' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::ExplicitCast());
+		app.addModule<opov::module::ExplicitCast>();
 #include "tests/ExplicitCastNoMatchSet.inl"
 	}
 }
@@ -52,7 +52,7 @@ SCENARIO("Explicit casts with scalars/integers. Module looks for type double and
 	GIVEN("The 'ExplicitCast' module with type: double") {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ExplicitCast());
+		app.addModule<opov::module::ExplicitCast>();
 
 		SIMPLE_TEST0("A static cast."
 				, SCAST("a"));
@@ -106,7 +106,7 @@ SCENARIO("Explicit casts. Module produces one match for type " _TYPE_, "[" _TYPE
 	GIVEN("The 'ExplicitCast' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ExplicitCast());
+		app.addModule<opov::module::ExplicitCast>();
 #include "tests/ExplicitCastMatchSet.inl"
 	}
 }
@@ -114,7 +114,7 @@ SCENARIO("Explicit casts. Module produces no match for type " _TYPE_, "[" _TYPE_
 	GIVEN("The 'ExplicitCast' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ExplicitCast());
+		app.addModule<opov::module::ExplicitCast>();
 #include "tests/ExplicitCastNoMatchSet.inl"
 	}
 }

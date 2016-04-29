@@ -29,14 +29,14 @@
 #define IF_E(A, B) "if(a == 0.) { " A " } else { " B " }"
 
 
-KICKOFF_TEST(opov::module::IfElseAssign(), MAKE_CODE(IF("a = b;", "a = c;")), IF("a = b;", "a = c;"))
+KICKOFF_TEST(opov::module::IfElseAssign, MAKE_CODE(IF("a = b;", "a = c;")), IF("a = b;", "a = c;"))
 
 #define _TYPE_ "scalar"
 SCENARIO("Conditional assign op. Module produces one match for type " _TYPE_, "[" _TYPE_ "_match]") {
   GIVEN("The 'ConditionalAssgnMatcher' module with type: " _TYPE_) {
     opov::test::TestApp app(conf);
     app.init();
-    app.addModule(new opov::module::IfElseAssign());
+    app.addModule<opov::module::IfElseAssign>();
 #include "tests/IfElseMatchSet.inl"
   }
 }
@@ -45,7 +45,7 @@ SCENARIO("Conditional assign op. Module produces no match for type " _TYPE_, "["
   GIVEN("The 'ConditionalAssgnMatcher' module with type: " _TYPE_) {
     opov::test::TestApp app(conf);
     app.init();
-    app.addModule(new opov::module::IfElseAssign());
+    app.addModule<opov::module::IfElseAssign>();
 #include "tests/IfElseNoMatchSet.inl"
   }
 }

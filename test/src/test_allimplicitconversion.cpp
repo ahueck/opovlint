@@ -9,13 +9,13 @@
 
 #include "ImplicitConversionDefinition.h"
 
-KICKOFF_TEST(opov::module::AllImplicitConversion(), CMP("2.0"), "2.")
+KICKOFF_TEST(opov::module::AllImplicitConversion, CMP("2.0"), "2.")
 
 SCENARIO("Constructor Conversions. Module produces one match each time.", "[scalar_match]") {
 	GIVEN("The 'AllImplicitConversion' module.") {
 		opov::test::TestApp app;
 		app.init();
-		app.addModule(new opov::module::AllImplicitConversion());
+		app.addModule<opov::module::AllImplicitConversion>();
 
 		SIMPLE_TEST1("A comparison with a constant casted to scalar."
 					, CMP("scalar(2.)")
@@ -49,7 +49,7 @@ SCENARIO("Constructor Conversions. Module produces one match for type " _TYPE_, 
 	GIVEN("The 'AllImplicitConversion' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::AllImplicitConversion());
+		app.addModule<opov::module::AllImplicitConversion>();
 #include "tests/ConversionMatchSet.inl"
 	}
 }
@@ -69,7 +69,7 @@ SCENARIO("Constructor Conversions. Module produces one match for type " _TYPE_, 
 	GIVEN("The 'AllImplicitConversion' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::AllImplicitConversion());
+		app.addModule<opov::module::AllImplicitConversion>();
 #include "tests/ConversionMatchSet.inl"
 	}
 }

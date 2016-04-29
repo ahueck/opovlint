@@ -6,15 +6,14 @@
  */
 
 #include <modules/ImplicitConversion.h>
-#include <core/utility/ClangMatcherExt.h>
-#include <core/module/ModuleContext.h>
-#include <core/utility/ClangUtil.h>
-#include <core/utility/Util.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
+#include <core/module/ModuleContext.h>
 #include <core/transformation/TransformationHandler.h>
-//#include <modules/ExplicitCastVisitor.h>
 #include <core/transformation/TransformationUtil.h>
+#include <core/utility/ClangMatcherExt.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 
 namespace opov {
 namespace module {
@@ -39,6 +38,7 @@ void ImplicitConversion::setupMatcher() {
                 hasSourceExpression(
                     allOf(ofType(type_s), unless(anyOf(floatLiteral(), ignoringParenImpCasts(explicitCastExpr()))))
                 ), unless(anyOf(isLValueToRValue(), isTypedef(type_s)))).bind("impl_assign");*/
+  // breaks unit test as of 29.04.2016
   auto impl_assign = varDecl(isDefinition(), unless(isTypedef(type_s)), hasInitializer(ignoringImpCasts(ofType(type_s)))).bind("impl_assign");
 
   this->addMatcher(impl_conversion);
@@ -56,7 +56,7 @@ void ImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult
       ihandle.addIssue(expr, module, moduleDescription());  //, message.str());
     }
   } else {
-    const Expr* expr = result.Nodes.getNodeAs<Expr>("impl_assign");
+    const Expr* expr = result.Nodes.getNodeAs<Expr>("conversion");
     ihandle.addIssue(expr, moduleName(), moduleDescription());  //, message.str());
   }
 
