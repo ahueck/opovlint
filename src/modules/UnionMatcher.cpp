@@ -6,14 +6,14 @@
  */
 
 #include <modules/UnionMatcher.h>
-#include <core/utility/ClangMatcherExt.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
+#include <core/transformation/TransformationHandler.h>
+#include <core/transformation/TransformationUtil.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
-#include <core/issue/IssueHandler.h>
-#include <core/transformation/TransformationHandler.h>
-#include <core/configuration/Configuration.h>
-#include <core/transformation/TransformationUtil.h>
 
 #include <algorithm>
 #include <vector>

@@ -6,8 +6,8 @@
  */
 
 #include <core/module/AbstractModule.h>
-#include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
+#include <core/module/ModuleContext.h>
 
 #include <clang/AST/Stmt.h>
 #include <clang/Basic/SourceManager.h>

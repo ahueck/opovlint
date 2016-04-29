@@ -11,8 +11,8 @@
 #include "../issue/IssueHandlerStruct.h"
 #include "../issue/filter/FilterIssueStruct.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace opov {
 

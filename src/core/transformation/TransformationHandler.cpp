@@ -8,8 +8,8 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/logging/Logger.h>
 
-#include <clang/Tooling/Refactoring.h>
 #include <clang/Rewrite/Core/Rewriter.h>
+#include <clang/Tooling/Refactoring.h>
 
 namespace opov {
 

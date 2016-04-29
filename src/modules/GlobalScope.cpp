@@ -6,12 +6,12 @@
  */
 
 #include <modules/GlobalScope.h>
-#include <core/utility/ClangMatcherExt.h>
-#include <core/module/ModuleContext.h>
-#include <core/utility/ClangUtil.h>
-#include <core/issue/IssueHandler.h>
-#include <core/transformation/TransformationHandler.h>
 #include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/module/ModuleContext.h>
+#include <core/transformation/TransformationHandler.h>
+#include <core/utility/ClangMatcherExt.h>
+#include <core/utility/ClangUtil.h>
 
 namespace opov {
 namespace module {

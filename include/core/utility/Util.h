@@ -8,13 +8,12 @@
 #ifndef CORE_UTILITY_UTIL_H
 #define CORE_UTILITY_UTIL_H
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
+#include <sstream>
 #include <type_traits>
 #include <utility>
-#include <sstream>
-#include <algorithm>
-//#include <regex>
 
 namespace opov {
 namespace util {

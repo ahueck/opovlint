@@ -6,11 +6,10 @@
  */
 
 #include <modules/ExplicitConstructor.h>
-
-#include <core/utility/ClangMatcherExt.h>
-#include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
+#include <core/module/ModuleContext.h>
+#include <core/utility/ClangMatcherExt.h>
 
 namespace opov {
 namespace module {

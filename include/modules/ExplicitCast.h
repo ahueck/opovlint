@@ -11,7 +11,6 @@
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
-//#include <memory>
 
 namespace opov {
 namespace module {
@@ -22,7 +21,6 @@ class ExplicitCast : public opov::ASTMatcherModule {
  private:
   std::string header_cast;
   std::string stmt_cast;
-  // std::unique_ptr<ExplicitCastVisitor> visitor;
 
  public:
   ExplicitCast();

@@ -7,9 +7,9 @@
 
 #include <AnalyzerFactory.h>
 #include <ModuleConsumer.h>
+#include <core/configuration/Configuration.h>
 #include <core/logging/Logger.h>
 #include <core/module/ModuleContext.h>
-#include <core/configuration/Configuration.h>
 #include <core/reporting/IssueReporter.h>
 #include <core/utility/Util.h>
 

@@ -6,18 +6,18 @@
  */
 
 #include <core/AbstractFactory.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/logging/Logger.h>
 #include <core/module/Module.h>
 #include <core/module/ModuleContext.h>
-#include <core/configuration/Configuration.h>
 #include <core/reporting/IssueReporter.h>
-#include <core/utility/Util.h>
-#include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/logging/Logger.h>
+#include <core/utility/Util.h>
 
 #include <clang/Frontend/CompilerInstance.h>
-#include <llvm/ADT/StringRef.h>
 #include <clang/Tooling/Refactoring.h>
+#include <llvm/ADT/StringRef.h>
 
 namespace opov {
 

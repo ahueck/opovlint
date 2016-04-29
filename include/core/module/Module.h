@@ -8,8 +8,8 @@
 #ifndef CORE_MODULE_MODULE_H
 #define CORE_MODULE_MODULE_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 namespace opov {
 

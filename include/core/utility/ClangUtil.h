@@ -11,13 +11,13 @@
 #include <core/logging/Logger.h>
 
 #include <clang/AST/AST.h>
-#include <clang/Lex/Lexer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Frontend/TextDiagnostic.h>
+#include <clang/Lex/Lexer.h>
 
-#include <string>
-#include <sstream>
 #include <iterator>
+#include <sstream>
+#include <string>
 
 namespace opov {
 
@@ -167,8 +167,9 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   using namespace llvm;
   SourceManager& SM = Ctx.getSourceManager();
   if (loc.isMacroID()) {
-    if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc))
+    if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc)) {
       return SourceLocation();
+    }
   }
   loc = Lexer::getLocForEndOfToken(loc, /*Offset=*/0, SM, Ctx.getLangOpts());
 

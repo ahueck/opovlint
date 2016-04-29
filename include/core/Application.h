@@ -8,9 +8,9 @@
 #ifndef CORE_APPLICATION_H
 #define CORE_APPLICATION_H
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace clang {
 namespace tooling {

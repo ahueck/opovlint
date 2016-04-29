@@ -8,10 +8,9 @@
 #ifndef CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
 #define CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
 
-#include <clang/Rewrite/Core/Rewriter.h>
-
 #include <external/IncludeDirectives.h>
 
+#include <clang/Rewrite/Core/Rewriter.h>
 #include <llvm/ADT/StringMap.h>
 
 #include <string>

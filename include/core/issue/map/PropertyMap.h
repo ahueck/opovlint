@@ -8,8 +8,8 @@
 #ifndef CORE_ISSUE_MAP_PROPERTYMAP_H
 #define CORE_ISSUE_MAP_PROPERTYMAP_H
 
-#include "Value.h"
 #include "PropertyMacros.h"
+#include "Value.h"
 
 #include <map>
 

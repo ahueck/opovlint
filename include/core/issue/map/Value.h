@@ -15,7 +15,7 @@
 namespace opov {
 
 /*
- * Caveat: copy-constructor has share semantic w.r.t. data bhind shared-ptr
+ * Caveat: copy-constructor has share semantic w.r.t. data behind shared_ptr
  */
 class Value {
  private:

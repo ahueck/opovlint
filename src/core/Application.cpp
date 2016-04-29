@@ -6,29 +6,28 @@
  */
 
 #include <core/Application.h>
-#include <core/IFactory.h>
-#include <core/module/Module.h>
 #include <core/configuration/Configuration.h>
-#include <core/issue/IssueHandler.h>
-#include <core/reporting/IssueReporter.h>
-#include <core/logging/Logger.h>
-#include <core/transformation/TransformationHandler.h>
+#include <core/IFactory.h>
 #include <core/issue/filter/IFilter.h>
 #include <core/issue/filter/UniqueFilter.h>
+#include <core/issue/IssueHandler.h>
+#include <core/logging/Logger.h>
+#include <core/module/Module.h>
+#include <core/reporting/IssueReporter.h>
+#include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
 #include <external/ReplacementHandling.h>
 
-#include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CommonOptionsParser.h>
-
+#include <clang/Tooling/Tooling.h>
+#include <llvm/ADT/SmallString.h>
+#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
-#include "llvm/ADT/SmallString.h"
-#include "llvm/Support/FileSystem.h"
-#include "llvm/Support/Path.h"
-#include "llvm/Support/Program.h"
-#include <limits.h>
+#include <llvm/Support/Program.h>
+
 #include <algorithm>
+#include <limits.h>
 
 namespace opov {
 

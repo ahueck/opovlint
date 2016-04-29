@@ -3,8 +3,8 @@
 
 #include "../Issue.h"
 
-#include <memory>
 #include <map>
+#include <memory>
 #include <vector>
 
 namespace opov {

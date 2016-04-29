@@ -6,24 +6,25 @@
  */
 
 #include "OpOvApp.h"
+#include <AnalyzerFactory.h>
 #include <core/IFactory.h>
 #include <core/configuration/JSONConfiguration.h>
+#include <core/issue/IssueHandler.h>
 #include <core/reporting/ConsoleReporter.h>
 #include <core/reporting/CSVReporter.h>
-#include <AnalyzerFactory.h>
-#include <core/utility/Util.h>
-#include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <modules/ExplicitCast.h>
-#include <modules/ImplicitConversion.h>
-#include <modules/ImplicitConditionMatcher.h>
-#include <modules/UnionMatcher.h>
-#include <modules/ConditionalAssgnMatcher.h>
-#include <modules/ExplicitConstructor.h>
+#include <core/utility/Util.h>
+
 #include <modules/AllImplicitConversion.h>
+#include <modules/ConditionalAssgnMatcher.h>
+#include <modules/ExplicitCast.h>
+#include <modules/ExplicitConstructor.h>
 #include <modules/GlobalScope.h>
 #include <modules/IfElseAssign.h>
+#include <modules/ImplicitConditionMatcher.h>
+#include <modules/ImplicitConversion.h>
 #include <modules/LocalScope.h>
+#include <modules/UnionMatcher.h>
 
 OpOvApp::OpOvApp(const std::string &config_path)
     : config_path(config_path) {

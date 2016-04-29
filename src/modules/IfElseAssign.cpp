@@ -6,15 +6,14 @@
  */
 
 #include <modules/IfElseAssign.h>
-#include <core/utility/ClangMatcherExt.h>
-#include <core/module/ModuleContext.h>
-#include <core/utility/ClangUtil.h>
-#include <core/utility/Util.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
-//#include <modules/ConditionalTransformer.h>
+#include <core/module/ModuleContext.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/transformation/TransformationUtil.h>
+#include <core/utility/ClangMatcherExt.h>
+#include <core/utility/ClangUtil.h>
+#include <core/utility/Util.h>
 
 namespace opov {
 namespace module {

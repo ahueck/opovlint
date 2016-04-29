@@ -10,8 +10,6 @@
 
 #include "IssueReporter.h"
 
-//#include <string>
-
 namespace opov {
 
 class CSVReporter : public opov::IssueReporter {

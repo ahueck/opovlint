@@ -6,8 +6,8 @@
  */
 
 #include <core/module/ASTMatcherModule.h>
-#include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
+#include <core/module/ModuleContext.h>
 
 namespace opov {
 
