@@ -29,7 +29,7 @@ void IfElseAssign::setupOnce(const Configuration* config) {
 }
 
 void IfElseAssign::setupMatcher() {
-  // clang-format off
+// clang-format off
 // ADOL-C speaks about all types being 'active', we should warn whenever an active type is involved (scalar).
 // Caveat:    We limit ourselves to conditionaloperator-like structures (as shown in ADOL-C tech paper)
 //            That is if or if-else with each having exactly one assignment with an active type involved
