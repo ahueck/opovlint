@@ -21,10 +21,10 @@ class ASTMatcherModule : public opov::AbstractModule, public clang::ast_matchers
  public:
   ASTMatcherModule();
   template <typename T>
-  void addMatcher(const T &matcher);
-  void init(const Configuration *config) override;
+  void addMatcher(const T& matcher);
+  void init(const Configuration* config) override;
   virtual void setupMatcher() = 0;
-  void execute(ModuleContext *context) override;
+  void execute(ModuleContext* context) override;
   ~ASTMatcherModule() override;
 };
 
@@ -32,4 +32,4 @@ class ASTMatcherModule : public opov::AbstractModule, public clang::ast_matchers
 
 #include "ASTMatcherModule.hpp"
 
-#endif // CORE_MODULE_ASTMATCHERMODULE_H
+#endif  // CORE_MODULE_ASTMATCHERMODULE_H

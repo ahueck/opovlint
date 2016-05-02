@@ -57,4 +57,4 @@ namespace opov {
 
 } /* namespace opov */
 
-#endif // CORE_ISSUE_MAP_PROPERTYMACROS_H
+#endif  // CORE_ISSUE_MAP_PROPERTYMACROS_H

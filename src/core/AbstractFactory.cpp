@@ -22,11 +22,7 @@
 namespace opov {
 
 AbstractFactory::AbstractFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
-    : module(nullptr)
-    , config(config)
-    , currentSource("")
-    , ihandler(ihandler)
-    , thandler(thandler) {
+    : module(nullptr), config(config), currentSource(""), ihandler(ihandler), thandler(thandler) {
 }
 
 bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) {

@@ -30,6 +30,7 @@ void ConditionalAssgnMatcher::setupOnce(const Configuration* config) {
 }
 
 void ConditionalAssgnMatcher::setupMatcher() {
+  // clang-format off
   /* We warn whenever an active type is present for such code structures.
    * (Even if there is no assignement.)
    *
@@ -51,19 +52,50 @@ void ConditionalAssgnMatcher::setupMatcher() {
    *    -> Caveat: nested in a call expr...
    *
    */
-  auto conditional = conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))
-                         .bind("conditional");
-  //auto condassign = stmt(unless(compoundStmt()), hasParent(compoundStmt()), children_or_self(conditional)).bind("conditional_root");
-  //auto root = binaryOperator(hasOperatorName("="), hasEitherOperand(ignoringParenImpCasts(conditional)));
+  StatementMatcher conditional =
+      conditionalOperator(
+          anyOf(
+              hasTrueExpression(ofType(type_s))
+              , hasFalseExpression(ofType(type_s))
+          )
+      ).bind("conditional");
 
-  auto condassign = conditionalOperator(
-          anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))),
-          unless(hasAncestor(conditionalOperator())),
-          hasAncestor(stmt(unless(compoundStmt()), hasParent(compoundStmt())).bind("conditional_root"))
-        ).bind("conditional");
+  /*auto condassign =
+      stmt(
+          unless(compoundStmt())
+          , hasParent(compoundStmt())
+          , children_or_self(conditional)
+      ).bind("conditional_root");*/
+  /*auto root =
+      binaryOperator(
+          hasOperatorName("=")
+          , hasEitherOperand(ignoringParenImpCasts(conditional)));*/
 
-  //auto condassign = stmt(unless(compoundStmt()), hasParent(compoundStmt()), children_or_self(conditional)).bind("conditional_root");
+  StatementMatcher condassign =
+      conditionalOperator(
+          anyOf(
+              hasTrueExpression(ofType(type_s))
+              , hasFalseExpression(ofType(type_s))
+          )
+          , unless(
+                hasAncestor(conditionalOperator())
+            )
+          , hasAncestor(
+                stmt(
+                    unless(compoundStmt())
+                    , hasParent(compoundStmt())
+                ).bind("conditional_root")
+            )
+      ).bind("conditional");
 
+  /*auto condassign =
+      stmt(
+          unless(compoundStmt())
+          , hasParent(compoundStmt())
+          , children_or_self(conditional)
+      ).bind("conditional_root");*/
+
+  // clang-format on
   this->addMatcher(condassign);
   this->addMatcher(conditional);
 }
@@ -71,9 +103,10 @@ void ConditionalAssgnMatcher::setupMatcher() {
 void ConditionalAssgnMatcher::toString(clang::ASTContext& ac, const Expr* e, conditional_data& d) {
   auto cond = dyn_cast<ConditionalOperator>(e->IgnoreParenImpCasts());
   if (cond != nullptr) {
-    d.type = type_s; // We matched, so it should be a scalar type. clutil::typeOf(e);
+    d.type = type_s;  // We matched, so it should be a scalar type. clutil::typeOf(e);
     auto pos = clutil::posOf(ac.getSourceManager(), cond);
-    d.variable = "_oolint_t_"  + util::num2str(std::get<0>(pos)) + util::num2str(std::get<1>(pos)) + util::num2str(std::get<2>(pos)) + util::num2str(std::get<3>(pos));
+    d.variable = "_oolint_t_" + util::num2str(std::get<0>(pos)) + util::num2str(std::get<1>(pos)) +
+                 util::num2str(std::get<2>(pos)) + util::num2str(std::get<3>(pos));
     d.replacement = d.type + " " + d.variable + ";\n" + "condassign(" + d.variable + ", " +
                     clutil::node2str(ac, cond->getCond()) + ", " +
                     (d.lhs == "" ? clutil::node2str(ac, cond->getLHS()) : d.lhs) + ", " +

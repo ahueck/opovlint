@@ -28,4 +28,4 @@ class OpOvApp : public opov::Application {
   ~OpOvApp() override = default;
 };
 
-#endif // _SRC_OPOVAPP_H
+#endif  // _SRC_OPOVAPP_H

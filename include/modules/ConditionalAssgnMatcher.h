@@ -20,9 +20,7 @@ namespace module {
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
  private:
   bool apply_transform;
-  typedef struct {
-    std::string type, variable, lhs, rhs, replacement;
-  } conditional_data;
+  typedef struct { std::string type, variable, lhs, rhs, replacement; } conditional_data;
 
  public:
   ConditionalAssgnMatcher();
@@ -41,4 +39,4 @@ class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif // MODULES_CONDITIONALASSGNMATCHER_H
+#endif  // MODULES_CONDITIONALASSGNMATCHER_H

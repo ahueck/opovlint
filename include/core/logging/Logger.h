@@ -18,7 +18,7 @@
 #define LOG_LEVEL 1
 #endif
 
-
+// clang-format off
 #define _OO_LOG_LEVEL_MSG(LEVEL_NUM, LEVEL, MSG) \
   if (LEVEL_NUM <= LOG_LEVEL) \
     llvm::errs() << LEVEL << ": " << __FILE__ << "@'" << __func__ << "' (" << __LINE__ << "): " << MSG << "\n"
@@ -37,5 +37,5 @@
 #define LOG_ERROR(MSG) _OO_LOG_LEVEL_MSG(1, "Error", MSG)
 #define LOG_FATAL(MSG) _OO_LOG_LEVEL_MSG(0, "Fatal", MSG)
 #define LOG_MSG(MSG) llvm::outs() << MSG << "\n"
-
-#endif // CORE_LOGGING_LOGGER_H
+// clang-format on
+#endif  // CORE_LOGGING_LOGGER_H

@@ -47,4 +47,4 @@ class Issue {
 
 } /* namespace opov */
 
-#endif // CORE_ISSUE_ISSUE_H
+#endif  // CORE_ISSUE_ISSUE_H

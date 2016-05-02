@@ -19,11 +19,11 @@ class Issue;
 
 struct TranslationUnitIssues {
   std::string MainSourceFile;
-  std::vector<std::shared_ptr<Issue> > Issues;
+  std::vector<std::shared_ptr<Issue>> Issues;
 };
 
 typedef llvm::StringMap<TranslationUnitIssues> TUIssuesMap;
 
 } /* namespace opov */
 
-#endif // CORE_ISSUE_ISSUEHANDLERSTRUCT_H
+#endif  // CORE_ISSUE_ISSUEHANDLERSTRUCT_H

@@ -49,4 +49,4 @@ class ModuleContext {
 
 } /* namespace opov */
 
-#endif // CORE_MODULE_MODULECONTEXT_H
+#endif  // CORE_MODULE_MODULECONTEXT_H

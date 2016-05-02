@@ -98,4 +98,4 @@ typename _Unique_if<T>::_Known_bound make_unique(Args&&...) = delete;
 } /* namespace util */
 } /* namespace opov */
 
-#endif // CORE_UTILITY_UTIL_H
+#endif  // CORE_UTILITY_UTIL_H

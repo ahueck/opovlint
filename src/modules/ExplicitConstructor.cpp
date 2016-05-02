@@ -17,8 +17,7 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-ExplicitConstructor::ExplicitConstructor()
-    : warnOnTemplates(false) {
+ExplicitConstructor::ExplicitConstructor() : warnOnTemplates(false) {
 }
 
 void ExplicitConstructor::setupOnce(const Configuration* config) {
@@ -26,13 +25,27 @@ void ExplicitConstructor::setupOnce(const Configuration* config) {
 }
 
 void ExplicitConstructor::setupMatcher() {
-  auto isTemplSpecialization = hasParent(classTemplateSpecializationDecl());
-  auto constructor =
+  // clang-format off
+  auto isTemplSpecialization =
+      hasParent(classTemplateSpecializationDecl());
+  DeclarationMatcher constructor =
       (warnOnTemplates
-           ? constructorDecl(unless(isTemplSpecialization))
-           : constructorDecl(unless(anyOf(isTemplSpecialization,
-                                          hasParent(recordDecl(hasParent(classTemplateDecl()))))))).bind("constructor");
+           ? constructorDecl(
+               unless(isTemplSpecialization)
+             )
+           : constructorDecl(
+                 unless(
+                     anyOf(
+                         isTemplSpecialization
+                         , hasParent(
+                               recordDecl(hasParent(classTemplateDecl()))
+                           )
+                     )
+                 )
+             )
+       ).bind("constructor");
   ;
+  // clang-format on
   addMatcher(constructor);
 }
 

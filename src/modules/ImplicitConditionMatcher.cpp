@@ -24,7 +24,6 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 ImplicitConditionMatcher::ImplicitConditionMatcher() {
-
 }
 
 /*
@@ -33,21 +32,53 @@ void ImplicitConditionMatcher::setupOnce(const Configuration* config) {
 */
 
 void ImplicitConditionMatcher::setupMatcher() {
-  auto impl = implicitCastExpr(isFloatingToBoolean(), unless(hasParent(binaryOperator())),
-                               hasSourceExpression(ofType(type_s))).bind("implicit");
-  auto unaryMatch =
-      unaryOperator(hasUnaryOperand(implicitCastExpr(isFloatingToBoolean(), hasSourceExpression(ofType(type_s)))))
-          .bind("unary");
+  // clang-format off
+  StatementMatcher impl =
+      implicitCastExpr(
+          isFloatingToBoolean()
+          , unless(hasParent(binaryOperator()))
+          , hasSourceExpression(ofType(type_s))
+      ).bind("implicit");
+
+  StatementMatcher unaryMatch =
+      unaryOperator(
+          hasUnaryOperand(
+              implicitCastExpr(
+                  isFloatingToBoolean()
+                  , hasSourceExpression(ofType(type_s))
+              )
+          )
+      ).bind("unary");
 
   /*auto typedef_condition =
-      hasCondition(anyOf(unaryMatch, expr(hasDescendant(unaryMatch)), impl, expr(hasDescendant(impl))));*/
+      hasCondition(
+          anyOf(
+              unaryMatch
+              , expr(hasDescendant(unaryMatch))
+              , impl
+              , expr(hasDescendant(impl))
+          )
+      );*/
 
-  auto typedef_condition = hasCondition(anyOf(descendant_or_self(unaryMatch), descendant_or_self(impl)));
+  auto typedef_condition =
+      hasCondition(
+          anyOf(
+              descendant_or_self(unaryMatch)
+              , descendant_or_self(impl)
+          )
+      );
 
   StatementMatcher all_cond =
-      stmt(anyOf(ifStmt(typedef_condition), forStmt(typedef_condition), doStmt(typedef_condition),
-                 whileStmt(typedef_condition), conditionalOperator(typedef_condition))).bind("stmt");
-
+      stmt(
+          anyOf(
+              ifStmt(typedef_condition)
+              , forStmt(typedef_condition)
+              , doStmt(typedef_condition)
+              , whileStmt(typedef_condition)
+              , conditionalOperator(typedef_condition)
+          )
+     ).bind("stmt");
+  // clang-format on
   this->addMatcher(all_cond);
 }
 

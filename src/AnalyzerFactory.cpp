@@ -18,11 +18,11 @@
 
 namespace opov {
 
-AnalyzerFactory::AnalyzerFactory(Configuration *config, IssueHandler *ihandler, TransformationHandler *thandler)
+AnalyzerFactory::AnalyzerFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
     : AbstractFactory(config, ihandler, thandler) {
 }
 
-bool AnalyzerFactory::handleBeginSource(clang::CompilerInstance &CI, clang::StringRef Filename) {
+bool AnalyzerFactory::handleBeginSource(clang::CompilerInstance& CI, clang::StringRef Filename) {
   AbstractFactory::handleBeginSource(CI, Filename);
   LOG_DEBUG("Called AnalyzerFactory beginsource: " << CI.hasASTConsumer());
   return true;

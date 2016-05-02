@@ -19,11 +19,7 @@
 namespace opov {
 
 ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
-    : config(config)
-    , issues()
-    , context(nullptr)
-    , ihandler(ihandler)
-    , thandler(thandler) {
+    : config(config), issues(), context(nullptr), ihandler(ihandler), thandler(thandler) {
   issues.reserve(100);
 }
 

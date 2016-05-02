@@ -29,4 +29,4 @@ class Configuration {
 
 } /* namespace opov */
 
-#endif // CORE_CONFIGURATION_CONFIGURATION_H
+#endif  // CORE_CONFIGURATION_CONFIGURATION_H

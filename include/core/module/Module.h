@@ -27,4 +27,4 @@ class Module {
 
 } /* namespace opov */
 
-#endif // CORE_MODULE_MODULE_H
+#endif  // CORE_MODULE_MODULE_H

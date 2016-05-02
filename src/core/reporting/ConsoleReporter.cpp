@@ -13,7 +13,6 @@
 namespace opov {
 
 ConsoleReporter::ConsoleReporter() {
-
 }
 
 void ConsoleReporter::addIssue(const TranslationUnitIssues& issue) {

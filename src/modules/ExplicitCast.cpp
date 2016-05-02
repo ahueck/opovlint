@@ -22,7 +22,6 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 ExplicitCast::ExplicitCast() {
-
 }
 
 void ExplicitCast::setupOnce(const Configuration* config) {
@@ -31,6 +30,7 @@ void ExplicitCast::setupOnce(const Configuration* config) {
 }
 
 void ExplicitCast::setupMatcher() {
+  // clang-format off
   /* We ignore constructor conversions. This case is handled in
    * ImplicitConversion module
    * We do not warn on casts to scalar pointer
@@ -39,10 +39,17 @@ void ExplicitCast::setupMatcher() {
    * static_cast<scalar*>(&my_scalar);
    */
   StatementMatcher invalid_expl_cast =
-      explicitCastExpr(unless(anyOf(hasDestinationType(hasCanonicalType(pointerType())), isTypedef(type_s),
-                                    isConstructorConversion())),
-                       hasSourceExpression(ofType(type_s))).bind("cast");
-
+      explicitCastExpr(
+          unless(
+              anyOf(
+                  hasDestinationType(hasCanonicalType(pointerType()))
+                  , isTypedef(type_s)
+                  , isConstructorConversion()
+              )
+          )
+          , hasSourceExpression(ofType(type_s))
+      ).bind("cast");
+  // clang-format on
   this->addMatcher(invalid_expl_cast);
 }
 
@@ -55,7 +62,7 @@ void ExplicitCast::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
   if (transform) {
     auto& thandle = context->getTransformationHandler();
     auto replace = trutil::reCast(context->getASTContext(), ecast, type_s, stmt_cast);
-//    thandle.addHeader(header_cast, clutil::locOf(context->getSourceManager(), ecast).getBegin());
+    //    thandle.addHeader(header_cast, clutil::locOf(context->getSourceManager(), ecast).getBegin());
     thandle.addReplacements(replace);
   }
 }

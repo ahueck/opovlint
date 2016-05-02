@@ -11,8 +11,7 @@
 
 namespace opov {
 
-ModuleConsumer::ModuleConsumer(Module *module, ModuleContext *mcontext)
-    : AbstractModuleConsumer(module, mcontext) {
+ModuleConsumer::ModuleConsumer(Module* module, ModuleContext* mcontext) : AbstractModuleConsumer(module, mcontext) {
 }
 
 ModuleConsumer::~ModuleConsumer() {

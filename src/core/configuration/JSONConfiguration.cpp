@@ -13,7 +13,6 @@
 namespace opov {
 
 JSONConfiguration::JSONConfiguration() {
-
 }
 
 bool JSONConfiguration::load(const std::string& file) {

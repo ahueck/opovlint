@@ -70,9 +70,9 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
   config->getValue("replacement:location", replacement_loc);
   config->getValue("replacement:apply", apply_replacements);
 
-  if(!replacementHandler.findClangApplyReplacements("")) {
-	  LOG_ERROR("Could not find clang-apply-replacement");
-	  return 0;
+  if (!replacementHandler.findClangApplyReplacements("")) {
+    LOG_ERROR("Could not find clang-apply-replacement");
+    return 0;
   }
 
   for (auto& module : modules) {
@@ -85,13 +85,13 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
   }
   report();
   replacementHandler.setDestinationDir(replacement_loc);
-  if(!replacementHandler.serializeReplacements(thandler->getAllReplacements())) {
-      LOG_DEBUG("Failed to serialize replacements");
+  if (!replacementHandler.serializeReplacements(thandler->getAllReplacements())) {
+    LOG_DEBUG("Failed to serialize replacements");
   }
-  if(apply_replacements) {
-      if(!replacementHandler.applyReplacements()) {
-          LOG_DEBUG("Failed to apply replacements");
-      }
+  if (apply_replacements) {
+    if (!replacementHandler.applyReplacements()) {
+      LOG_DEBUG("Failed to apply replacements");
+    }
   }
 
   return sig;
@@ -134,7 +134,6 @@ void Application::addModule(Module* module) {
 */
 
 void Application::cleanUp() {
-
 }
 
 std::string Application::getApplicationName() {

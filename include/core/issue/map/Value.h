@@ -23,15 +23,11 @@ class Value {
   std::shared_ptr<void> value;
 
  public:
-  Value()
-      : type("unknown")
-      , value(nullptr) {
+  Value() : type("unknown"), value(nullptr) {
   }
 
   template <typename T>
-  explicit Value(const T& val)
-      : type(PropertyType<T>::name())
-      , value(std::make_shared<T>(val)) {
+  explicit Value(const T& val) : type(PropertyType<T>::name()), value(std::make_shared<T>(val)) {
   }
 
   template <typename T>
@@ -42,4 +38,4 @@ class Value {
 
 } /* namespace opov */
 
-#endif // CORE_ISSUE_MAP_VALUE_H
+#endif  // CORE_ISSUE_MAP_VALUE_H

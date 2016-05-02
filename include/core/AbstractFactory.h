@@ -49,4 +49,4 @@ class AbstractFactory : public IFactory {
 
 } /* namespace opov */
 
-#endif // CORE_ABSTRACTFACTORY_H
+#endif  // CORE_ABSTRACTFACTORY_H

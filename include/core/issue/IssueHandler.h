@@ -42,4 +42,4 @@ class IssueHandler {
 
 #include "IssueHandler.hpp"
 
-#endif // CORE_ISSUE_ISSUEHANDLER_H
+#endif  // CORE_ISSUE_ISSUEHANDLER_H

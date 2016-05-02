@@ -9,10 +9,7 @@
 
 namespace opov {
 
-IssueHandler::IssueHandler()
-    : source("")
-    , issues()
-    , ac(nullptr) {
+IssueHandler::IssueHandler() : source(""), issues(), ac(nullptr) {
 }
 
 void IssueHandler::setSource(const std::string& current) {

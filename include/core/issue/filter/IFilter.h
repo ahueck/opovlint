@@ -9,9 +9,9 @@ namespace opov {
 namespace filter {
 
 class IFilter {
-public:
-    virtual IssueSet apply(const TUIssuesMap& map) = 0;
-    virtual ~IFilter() = default;
+ public:
+  virtual IssueSet apply(const TUIssuesMap& map) = 0;
+  virtual ~IFilter() = default;
 };
 
 } /* namespace filter */

@@ -26,4 +26,4 @@ class IssueReporter {
 
 } /* namespace opov */
 
-#endif // CORE_REPORTING_ISSUEREPORTER_H
+#endif  // CORE_REPORTING_ISSUEREPORTER_H

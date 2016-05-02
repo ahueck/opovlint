@@ -75,8 +75,8 @@ AST_MATCHER(TagDecl, isUnion) {
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
-  //auto& ct = Finder->getASTContext();
-  //LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
+  // auto& ct = Finder->getASTContext();
+  // LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
   return is_type;
 }
 
@@ -119,4 +119,4 @@ AST_MATCHER(NestedNameSpecifier, isGlobalNamespace) {
 } /* namespace ast_matchers */
 } /* namespace clang */
 
-#endif // CORE_UTILITY_CLANGMATCHEREXT_H
+#endif  // CORE_UTILITY_CLANGMATCHEREXT_H

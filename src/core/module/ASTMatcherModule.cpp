@@ -12,7 +12,6 @@
 namespace opov {
 
 ASTMatcherModule::ASTMatcherModule() {
-
 }
 
 void ASTMatcherModule::init(const Configuration* config) {

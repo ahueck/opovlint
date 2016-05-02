@@ -28,4 +28,4 @@ class IFactory : public clang::tooling::SourceFileCallbacks {
 
 } /* namespace opov */
 
-#endif // CORE_IFACTORY_H
+#endif  // CORE_IFACTORY_H

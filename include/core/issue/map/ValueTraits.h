@@ -75,4 +75,4 @@ struct PropertyType<unsigned int> {
 
 } /* namespace opov */
 
-#endif // CORE_ISSUE_MAP_VALUETRAITS_H
+#endif  // CORE_ISSUE_MAP_VALUETRAITS_H

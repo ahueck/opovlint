@@ -19,24 +19,39 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 AllImplicitConversion::AllImplicitConversion() {
-
 }
 
 /*
-void AllImplicitConversion::setupOnce(const Configuration* config) {
-}
-*/
+ void AllImplicitConversion::setupOnce(const Configuration* config) {
+ }
+ */
 void AllImplicitConversion::setupMatcher() {
-  StatementMatcher impl_conversion = materializeTemporaryExpr(
-      hasTemporary(ignoringImpCasts(constructExpr(unless(temporaryObjectExpr())).bind("conversion"))));
-
-  /*constructExpr(unless(anyOf(
-                                                                                                  hasDeclaration(constructorDecl(isCopyOrMoveCtor()))
-                                                                                                  ,
-     hasParent(explicitCastExpr(isConstructorConversion()))
-                                                                                                  ,
-     hasParent(varDecl())))
-                                                                                  ).bind("conversion");*/
+  // clang-format off
+  StatementMatcher impl_conversion =
+      materializeTemporaryExpr(
+          hasTemporary(
+              ignoringImpCasts(
+                  constructExpr(
+                      unless(temporaryObjectExpr())
+                  ).bind("conversion")
+              )
+          )
+      );
+  /* constructExpr(
+          unless(
+              anyOf(
+                  hasDeclaration(
+                      constructorDecl(isCopyOrMoveCtor())
+                  )
+                  , hasParent(
+                        explicitCastExpr(
+                            isConstructorConversion())
+                        )
+                  , hasParent(varDecl())
+              )
+          )
+      ).bind("conversion");*/
+  // clang-format on
   this->addMatcher(impl_conversion);
 }
 

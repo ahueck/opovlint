@@ -33,4 +33,4 @@ typedef std::map<std::string, Value> property_map;
 
 } /* namespace opov */
 
-#endif // CORE_ISSUE_MAP_PROPERTYMAP_H
+#endif  // CORE_ISSUE_MAP_PROPERTYMAP_H

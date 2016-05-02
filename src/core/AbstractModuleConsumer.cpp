@@ -14,8 +14,7 @@
 namespace opov {
 
 AbstractModuleConsumer::AbstractModuleConsumer(Module* module, ModuleContext* mcontext)
-    : module(module)
-    , mcontext(mcontext) {
+    : module(module), mcontext(mcontext) {
 }
 
 void AbstractModuleConsumer::Initialize(clang::ASTContext& Context) {

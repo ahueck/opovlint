@@ -60,14 +60,13 @@ class Application {
                             const std::vector<std::string>& args = std::vector<std::string>());
   virtual void report();
   virtual std::string getApplicationName();
-  template<typename T, typename... Args>
+  template <typename T, typename... Args>
   void addModule(Args&&... arguments);
   virtual ~Application();
-
 };
 
 } /* namespace opov */
 
 #include "Application.hpp"
 
-#endif // CORE_APPLICATION_H
+#endif  // CORE_APPLICATION_H

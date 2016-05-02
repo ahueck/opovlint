@@ -33,4 +33,4 @@ class AbstractModule : public Module {
 
 } /* namespace opov */
 
-#endif // CORE_MODULE_ABSTRACTMODULE_H
+#endif  // CORE_MODULE_ABSTRACTMODULE_H

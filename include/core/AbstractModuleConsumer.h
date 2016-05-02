@@ -31,4 +31,4 @@ class AbstractModuleConsumer : public clang::ASTConsumer {
 
 } /* namespace opov */
 
-#endif // CORE_ABSTRACTMODULECONSUMER_H
+#endif  // CORE_ABSTRACTMODULECONSUMER_H

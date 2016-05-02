@@ -15,9 +15,9 @@ namespace opov {
 class ConsoleReporter : public opov::IssueReporter {
  public:
   ConsoleReporter();
-  void addIssue(const TranslationUnitIssues &issue) override;
-  void addIssues(const TUIssuesMap &issues) override;
-  void addIssues(const filter::IssueSet &issues) override;
+  void addIssue(const TranslationUnitIssues& issue) override;
+  void addIssues(const TUIssuesMap& issues) override;
+  void addIssues(const filter::IssueSet& issues) override;
   ~ConsoleReporter() override;
 
  private:
@@ -26,4 +26,4 @@ class ConsoleReporter : public opov::IssueReporter {
 
 } /* namespace opov */
 
-#endif // CORE_REPORTING_CONSOLEREPORTER_H
+#endif  // CORE_REPORTING_CONSOLEREPORTER_H

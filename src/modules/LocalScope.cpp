@@ -14,36 +14,57 @@
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 
-
 namespace opov {
 namespace module {
 
 using namespace clang;
 using namespace clang::ast_matchers;
 
-LocalScope::LocalScope()
-: ns_s(""), keep_global(false), functions_wl() {
+LocalScope::LocalScope() : ns_s(""), keep_global(false), functions_wl() {
 }
 
 void LocalScope::setupOnce(const Configuration* config) {
   config->getValue("LocalScope:namespace", ns_s);
   config->getValue("LocalScope:keep_global", keep_global);
 
-  //std::vector<std::string> functions;
+  // std::vector<std::string> functions;
   config->getVector("LocalScope:functions", functions_wl);
-  //functions_wl(functions.begin(), functions.end());
+  // functions_wl(functions.begin(), functions.end());
 }
 
 void LocalScope::setupMatcher() {
+  // clang-format off
   // This matches calls to functions with scalar arguments but also functions with scalar parameters or scalar retun type.
-  auto call_matcher =
-      callExpr(anyOf(
-                      callee(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
-                      hasAnyArgument(ignoringImpCasts(isTypedef(type_s))),
-                      isTypedef(type_s)
-                    ),
-               callee(expr(ignoringImpCasts(declRefExpr(has(nestedNameSpecifier(specifiesNamespace(hasName(ns_s))))))))).bind("call");
-
+  StatementMatcher call_matcher =
+      callExpr(
+          anyOf(
+              callee(
+                  functionDecl(
+                      hasAnyParameter(
+                          varDecl(isTypedef(type_s))
+                      )
+                  )
+              )
+              , hasAnyArgument(
+                    ignoringImpCasts(isTypedef(type_s))
+                )
+              , isTypedef(type_s)
+          )
+          , callee(
+                expr(
+                    ignoringImpCasts(
+                        declRefExpr(
+                            has(
+                                nestedNameSpecifier(
+                                    specifiesNamespace(hasName(ns_s))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+      ).bind("call");
+  // clang-format on
   this->addMatcher(call_matcher);
 }
 
@@ -53,7 +74,7 @@ void LocalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result
   auto& ihandle = context->getIssueHandler();
   ihandle.addIssue(call, moduleName(), moduleDescription());
 
-  if(transform) {
+  if (transform) {
     auto& thandle = context->getTransformationHandler();
     auto& ac = context->getASTContext();
     auto& sm = context->getSourceManager();
@@ -62,9 +83,10 @@ void LocalScope::run(const clang::ast_matchers::MatchFinder::MatchResult& result
     const std::string replace_str((keep_global && offset == 4) ? "::" : "");
 
     std::string func_name = name.substr(ns_s.length() + offset);
-    auto ret = std::find_if (functions_wl.begin(), functions_wl.end(), [&](const std::string& wl_func) { return util::startsWith(func_name, wl_func); });
-    if(std::end(functions_wl) != ret) {
-      thandle.addReplacements(tooling::Replacement(sm, call->getLocStart(), ns_s.length() + offset,  replace_str));
+    auto ret = std::find_if(functions_wl.begin(), functions_wl.end(),
+                            [&](const std::string& wl_func) { return util::startsWith(func_name, wl_func); });
+    if (std::end(functions_wl) != ret) {
+      thandle.addReplacements(tooling::Replacement(sm, call->getLocStart(), ns_s.length() + offset, replace_str));
     }
   }
 }

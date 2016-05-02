@@ -54,4 +54,4 @@ class TransformationHandler {
 
 } /* namespace opov */
 
-#endif // CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
+#endif  // CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H

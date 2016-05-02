@@ -14,9 +14,7 @@
 
 namespace opov {
 
-AbstractModule::AbstractModule()
-    : context(nullptr)
-    , transform(false) {
+AbstractModule::AbstractModule() : context(nullptr), transform(false) {
 }
 
 void AbstractModule::init(const Configuration* config) {
@@ -26,9 +24,7 @@ void AbstractModule::init(const Configuration* config) {
 }
 
 void AbstractModule::setupOnce(const Configuration* config) {
-
 }
-
 
 void AbstractModule::execute(ModuleContext* context) {
   this->context = context;

@@ -6,10 +6,10 @@
 namespace opov {
 namespace filter {
 
-class UniqueFilter: public IFilter {
-public:
+class UniqueFilter : public IFilter {
+ public:
   UniqueFilter();
-  IssueSet apply(const TUIssuesMap &map) override;
+  IssueSet apply(const TUIssuesMap& map) override;
   ~UniqueFilter() override;
 };
 

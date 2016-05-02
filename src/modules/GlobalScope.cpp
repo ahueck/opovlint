@@ -20,7 +20,6 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 GlobalScope::GlobalScope() {
-
 }
 
 /*
@@ -28,16 +27,29 @@ void GlobalScope::setupOnce(const Configuration* config) {
 }
 */
 void GlobalScope::setupMatcher() {
+  // clang-format off
   // This matches calls to functions with scalar arguments but also functions with scalar parameters and scalar return type.
-  auto call_matcher =
-      callExpr(anyOf(
-                      callee(functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))),
-                      hasAnyArgument(ignoringImpCasts(isTypedef(type_s))),
-                      isTypedef(type_s)
-
-                    ),
-               callee(expr(ignoringImpCasts(declRefExpr(has(nestedNameSpecifier(isGlobalNamespace()))))))).bind("call");
-
+  StatementMatcher call_matcher =
+      callExpr(
+          anyOf(
+              callee(
+                  functionDecl(hasAnyParameter(varDecl(isTypedef(type_s))))
+              )
+              , hasAnyArgument(
+                    ignoringImpCasts(isTypedef(type_s))
+                )
+              , isTypedef(type_s))
+              , callee(
+                    expr(
+                        ignoringImpCasts(
+                            declRefExpr(
+                                has(nestedNameSpecifier(isGlobalNamespace()))
+                            )
+                        )
+                    )
+                )
+      ).bind("call");
+  // clang-format on
   this->addMatcher(call_matcher);
 }
 

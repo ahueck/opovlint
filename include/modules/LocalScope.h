@@ -17,15 +17,16 @@ namespace opov {
 namespace module {
 
 class LocalScope : public opov::ASTMatcherModule {
-private:
+ private:
   std::string ns_s;
   bool keep_global;
   std::vector<std::string> functions_wl;
+
  public:
   LocalScope();
-  void setupOnce(const Configuration *config) override;
+  void setupOnce(const Configuration* config) override;
   void setupMatcher() override;
-  void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
   std::string moduleName() override;
   std::string moduleDescription() override;
   ~LocalScope() override;
@@ -34,4 +35,4 @@ private:
 } /* namespace module */
 } /* namespace opov */
 
-#endif // MODULES_LOCALSCOPE_H
+#endif  // MODULES_LOCALSCOPE_H

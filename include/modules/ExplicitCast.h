@@ -24,9 +24,9 @@ class ExplicitCast : public opov::ASTMatcherModule {
 
  public:
   ExplicitCast();
-  void setupOnce(const Configuration *config) override;
+  void setupOnce(const Configuration* config) override;
   void setupMatcher() override;
-  void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
   std::string moduleName() override;
   std::string moduleDescription() override;
   ~ExplicitCast() override;
@@ -35,4 +35,4 @@ class ExplicitCast : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif // MODULES_EXPLICITCAST_H
+#endif  // MODULES_EXPLICITCAST_H

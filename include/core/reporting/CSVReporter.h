@@ -15,9 +15,9 @@ namespace opov {
 class CSVReporter : public opov::IssueReporter {
  public:
   CSVReporter();
-  void addIssue(const TranslationUnitIssues &issue) override;
-  void addIssues(const TUIssuesMap &issues) override;
-  void addIssues(const filter::IssueSet &issues) override;
+  void addIssue(const TranslationUnitIssues& issue) override;
+  void addIssues(const TUIssuesMap& issues) override;
+  void addIssues(const filter::IssueSet& issues) override;
   ~CSVReporter() override;
 
  private:
@@ -26,4 +26,4 @@ class CSVReporter : public opov::IssueReporter {
 
 } /* namespace opov */
 
-#endif // CORE_REPORTING_CSVREPORTER_H
+#endif  // CORE_REPORTING_CSVREPORTER_H

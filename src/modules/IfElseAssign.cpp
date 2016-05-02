@@ -29,24 +29,65 @@ void IfElseAssign::setupOnce(const Configuration* config) {
 }
 
 void IfElseAssign::setupMatcher() {
+  // clang-format off
 // ADOL-C speaks about all types being 'active', we should warn whenever an active type is involved (scalar).
 // Caveat:    We limit ourselves to conditionaloperator-like structures (as shown in ADOL-C tech paper)
 //            That is if or if-else with each having exactly one assignment with an active type involved
 // auto assign = binaryOperator(hasOperatorName("="), hasDescendant(expr(isTypedef(type_s)))).bind(BIND);
 // auto single_expr = anyOf(compoundStmt(statementCountIs(1), has(assign)), assign);
-#define assign_bind(BIND) \
-  binaryOperator(hasOperatorName("="), \
-  hasLHS(declRefExpr(ofType(type_s))), \
-  unless(hasRHS(ignoringImpCasts(conditionalOperator(anyOf(hasTrueExpression(ofType(type_s)), hasFalseExpression(ofType(type_s))))))), \
-  hasRHS(expr(ofType(type_s)))).bind(BIND)
-#define assign_expr(BIND) anyOf(compoundStmt(statementCountIs(1), has(assign_bind(BIND))), assign_bind(BIND))
+#define assign_bind(BIND)                                           \
+  binaryOperator(                                                   \
+      hasOperatorName("=")                                          \
+      , hasLHS(declRefExpr(ofType(type_s)))                         \
+      , unless(                                                     \
+            hasRHS(                                                 \
+                ignoringImpCasts(                                   \
+                    conditionalOperator(                            \
+                        anyOf(                                      \
+                            hasTrueExpression(ofType(type_s))       \
+                            , hasFalseExpression(ofType(type_s))    \
+                        )                                           \
+                    )                                               \
+                )                                                   \
+            )                                                       \
+        )                                                           \
+      , hasRHS(                                                     \
+            expr(ofType(type_s))                                    \
+        )                                                           \
+  ).bind(BIND)
 
-  auto conditional = ifStmt(hasThenStmt(assign_expr("then")),
-                            anyOf(hasElseStmt(assign_expr("else")), unless(hasElseStmt(stmt())))).bind("conditional");
+#define assign_expr(BIND)               \
+  anyOf(                                \
+      compoundStmt(                     \
+          statementCountIs(1)           \
+          , has(                        \
+                assign_bind(BIND)       \
+            )                           \
+      )                                 \
+      , assign_bind(BIND)               \
+  )
 
-  // auto conditional =
-  //    ifStmt(anyOf(allOf(hasThenStmt(assign_expr("then")), hasElseStmt(assign_expr("else"))),
-  //                 hasThenStmt(assign_expr("then")), unless(hasElseStmt(stmt())))).bind("conditional");
+  StatementMatcher conditional =
+      ifStmt(
+          hasThenStmt(assign_expr("then"))
+          , anyOf(
+                hasElseStmt(assign_expr("else"))
+                , unless(hasElseStmt(stmt()))
+            )
+      ).bind("conditional");
+
+   /*StatementMatcher conditional =
+       ifStmt(
+           anyOf(
+               allOf(
+                   hasThenStmt(assign_expr("then"))
+                   , hasElseStmt(assign_expr("else"))
+               )
+               , hasThenStmt(assign_expr("then"))
+               , unless(hasElseStmt(stmt()))
+           )
+       ).bind("conditional");*/
+  // clang-format on
   this->addMatcher(conditional);
 }
 

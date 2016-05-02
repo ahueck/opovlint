@@ -26,8 +26,7 @@
 #include <modules/LocalScope.h>
 #include <modules/UnionMatcher.h>
 
-OpOvApp::OpOvApp(const std::string &config_path)
-    : config_path(config_path) {
+OpOvApp::OpOvApp(const std::string& config_path) : config_path(config_path) {
 }
 
 void OpOvApp::loadConfig() {

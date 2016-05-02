@@ -18,9 +18,9 @@ namespace module {
 class ImplicitConversion : public opov::ASTMatcherModule {
  public:
   ImplicitConversion();
-  //virtual void setupOnce(const Configuration* config) override;
+  // virtual void setupOnce(const Configuration* config) override;
   void setupMatcher() override;
-  void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
   std::string moduleName() override;
   std::string moduleDescription() override;
   ~ImplicitConversion() override;
@@ -29,4 +29,4 @@ class ImplicitConversion : public opov::ASTMatcherModule {
 } /* namespace module */
 } /* namespace opov */
 
-#endif // MODULES_IMPLICITCONVERSION_H
+#endif  // MODULES_IMPLICITCONVERSION_H

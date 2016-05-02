@@ -15,7 +15,6 @@
 namespace opov {
 
 CSVReporter::CSVReporter() {
-
 }
 
 void CSVReporter::addIssue(const TranslationUnitIssues& issue) {

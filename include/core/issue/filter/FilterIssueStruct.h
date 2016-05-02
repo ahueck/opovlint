@@ -11,12 +11,12 @@ namespace opov {
 namespace filter {
 
 struct IssuesFiltered {
-	std::shared_ptr<Issue> issue;
-	std::vector<std::string> tunits;
+  std::shared_ptr<Issue> issue;
+  std::vector<std::string> tunits;
 };
 
 struct issue_compare {
-  bool operator() (const IssuesFiltered& a, const IssuesFiltered& b) {
+  bool operator()(const IssuesFiltered& a, const IssuesFiltered& b) {
     return a.issue->hash() != b.issue->hash();
   }
 };
