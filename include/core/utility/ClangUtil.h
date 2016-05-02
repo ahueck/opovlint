@@ -201,42 +201,43 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   return tok.getLocation();
 }
 
-class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
+class TypeDeducer final : public clang::RecursiveASTVisitor<TypeDeducer> {
  private:
-  bool subtreeHasType;
+  bool subtree_has_type;
   std::string type;
   bool is_builtin;
 
  public:
-  explicit TypeDeducer(const std::string& type) : subtreeHasType(false), type(type), is_builtin(isBuiltin(type)) {
+  explicit TypeDeducer(const std::string& type) : subtree_has_type(false), type(type), is_builtin(is_builtin_type(type)) {
   }
 
   template <typename NODE>
   bool hasType(NODE node) {
-    this->subtreeHasType = false;
+    this->subtree_has_type = false;
     this->TraverseStmt(node);
-    return subtreeHasType;
+
+    return subtree_has_type;
   }
 
   bool TraverseStmt(clang::Stmt* S) {
     clang::Expr* expr = clang::dyn_cast<clang::Expr>(S);
     if (expr != nullptr) {
-      if (typeFound(expr)) {
-        subtreeHasType = true;
-        return false;
-      } else if (terminate(expr)) {
+      subtree_has_type = type_found(expr);
+      const bool terminate_recursion = terminate(expr);
+      if (subtree_has_type || terminate_recursion) {
         return false;
       }
     }
+
     return RecursiveASTVisitor<TypeDeducer>::TraverseStmt(S);
   }
 
  private:
-  inline static bool isBuiltin(const std::string& type) {
+  inline static bool is_builtin_type(const std::string& type) {
     return type == "double" || type == "float";
   }
 
-  inline bool typeFound(clang::Expr* expr) {
+  inline bool type_found(clang::Expr* expr) {
     // we cont. if binary/parens returns double/float, happens even with typedef
     // types
     // TODO: possibly extend to unary ops too!

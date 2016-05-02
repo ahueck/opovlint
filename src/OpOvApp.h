@@ -23,7 +23,7 @@ class OpOvApp : public opov::Application {
   void initModules() override;
 
  public:
-  OpOvApp(const std::string& config_path);
+  explicit OpOvApp(const std::string& config_path);
 
   ~OpOvApp() override = default;
 };

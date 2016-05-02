@@ -14,14 +14,11 @@
 
 namespace opov {
 
-class Issue {
+class Issue final {
  private:
   property_map _properties;
 
  public:
-  Issue() {
-  }
-
   const property_map& properties() {
     return _properties;
   }
