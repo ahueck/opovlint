@@ -1,7 +1,23 @@
-language: C++
+language: 
+  - cpp
 
-compiler:
-  - gcc
+os:
+  - linux
+
+dist:
+  - trusty
+
+sudo:
+  - required
+
+env:
+  - CXX_COMPILER=g++ C_COMPILER=gcc SANITIZE=0 BUILD_DIR=build
+  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address
+  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory
+
+matrix:
+  allow_failures:
+    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Memory BUILD_DIR=build_memory
 
 before_install:
   - sudo apt-get update -qq
@@ -10,15 +26,17 @@ install:
   - sudo apt-get --yes install zlib1g-dev libxml2-dev libedit-dev clang-3.6 libclang-common-3.6-dev libclang-3.6-dev libclang1-3.6 libllvm3.6 llvm-3.6 llvm-3.6-dev llvm-3.6-runtime
 
 before_script:
-  - mkdir build
-  - cd build
+  - mkdir ${BUILD_DIR}
+  - cd ${BUILD_DIR}
 
 script: 
-  - cmake -DCMAKE_CXX_COMPILER=g++ -DMAKE_TEST=TRUE -DLOG_LEVEL=0 ..
+  - cmake -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DCMAKE_C_COMPILER=${C_COMPILER} -DMAKE_TEST=1 -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 ..
   - make
-  - cd .. && chmod +x unit_tests.sh
-  - ./unit_tests.sh
+  - cd ..
+  - ./scripts/unit_tests.sh
+  - if [[ ! $SANITIZE -eq 0 ]] ; then ./scripts/sanitizer.sh ${SANITIZE} ; fi
 
 branches:
   only:
     - master
+    - devel

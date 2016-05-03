@@ -22,6 +22,6 @@ for test in ./bin/test_* ; do
   fi
 done
 
-if [ $failed -eq 1 ] ; then
+if [ $failed -ge 1 ] ; then
   echo "# of failed tests:" $failed && exit 1
 fi
