@@ -12,12 +12,14 @@ sudo:
 
 env:
   - CXX_COMPILER=g++ C_COMPILER=gcc SANITIZE=0 BUILD_DIR=build
+  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=0 BUILD_DIR=build_clang
   - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address
   - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory
 
 matrix:
   allow_failures:
     - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Memory BUILD_DIR=build_memory
+    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address
 
 before_install:
   - sudo apt-get update -qq
