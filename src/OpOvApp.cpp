@@ -35,7 +35,7 @@ void OpOvApp::loadConfig() {
   if (!success) {
     LOG_FATAL("Could not find configuration file under '" << config_path << "'."
                                                           << "Exiting...");
-    exit(-1);
+    std::exit(EXIT_FAILURE);
   }
 }
 

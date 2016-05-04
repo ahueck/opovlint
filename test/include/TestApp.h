@@ -35,7 +35,7 @@ protected:
 		config = opov::util::make_unique<JSONConfiguration>();
 		bool success = config->load(conf_file);
 		if (!success) {
-			exit(-1);
+		  std::exit(EXIT_FAILURE);
 		}
 	}
 
