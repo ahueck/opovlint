@@ -208,7 +208,8 @@ class TypeDeducer final : public clang::RecursiveASTVisitor<TypeDeducer> {
   bool is_builtin;
 
  public:
-  explicit TypeDeducer(const std::string& type) : subtree_has_type(false), type(type), is_builtin(is_builtin_type(type)) {
+  explicit TypeDeducer(const std::string& type)
+      : subtree_has_type(false), type(type), is_builtin(is_builtin_type(type)) {
   }
 
   template <typename NODE>

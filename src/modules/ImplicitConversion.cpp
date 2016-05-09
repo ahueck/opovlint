@@ -77,7 +77,7 @@ void ImplicitConversion::setupMatcher() {
       ).bind("impl_assign");
   // clang-format on
   this->addMatcher(impl_conversion);
-  this->addMatcher(impl_assign);
+  //this->addMatcher(impl_assign);
 }
 
 void ImplicitConversion::run(const clang::ast_matchers::MatchFinder::MatchResult& result) {
