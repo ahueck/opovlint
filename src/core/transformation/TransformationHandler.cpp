@@ -8,17 +8,14 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/logging/Logger.h>
 
-#include <clang/Tooling/Refactoring.h>
 #include <clang/Rewrite/Core/Rewriter.h>
+#include <clang/Tooling/Refactoring.h>
 
 namespace opov {
 
 using namespace clang::tooling;
 
-TransformationHandler::TransformationHandler()
-    : replacements()
-    , source("")
-    , includes(nullptr) {
+TransformationHandler::TransformationHandler() : replacements(), source(""), includes(nullptr) {
 }
 
 void TransformationHandler::setSource(const std::string& current) {
@@ -30,14 +27,13 @@ void TransformationHandler::initRewriter(clang::SourceManager& sm, const clang::
 }
 
 void TransformationHandler::addReplacements(const clang::tooling::Replacement& replacement) {
-  //replacement.apply(rewriter);
+  // replacement.apply(rewriter);
 
   TranslationUnitReplacements& tunit = replacements[source];
   if (tunit.MainSourceFile.empty()) {
     tunit.MainSourceFile = source;
   }
   tunit.Replacements.push_back(replacement);
-
 }
 
 void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
@@ -45,7 +41,7 @@ void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
   nl_opt.RemoveLineIfEmpty = true;
   if (Hint.CodeToInsert.empty()) {
     if (!Hint.InsertFromRange.isValid()) {
-      //rewriter.RemoveText(Hint.RemoveRange, nl_opt);
+      // rewriter.RemoveText(Hint.RemoveRange, nl_opt);
       // rewriter.ReplaceText(Hint.RemoveRange.getAsRange(), "");
     }
     // if (Hint.InsertFromRange.isValid())
@@ -56,11 +52,11 @@ void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
   } else {
     if (Hint.RemoveRange.isTokenRange() || Hint.RemoveRange.getBegin() != Hint.RemoveRange.getEnd()) {
       // commit.replace(Hint.RemoveRange, Hint.CodeToInsert);
-      //rewriter.ReplaceText(Hint.RemoveRange.getAsRange(), Hint.CodeToInsert);
+      // rewriter.ReplaceText(Hint.RemoveRange.getAsRange(), Hint.CodeToInsert);
     } else {
       // commit.insert(Hint.RemoveRange.getBegin(), Hint.CodeToInsert,/*afterToken=*/false,
       // Hint.BeforePreviousInsertions);
-      //rewriter.InsertText(Hint.RemoveRange.getBegin(), Hint.CodeToInsert, Hint.BeforePreviousInsertions, true);
+      // rewriter.InsertText(Hint.RemoveRange.getBegin(), Hint.CodeToInsert, Hint.BeforePreviousInsertions, true);
       // rewriter.ReplaceText(Hint.RemoveRange.getBegin(),0, Hint.CodeToInsert);
     }
   }
@@ -74,7 +70,7 @@ void TransformationHandler::addReplacements(const clang::FixItHint& Hint) {
 }
 
 void TransformationHandler::addHeader(const std::string& header, clang::SourceLocation loc) {
-  addReplacements(includes->addAngledInclude(loc, header));
+  // FIXME addReplacements(includes->addAngledInclude(loc, header));
 }
 
 void TransformationHandler::addReplacements(const std::vector<clang::tooling::Replacement>& replacements) {
@@ -99,7 +95,6 @@ TUReplacementsMap& TransformationHandler::getAllReplacements() {
   return replacements;
 }
 
-TransformationHandler::~TransformationHandler() {
-}
+TransformationHandler::~TransformationHandler() = default;
 
 } /* namespace opov */

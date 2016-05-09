@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef EXPLICITCONSTRUCTOR_H_
-#define EXPLICITCONSTRUCTOR_H_
+#ifndef MODULES_EXPLICITCONSTRUCTOR_H
+#define MODULES_EXPLICITCONSTRUCTOR_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -19,15 +19,15 @@ class ExplicitConstructor : public opov::ASTMatcherModule {
 
  public:
   ExplicitConstructor();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~ExplicitConstructor();
+  void setupOnce(const Configuration* config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~ExplicitConstructor() override;
 };
 
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* EXPLICITCONSTRUCTOR_H_ */
+#endif  // MODULES_EXPLICITCONSTRUCTOR_H

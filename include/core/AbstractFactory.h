@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ABSTRACTFACTORY_H_
-#define ABSTRACTFACTORY_H_
+#ifndef CORE_ABSTRACTFACTORY_H
+#define CORE_ABSTRACTFACTORY_H
 
 #include "IFactory.h"
 
@@ -16,10 +16,10 @@
 
 namespace clang {
 class CompilerInstance;
-}
+} /* namespace clang */
 namespace llvm {
 class StringRef;
-}
+} /* namespace llvm */
 
 namespace opov {
 
@@ -40,13 +40,13 @@ class AbstractFactory : public IFactory {
 
  public:
   AbstractFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
-  virtual bool handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) override;
-  virtual void handleEndSource() override;
-  virtual void init() override;
-  virtual void setModule(Module* m) override;
-  virtual ~AbstractFactory();
+  bool handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) override;
+  void handleEndSource() override;
+  void init() override;
+  void setModule(Module* m) override;
+  ~AbstractFactory() override;
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* ABSTRACTFACTORY_H_ */
+#endif  // CORE_ABSTRACTFACTORY_H

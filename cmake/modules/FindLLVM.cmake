@@ -13,10 +13,11 @@ function(setup_llvm)
 ## Out:
 ##  Var: ${LLVM_ROOT_DIR} (Prefix of LLVM)
 ##  Exe: ${LLVM_CONFIG}
-  set(llvm_config_names llvm-config-3.7
-                        llvm-config-3.6
-                        llvm-config-3.5
-                        llvm-config)
+  set(llvm_config_names llvm-config-3.6
+                        llvm-config
+                        llvm-config-3.7
+                        llvm-config-3.8
+                        llvm-config-3.9)
 
   find_program(LLVM_CONFIG
       NAMES ${llvm_config_names}

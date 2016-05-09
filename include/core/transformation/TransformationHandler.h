@@ -5,13 +5,12 @@
  *      Author: ahueck
  */
 
-#ifndef TRANSFORMATIONHANDLER_H_
-#define TRANSFORMATIONHANDLER_H_
-
-#include <clang/Rewrite/Core/Rewriter.h>
+#ifndef CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
+#define CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H
 
 #include <external/IncludeDirectives.h>
 
+#include <clang/Rewrite/Core/Rewriter.h>
 #include <llvm/ADT/StringMap.h>
 
 #include <string>
@@ -21,9 +20,9 @@ class SourceManager;
 class LangOptions;
 namespace tooling {
 class Replacement;
-class TranslationUnitReplacements;
-}
-}
+struct TranslationUnitReplacements;
+} /* namespace tooling */
+} /* namespace clang */
 
 namespace opov {
 
@@ -55,4 +54,4 @@ class TransformationHandler {
 
 } /* namespace opov */
 
-#endif /* TRANSFORMATIONHANDLER_H_ */
+#endif  // CORE_TRANSFORMATION_TRANSFORMATIONHANDLER_H

@@ -5,17 +5,14 @@
  *      Author: ahueck
  */
 
-#ifndef IFACTORY_H_
-#define IFACTORY_H_
+#ifndef CORE_IFACTORY_H
+#define CORE_IFACTORY_H
 
 #include <clang/Tooling/Tooling.h>
 
-// Forward decl. of several clang classes
-// class CompilerInstance;
-// class StringRef;
 namespace clang {
 class AstConsumer;
-}
+} /* namespace clang */
 
 namespace opov {
 
@@ -25,11 +22,10 @@ class IFactory : public clang::tooling::SourceFileCallbacks {
  public:
   virtual void init() = 0;
   virtual void setModule(Module* m) = 0;
-  virtual clang::ASTConsumer* newASTConsumer() = 0;
-  virtual ~IFactory() {
-  }
+  virtual std::unique_ptr<clang::ASTConsumer> newASTConsumer() = 0;
+  ~IFactory() override = default;
 };
 
 } /* namespace opov */
 
-#endif /* IFACTORY_H_ */
+#endif  // CORE_IFACTORY_H

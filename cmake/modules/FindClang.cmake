@@ -19,11 +19,12 @@ else()
     endif()
   endmacro()
 
+
 	find_and_add_clang_lib(clangFrontend)
 	find_and_add_clang_lib(clangDriver)
 	find_and_add_clang_lib(clangCodeGen)
 	find_and_add_clang_lib(clangSema)
-	find_and_add_clang_lib(clangChecker)
+#not found: 	find_and_add_clang_lib(clangChecker)
 	find_and_add_clang_lib(clangAnalysis)
 	find_and_add_clang_lib(clangRewrite)
 	find_and_add_clang_lib(clangAST)
@@ -37,34 +38,16 @@ else()
 	find_and_add_clang_lib(clangSerialization)
 	find_and_add_clang_lib(clangTooling)
   find_and_add_clang_lib(clangASTMatchers)
-	find_and_add_clang_lib(clangStaticAnalyzerCheckers)
-	find_and_add_clang_lib(clangStaticAnalyzerCore)
-	find_and_add_clang_lib(clangStaticAnalyzerFrontend)
+# Following 3, no need:
+#  find_and_add_clang_lib(clangStaticAnalyzerCheckers)
+#  find_and_add_clang_lib(clangStaticAnalyzerCore)
+#  find_and_add_clang_lib(clangStaticAnalyzerFrontend)
 	find_and_add_clang_lib(clangSema)
-	find_and_add_clang_lib(clangRewriteCore)
+#not found:	find_and_add_clang_lib(clangRewriteCore)
+# new in 3.6:
+  find_and_add_clang_lib(clangToolingCore)
+	find_and_add_clang_lib(clangTooling)
 
-	#CLANG_LIBS := \
-	#-Wl,--start-group \
-	#-lclangAST \
-	#-lclangAnalysis \
-	#-lclangBasic \
-	#-lclangDriver \
-	#-lclangEdit \
-	#-lclangFrontend \
-	#-lclangFrontendTool \
-	#-lclangLex \
-	#-lclangParse \
-	#-lclangSema \
-	#-lclangEdit \
-	#-lclangASTMatchers \
-	#-lclangRewriteCore \
-	#-lclangRewriteFrontend \
-	#-lclangStaticAnalyzerFrontend \
-	#-lclangStaticAnalyzerCheckers \
-	#-lclangStaticAnalyzerCore \
-	#-lclangSerialization \
-	#-lclangTooling \
-	#-Wl,--end-group
 
   if(CLANG_LIBS)
     set(CLANG_FOUND TRUE)

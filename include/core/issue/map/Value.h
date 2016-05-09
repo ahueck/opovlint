@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef VALUE_H_
-#define VALUE_H_
+#ifndef CORE_ISSUE_MAP_VALUE_H
+#define CORE_ISSUE_MAP_VALUE_H
 
 #include "ValueTraits.h"
 
@@ -14,45 +14,28 @@
 
 namespace opov {
 
+/*
+ * Caveat: copy-constructor has share semantic w.r.t. data behind shared_ptr
+ */
 class Value {
  private:
   std::string type;
   std::shared_ptr<void> value;
 
  public:
-  Value()
-      : type("unknown")
-      , value(nullptr) {
+  Value() : type("unknown"), value(nullptr) {
   }
 
   template <typename T>
-  Value(const T& val)
-      : type(PropertyType<T>::name())
-      , value(std::make_shared<T>(val)) {
-  }
-
-  Value(const Value& other)
-      : type(other.type)
-      , value(other.value) {
-  }
-
-  Value& operator=(const Value& other) {
-    if (this != &other) {
-      this->type = other.type;
-      this->value = other.value;
-    }
-    return *this;
+  explicit Value(const T& val) : type(PropertyType<T>::name()), value(std::make_shared<T>(val)) {
   }
 
   template <typename T>
-  const T& get() {
+  const T& get() const {
     return *((T*)value.get());
-  }
-
-  ~Value() {
   }
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* VALUE_H_ */
+#endif  // CORE_ISSUE_MAP_VALUE_H

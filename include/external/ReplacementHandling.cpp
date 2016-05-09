@@ -24,20 +24,20 @@ using namespace llvm;
 using namespace llvm::sys;
 using namespace clang::tooling;
 
-
 bool ReplacementHandling::findClangApplyReplacements(const char *Argv0) {
-  CARPath = FindProgramByName("clang-apply-replacements");
-/*
-  if (!CARPath.empty())
+  ErrorOr<std::string> CARPathOrErr =
+      findProgramByName("clang-apply-replacements");
+  if (!CARPathOrErr)
     return true;
 
+  CARPath = *CARPathOrErr;
   static int StaticSymbol;
   std::string ClangModernizePath = fs::getMainExecutable(Argv0, &StaticSymbol);
   SmallString<128> TestPath = path::parent_path(ClangModernizePath);
   path::append(TestPath, "clang-apply-replacements");
   if (fs::can_execute(Twine(TestPath)))
     CARPath = TestPath.str();
-*/
+
   return !CARPath.empty();
 }
 
@@ -73,11 +73,10 @@ bool ReplacementHandling::serializeReplacements(
       continue;
     }
 
-    std::string ErrorInfo;
-    raw_fd_ostream ReplacementsFile(ReplacementsFileName.c_str(), ErrorInfo,
-                                    fs::F_None);
-    if (!ErrorInfo.empty()) {
-      errs() << "Error opening file: " << ErrorInfo << "\n";
+    std::error_code EC;
+    raw_fd_ostream ReplacementsFile(ReplacementsFileName, EC, fs::F_None);
+    if (EC) {
+      errs() << "Error opening file: " << EC.message() << "\n";
       Errors = true;
       continue;
     }
@@ -132,7 +131,7 @@ bool ReplacementHandling::applyReplacements() {
 std::string ReplacementHandling::generateTempDir() {
   SmallString<128> Prefix;
   path::system_temp_directory(true, Prefix);
-  path::append(Prefix, "opovlint");
+  path::append(Prefix, "oo-lint");
   SmallString<128> Result;
   fs::createUniqueDirectory(Twine(Prefix), Result);
   return Result.str();
@@ -145,7 +144,7 @@ bool ReplacementHandling::generateReplacementsFileName(
   Error.clear();
   SmallString<128> Prefix = DestinationDir;
   path::append(Prefix, path::filename(MainSourceFile));
-  if (auto EC =
+  if (std::error_code EC =
           fs::createUniqueFile(Prefix + "_%%_%%_%%_%%_%%_%%.yaml", Result)) {
     const std::string &Msg = EC.message();
     Error.append(Msg.begin(), Msg.end());

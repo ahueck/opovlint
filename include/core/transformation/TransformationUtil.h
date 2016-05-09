@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef TRANSFORMATIONUTIL_H_
-#define TRANSFORMATIONUTIL_H_
+#ifndef CORE_TRANSFORMATION_TRANSFORMATIONUTIL_H
+#define CORE_TRANSFORMATION_TRANSFORMATIONUTIL_H
 
 #include <core/utility/ClangUtil.h>
 
@@ -127,7 +127,7 @@ inline clang::tooling::Replacement insertNode(const clang::ASTContext& ac, T to_
 template <typename T>
 inline clang::tooling::Replacement removeNode(clang::ASTContext& ac, T node, bool with_semi = false) {
   auto& sm = ac.getSourceManager();
-  return Replacement(sm, clang::CharSourceRange::getCharRange(clutil::locOf(ac,node, with_semi)), "");
+  return Replacement(sm, clang::CharSourceRange::getCharRange(clutil::locOf(ac, node, with_semi)), "");
 }
 
 template <typename T>
@@ -186,7 +186,8 @@ inline bool removeNode_rew(clang::Rewriter& rw, T node) {
 //}
 //
 //
-}
-}
 
-#endif /* TRANSFORMATIONUTIL_H_ */
+} /* namespace trutil*/
+} /* namespace opov */
+
+#endif  // CORE_TRANSFORMATION_TRANSFORMATIONUTIL_H

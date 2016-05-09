@@ -27,10 +27,10 @@ void CSVReporter::addIssues(const TUIssuesMap& issues) {
   }
 }
 
-void CSVReporter::addIssues(const filter::IssueSet& set) {
+void CSVReporter::addIssues(const filter::IssueSet& issues) {
   std::stringstream csv;
   csv << "Module Name;File Path;Code;Line Start;Line End;Column Start;Column End;File Count;Files\n";
-  for (auto& ifiltered : set) {
+  for (auto& ifiltered : issues) {
     auto i = ifiltered.second.issue;
     csv << i->getModuleName() << ";";
     csv << i->getFile() << ";";
@@ -62,7 +62,6 @@ void CSVReporter::print(const TranslationUnitIssues& issue) {
   }
 }
 
-CSVReporter::~CSVReporter() {
-}
+CSVReporter::~CSVReporter() = default;
 
 } /* namespace opov */

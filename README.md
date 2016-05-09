@@ -62,10 +62,10 @@ For Ubuntu/Debian, refer to the [Travis CI file](.travis.yml) for guidance.
 
 ### Prerequisites
 
-1.  C++ Compiler with C++11 support (GCC version >= 4.8)
+1.  C++ Compiler with C++11 support (GCC version >= 4.8. Also tested for Clang version 3.6)
 2.  cmake (version >=2.8)
-3.  Clang/LLVM in Version 3.5.0. Newer versions might not work due to the changing API.
-    The build system relies on the presence of the **llvm-config**(-3.5 -3.6 -3.7) binary.
+3.  Clang/LLVM in Version 3.6.0. Other versions might not work due to the changing API.
+    The build system relies on the presence of the **llvm-config**(-3.6 -3.7 -3.8) binary.
     If it can not be found, set the cmake variable ${LLVM_ROOT_DIR} to point to the 
     respective bin/ folder where llvm-config is located.
 

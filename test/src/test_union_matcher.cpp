@@ -30,7 +30,7 @@
 #define UNION(STR) MAKE_CODE(UNION_S(STR))
 #define NUNION(STR) MAKE_CODE(NUNION_S(STR) " nunion")
 
-KICKOFF_TEST(opov::module::UnionMatcher(), UNION("scalar a;"), UNION_S("scalar a;"))
+KICKOFF_TEST(opov::module::UnionMatcher, UNION("scalar a;"), UNION_S("scalar a;"))
 
 #define _TYPE_ "scalar"
 #define _NTYPE_ "double"
@@ -38,7 +38,7 @@ SCENARIO("Unions. Module produces one match for type " _TYPE_, "[" _TYPE_ "_matc
 	GIVEN("The 'UnionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::UnionMatcher());
+		app.addModule<opov::module::UnionMatcher>();
 #include "tests/UnionMatchSet.inl"
 	}
 }
@@ -47,7 +47,7 @@ SCENARIO("Unions. Module produces no match for type " _TYPE_, "[" _TYPE_ "_nmatc
 	GIVEN("The 'UnionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::UnionMatcher());
+		app.addModule<opov::module::UnionMatcher>();
 #include "tests/UnionNoMatchSet.inl"
 	}
 }
@@ -60,7 +60,7 @@ SCENARIO("Unions. Module produces one match for type " _TYPE_, "[" _TYPE_ "_matc
 	GIVEN("The 'UnionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::UnionMatcher());
+		app.addModule<opov::module::UnionMatcher>();
 #include "tests/UnionMatchSet.inl"
 	}
 }
@@ -68,7 +68,7 @@ SCENARIO("Unions. Module produces no match for type " _TYPE_, "[" _TYPE_ "_nmatc
 	GIVEN("The 'UnionMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::UnionMatcher());
+		app.addModule<opov::module::UnionMatcher>();
 #include "tests/UnionNoMatchSet.inl"
 	}
 }

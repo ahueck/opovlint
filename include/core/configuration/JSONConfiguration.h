@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef JSONCONFIGURATION_H_
-#define JSONCONFIGURATION_H_
+#ifndef CORE_CONFIGURATION_JSONCONFIGURATION_H
+#define CORE_CONFIGURATION_JSONCONFIGURATION_H
 
 #include "Configuration.h"
 
@@ -27,20 +27,20 @@ class JSONConfiguration : public opov::Configuration {
 
  public:
   JSONConfiguration();
-  virtual bool load(const std::string& file) override;
-  virtual void getValue(const std::string& id, std::string& val, std::string def = "") const override;
-  virtual void getValue(const std::string& id, double& val, double def = 0.0) const override;
-  virtual void getValue(const std::string& id, int& val, int def = 0) const override;
-  virtual void getValue(const std::string& id, bool& val, bool def = false) const override;
-  virtual void getVector(const std::string& id, std::vector<std::string>& vec) const override;
-  virtual void getVector(const std::string& id, std::vector<double>& vec) const override;
-  virtual void getVector(const std::string& id, std::vector<int>& vec) const override;
-  virtual void getVector(const std::string& id, std::vector<bool>& vec) const override;
-  virtual ~JSONConfiguration();
+  bool load(const std::string& file) override;
+  void getValue(const std::string& id, std::string& val, std::string def = "") const override;
+  void getValue(const std::string& id, double& val, double def = 0.0) const override;
+  void getValue(const std::string& id, int& val, int def = 0) const override;
+  void getValue(const std::string& id, bool& val, bool def = false) const override;
+  void getVector(const std::string& id, std::vector<std::string>& vec) const override;
+  void getVector(const std::string& id, std::vector<double>& vec) const override;
+  void getVector(const std::string& id, std::vector<int>& vec) const override;
+  void getVector(const std::string& id, std::vector<bool>& vec) const override;
+  ~JSONConfiguration() override;
 };
 
 } /* namespace opov */
 
 #include "JSONConfiguration.hpp"
 
-#endif /* JSONCONFIGURATION_H_ */
+#endif  // CORE_CONFIGURATION_JSONCONFIGURATION_H

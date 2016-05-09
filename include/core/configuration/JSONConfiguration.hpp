@@ -38,6 +38,6 @@ std::vector<T> JSONConfiguration::getVec(const std::string& id) const {
   return items;
 }
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* JSONPROPERTY_HPP_ */

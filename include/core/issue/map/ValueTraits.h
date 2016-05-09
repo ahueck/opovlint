@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUETRAITS_H_
-#define ISSUETRAITS_H_
+#ifndef CORE_ISSUE_MAP_VALUETRAITS_H
+#define CORE_ISSUE_MAP_VALUETRAITS_H
 
 #include <string>
 
@@ -73,6 +73,6 @@ struct PropertyType<unsigned int> {
   }
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* ISSUETRAITS_H_ */
+#endif  // CORE_ISSUE_MAP_VALUETRAITS_H

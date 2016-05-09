@@ -5,27 +5,25 @@
  *      Author: zeitgeist
  */
 
-#ifndef CONSOLEREPORTER_H_
-#define CONSOLEREPORTER_H_
+#ifndef CORE_REPORTING_CONSOLEREPORTER_H
+#define CORE_REPORTING_CONSOLEREPORTER_H
 
 #include "IssueReporter.h"
-
-//#include <string>
 
 namespace opov {
 
 class ConsoleReporter : public opov::IssueReporter {
  public:
   ConsoleReporter();
-  virtual void addIssue(const TranslationUnitIssues& issue) override;
-  virtual void addIssues(const TUIssuesMap& issues) override;
-  virtual void addIssues(const filter::IssueSet& issues) override;
-  virtual ~ConsoleReporter();
+  void addIssue(const TranslationUnitIssues& issue) override;
+  void addIssues(const TUIssuesMap& issues) override;
+  void addIssues(const filter::IssueSet& issues) override;
+  ~ConsoleReporter() override;
 
  private:
   void print(const TranslationUnitIssues& issue);
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* CONSOLEREPORTER_H_ */
+#endif  // CORE_REPORTING_CONSOLEREPORTER_H

@@ -5,15 +5,16 @@
  *      Author: ahueck
  */
 
-#ifndef PROPERTYMAP_H_
-#define PROPERTYMAP_H_
+#ifndef CORE_ISSUE_MAP_PROPERTYMAP_H
+#define CORE_ISSUE_MAP_PROPERTYMAP_H
 
-#include "Value.h"
 #include "PropertyMacros.h"
+#include "Value.h"
 
 #include <map>
 
 namespace opov {
+
 typedef std::map<std::string, Value> property_map;
 
 // creates a getter and setter using a std::map<std::string, Value> called
@@ -29,6 +30,7 @@ typedef std::map<std::string, Value> property_map;
       return PropertyType<DS_CONCAT(NAME, PropertyType)>::DefaultValue(); \
     return it->second.get<DS_CONCAT(NAME, PropertyType)>();               \
   }
-}
 
-#endif /* PROPERTYMAP_H_ */
+} /* namespace opov */
+
+#endif  // CORE_ISSUE_MAP_PROPERTYMAP_H

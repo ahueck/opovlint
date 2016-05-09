@@ -6,17 +6,15 @@
  */
 
 #include <core/module/AbstractModule.h>
-#include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
+#include <core/module/ModuleContext.h>
 
 #include <clang/AST/Stmt.h>
 #include <clang/Basic/SourceManager.h>
 
 namespace opov {
 
-AbstractModule::AbstractModule()
-    : context(nullptr)
-    , transform(false) {
+AbstractModule::AbstractModule() : context(nullptr), transform(false) {
 }
 
 void AbstractModule::init(const Configuration* config) {
@@ -25,11 +23,13 @@ void AbstractModule::init(const Configuration* config) {
   setupOnce(config);
 }
 
+void AbstractModule::setupOnce(const Configuration* config) {
+}
+
 void AbstractModule::execute(ModuleContext* context) {
   this->context = context;
 }
 
-AbstractModule::~AbstractModule() {
-}
+AbstractModule::~AbstractModule() = default;
 
 } /* namespace opov */

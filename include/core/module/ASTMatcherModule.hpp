@@ -15,6 +15,6 @@ void ASTMatcherModule::addMatcher(const T& matcher) {
   finder.addMatcher(matcher, this);
 }
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif /* ASTMATCHERMODULE_HPP_ */

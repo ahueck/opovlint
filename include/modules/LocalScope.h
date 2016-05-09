@@ -5,34 +5,34 @@
  *      Author: ahueck
  */
 
-#ifndef LocalScope_H_
-#define LocalScope_H_
+#ifndef MODULES_LOCALSCOPE_H
+#define MODULES_LOCALSCOPE_H
 
 #include <core/module/ASTMatcherModule.h>
 
 #include <string>
 #include <vector>
-//#include <set>
 
 namespace opov {
 namespace module {
 
 class LocalScope : public opov::ASTMatcherModule {
-private:
+ private:
   std::string ns_s;
   bool keep_global;
   std::vector<std::string> functions_wl;
+
  public:
   LocalScope();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~LocalScope();
+  void setupOnce(const Configuration* config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~LocalScope() override;
 };
 
 } /* namespace module */
 } /* namespace opov */
 
-#endif /* LocalScope_H_ */
+#endif  // MODULES_LOCALSCOPE_H

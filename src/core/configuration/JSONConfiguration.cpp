@@ -13,7 +13,6 @@
 namespace opov {
 
 JSONConfiguration::JSONConfiguration() {
-  // TODO Auto-generated constructor stub
 }
 
 bool JSONConfiguration::load(const std::string& file) {
@@ -58,8 +57,6 @@ void JSONConfiguration::getVector(const std::string& id, std::vector<bool>& vec)
   vec = getVec<bool>(id);
 }
 
-JSONConfiguration::~JSONConfiguration() {
-  // TODO Auto-generated destructor stub
-}
+JSONConfiguration::~JSONConfiguration() = default;
 
 } /* namespace opov */

@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ABSTRACTMODULECONSUMER_H_
-#define ABSTRACTMODULECONSUMER_H_
+#ifndef CORE_ABSTRACTMODULECONSUMER_H
+#define CORE_ABSTRACTMODULECONSUMER_H
 
 #include <clang/AST/ASTConsumer.h>
 
@@ -24,11 +24,11 @@ class AbstractModuleConsumer : public clang::ASTConsumer {
 
  public:
   AbstractModuleConsumer(Module* module, ModuleContext* mcontext);
-  virtual void Initialize(clang::ASTContext& Context) override;
+  void Initialize(clang::ASTContext& Context) override;
   void HandleTranslationUnit(clang::ASTContext& Context) override;
-  virtual ~AbstractModuleConsumer();
+  ~AbstractModuleConsumer() override;
 };
 
 } /* namespace opov */
 
-#endif /* ABSTRACTMODULECONSUMER_H_ */
+#endif  // CORE_ABSTRACTMODULECONSUMER_H

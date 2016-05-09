@@ -108,7 +108,7 @@ TEST_CASE("Configuration", "[config]") {
 TEST_CASE("TransformationHandle", "[thandle]") {
 	opov::test::TestApp app(conf);
 	app.init();
-	app.addModule(new opov::module::ExplicitCast());
+	app.addModule<opov::module::ExplicitCast>();
 	const std::string code = "typedef double scalar; scalar a = 10.0; void container() { int res = 0.0; res = static_cast<double>(a); }";
     SECTION("No transformation state") {
 		auto handle = app.getHandler();

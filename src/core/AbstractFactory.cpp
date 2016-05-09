@@ -6,27 +6,23 @@
  */
 
 #include <core/AbstractFactory.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
+#include <core/logging/Logger.h>
 #include <core/module/Module.h>
 #include <core/module/ModuleContext.h>
-#include <core/configuration/Configuration.h>
 #include <core/reporting/IssueReporter.h>
-#include <core/utility/Util.h>
-#include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <core/logging/Logger.h>
+#include <core/utility/Util.h>
 
 #include <clang/Frontend/CompilerInstance.h>
-#include <llvm/ADT/StringRef.h>
 #include <clang/Tooling/Refactoring.h>
+#include <llvm/ADT/StringRef.h>
 
 namespace opov {
 
 AbstractFactory::AbstractFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
-    : module(nullptr)
-    , config(config)
-    , currentSource("")
-    , ihandler(ihandler)
-    , thandler(thandler) {
+    : module(nullptr), config(config), currentSource(""), ihandler(ihandler), thandler(thandler) {
 }
 
 bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) {
@@ -51,7 +47,6 @@ void AbstractFactory::init() {
   this->context = opov::util::make_unique<ModuleContext>(this->config, this->ihandler, this->thandler);
 }
 
-AbstractFactory::~AbstractFactory() {
-}
+AbstractFactory::~AbstractFactory() = default;
 
 } /* namespace opov */

@@ -7,20 +7,15 @@ namespace opov {
 namespace filter {
 
 UniqueFilter::UniqueFilter() {
-
 }
 
-UniqueFilter::~UniqueFilter() {
-
-}
-
-IssueSet UniqueFilter::apply(const TUIssuesMap& unfilteredIssues) {
+IssueSet UniqueFilter::apply(const TUIssuesMap& map) {
   IssueSet unique_issues;
-  for(auto& tu_issues : unfilteredIssues) {
-    for(auto& issue : tu_issues.second.Issues) {
-      const int ihash =issue->hash();
+  for (auto& tu_issues : map) {
+    for (auto& issue : tu_issues.second.Issues) {
+      const int ihash = issue->hash();
       auto result = unique_issues.find(ihash);
-      if(result != std::end(unique_issues)) {
+      if (result != std::end(unique_issues)) {
         result->second.tunits.push_back(tu_issues.second.MainSourceFile);
       } else {
         IssuesFiltered ifiltered;
@@ -33,5 +28,7 @@ IssueSet UniqueFilter::apply(const TUIssuesMap& unfilteredIssues) {
   return unique_issues;
 }
 
-}
-}
+UniqueFilter::~UniqueFilter() = default;
+
+} /* namespace filter */
+} /* namespace opov */

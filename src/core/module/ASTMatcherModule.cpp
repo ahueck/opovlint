@@ -6,8 +6,8 @@
  */
 
 #include <core/module/ASTMatcherModule.h>
-#include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
+#include <core/module/ModuleContext.h>
 
 namespace opov {
 
@@ -27,7 +27,6 @@ void ASTMatcherModule::execute(ModuleContext* context) {
   finder.matchAST(context->getASTContext());
 }
 
-ASTMatcherModule::~ASTMatcherModule() {
-}
+ASTMatcherModule::~ASTMatcherModule() = default;
 
 } /* namespace opov */

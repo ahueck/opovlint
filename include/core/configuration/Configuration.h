@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef CONFIGURATION_H_
-#define CONFIGURATION_H_
+#ifndef CORE_CONFIGURATION_CONFIGURATION_H
+#define CORE_CONFIGURATION_CONFIGURATION_H
 
 #include <string>
 #include <vector>
@@ -24,10 +24,9 @@ class Configuration {
   virtual void getVector(const std::string& id, std::vector<double>& vec) const = 0;
   virtual void getVector(const std::string& id, std::vector<int>& vec) const = 0;
   virtual void getVector(const std::string& id, std::vector<bool>& vec) const = 0;
-  virtual ~Configuration() {
-  }
+  virtual ~Configuration() = default;
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* CONFIGURATION_H_ */
+#endif  // CORE_CONFIGURATION_CONFIGURATION_H

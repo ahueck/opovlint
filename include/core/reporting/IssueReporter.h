@@ -5,14 +5,14 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUEREPORTER_H_
-#define ISSUEREPORTER_H_
+#ifndef CORE_REPORTING_ISSUEREPORTER_H
+#define CORE_REPORTING_ISSUEREPORTER_H
 
 #include "../issue/IssueHandlerStruct.h"
 #include "../issue/filter/FilterIssueStruct.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace opov {
 
@@ -21,10 +21,9 @@ class IssueReporter {
   virtual void addIssue(const TranslationUnitIssues& issue) = 0;
   virtual void addIssues(const TUIssuesMap& issues) = 0;
   virtual void addIssues(const filter::IssueSet& issues) = 0;
-  virtual ~IssueReporter() {
-  }
+  virtual ~IssueReporter() = default;
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* ISSUEREPORTER_H_ */
+#endif  // CORE_REPORTING_ISSUEREPORTER_H

@@ -5,19 +5,19 @@
  *      Author: ahueck
  */
 
-#ifndef CLANGUTIL_H_
-#define CLANGUTIL_H_
+#ifndef CORE_UTILITY_CLANGUTIL_H
+#define CORE_UTILITY_CLANGUTIL_H
 
 #include <core/logging/Logger.h>
 
 #include <clang/AST/AST.h>
-#include <clang/Lex/Lexer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Frontend/TextDiagnostic.h>
+#include <clang/Lex/Lexer.h>
 
-#include <string>
-#include <sstream>
 #include <iterator>
+#include <sstream>
+#include <string>
 
 namespace opov {
 
@@ -37,22 +37,22 @@ inline clang::SourceRange locOf(const clang::SourceManager& sm, T node, unsigned
 template <typename T>
 inline clang::SourceRange locOf(clang::ASTContext& ac, T node, bool semicolon = false) {
   clang::SourceLocation start(node->getLocStart());
-  //clang::SourceLocation end(node->getLocEnd());
-  clang::SourceLocation end(clang::Lexer::getLocForEndOfToken(node->getLocEnd(), 0, ac.getSourceManager(), clang::LangOptions()));
+  // clang::SourceLocation end(node->getLocEnd());
+  clang::SourceLocation end(
+      clang::Lexer::getLocForEndOfToken(node->getLocEnd(), 0, ac.getSourceManager(), clang::LangOptions()));
   if (semicolon) {
     clang::SourceLocation semi_end = findLocationAfterSemi(node->getLocEnd(), ac, llvm::isa<clang::Decl>(node));
     // LOG_MSG(semi_end.isValid() << ": " << semi_end.printToString(ac.getSourceManager()) << ", " <<
     // end.printToString(ac.getSourceManager()));
     return {start, semi_end.isValid() ? semi_end : end};
-  } else {
-    return {start, end};
   }
+  return {start, end};
 }
 
 template <typename T>
 inline std::string typeOf(T&& node) {
   auto type = node->getType();
-  if(!type.isNull()) {
+  if (!type.isNull()) {
     return type.getUnqualifiedType().getAsString();
   }
   return "";
@@ -81,13 +81,12 @@ inline const clang::FileEntry* fileEntryOf(const clang::SourceManager& sm, T nod
 template <typename T>
 inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
   auto Entry = fileEntryOf(sm, node);
-  if (Entry != NULL) {
+  if (Entry != nullptr) {
     llvm::SmallString<256> FilePath(Entry->getName());
     auto EC = llvm::sys::fs::make_absolute(FilePath);
     return EC ? FilePath.c_str() : Entry->getName();
-  } else {
-    return "";
   }
+  return {""};
 }
 
 inline unsigned declCount(const clang::TagDecl* node) {
@@ -100,7 +99,7 @@ inline unsigned declCount(const clang::TagDecl* node) {
  * 	see: http://clang.llvm.org/docs/LibASTMatchersTutorial.html
  */
 inline bool areSameExpr(clang::ASTContext* context, const clang::Expr* first, const clang::Expr* second) {
-  if (!first || !second) {
+  if (first == nullptr || second == nullptr) {
     return false;
   }
   llvm::FoldingSetNodeID FirstID, SecondID;
@@ -139,7 +138,7 @@ inline std::string ast2str(/*const clang::SourceManager& sm,*/ T&& node) {
 inline std::string node2str(const clang::ASTContext& ac, const clang::Stmt* node) {
   std::string exprStr;
   llvm::raw_string_ostream s(exprStr);
-  node->printPretty(s, 0, ac.getPrintingPolicy());
+  node->printPretty(s, nullptr, ac.getPrintingPolicy());
   return s.str();
 }
 
@@ -169,8 +168,9 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   using namespace llvm;
   SourceManager& SM = Ctx.getSourceManager();
   if (loc.isMacroID()) {
-    if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc))
+    if (!Lexer::isAtEndOfMacroExpansion(loc, SM, Ctx.getLangOpts(), &loc)) {
       return SourceLocation();
+    }
   }
   loc = Lexer::getLocForEndOfToken(loc, /*Offset=*/0, SM, Ctx.getLangOpts());
 
@@ -180,9 +180,9 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   // Try to load the file buffer.
   bool invalidTemp = false;
   StringRef file = SM.getBufferData(locInfo.first, &invalidTemp);
-  if (invalidTemp)
+  if (invalidTemp) {
     return SourceLocation();
-
+  }
   const char* tokenBegin = file.data() + locInfo.second;
 
   // Lex from the start of the given location.
@@ -190,8 +190,9 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   Token tok;
   lexer.LexFromRawLexer(tok);
   if (tok.isNot(tok::semi)) {
-    if (!IsDecl)
+    if (!IsDecl) {
       return SourceLocation();
+    }
     // Declaration may be followed with other tokens; such as an __attribute,
     // before ending with a semicolon.
     return findSemiAfterLocation(tok.getLocation(), Ctx, /*IsDecl*/ true);
@@ -200,45 +201,44 @@ inline clang::SourceLocation findSemiAfterLocation(clang::SourceLocation loc, cl
   return tok.getLocation();
 }
 
-class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
+class TypeDeducer final : public clang::RecursiveASTVisitor<TypeDeducer> {
  private:
-  bool subtreeHasType;
+  bool subtree_has_type;
   std::string type;
   bool is_builtin;
 
  public:
-  TypeDeducer(const std::string& type)
-      : subtreeHasType(false)
-      , type(type)
-      , is_builtin(isBuiltin(type)) {
+  explicit TypeDeducer(const std::string& type)
+      : subtree_has_type(false), type(type), is_builtin(is_builtin_type(type)) {
   }
 
   template <typename NODE>
   bool hasType(NODE node) {
-    this->subtreeHasType = false;
+    this->subtree_has_type = false;
     this->TraverseStmt(node);
-    return subtreeHasType;
+
+    return subtree_has_type;
   }
 
   bool TraverseStmt(clang::Stmt* S) {
     clang::Expr* expr = clang::dyn_cast<clang::Expr>(S);
     if (expr != nullptr) {
-      if (typeFound(expr)) {
-        subtreeHasType = true;
-        return false;
-      } else if (terminate(expr)) {
+      subtree_has_type = type_found(expr);
+      const bool terminate_recursion = terminate(expr);
+      if (subtree_has_type || terminate_recursion) {
         return false;
       }
     }
+
     return RecursiveASTVisitor<TypeDeducer>::TraverseStmt(S);
   }
 
  private:
-  inline static bool isBuiltin(const std::string& type) {
+  inline static bool is_builtin_type(const std::string& type) {
     return type == "double" || type == "float";
   }
 
-  inline bool typeFound(clang::Expr* expr) {
+  inline bool type_found(clang::Expr* expr) {
     // we cont. if binary/parens returns double/float, happens even with typedef
     // types
     // TODO: possibly extend to unary ops too!
@@ -250,14 +250,26 @@ class TypeDeducer : public clang::RecursiveASTVisitor<TypeDeducer> {
   inline bool terminate(clang::Expr* expr) {
     // TODO should we terminate on binary expr?
     const std::string typeOfE = typeOf(expr);
-    return ((clang::isa<clang::UnaryOperator>(expr) || clang::isa<clang::BinaryOperator>(expr) || clang::isa<clang::CallExpr>(expr) ) &&
-            typeOfE == "_Bool")
-            || (clang::isa<clang::ExplicitCastExpr>(expr) && typeOfE != type)
-            || (clang::isa<clang::CallExpr>(expr) && typeOfE != type);
+    // clang-format off
+    const bool expr_returns_bool =
+        typeOfE == "_Bool"
+            && (
+                  clang::isa<clang::UnaryOperator>(expr)
+                  || clang::isa<clang::BinaryOperator>(expr)
+                  || clang::isa<clang::CallExpr>(expr)
+               );
+    const bool type_is_swallowed =
+        typeOfE != type
+        && (
+              clang::isa<clang::ExplicitCastExpr>(expr)
+              || clang::isa<clang::CallExpr>(expr)
+           );
+    // clang-format on
+    return expr_returns_bool || type_is_swallowed;
   }
 };
 
-}  // namespace clutil
-}  // namespace opov
+} /* namespace clutil */
+} /* namespace opov */
 
-#endif /* CLANGUTIL_H_ */
+#endif  // CORE_UTILITY_CLANGUTIL_H

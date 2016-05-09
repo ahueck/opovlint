@@ -27,14 +27,14 @@
 #define COND_SI "bi > 0 ? ci : di"
 #define CONDI MAKE_CODE("ai = " COND_SI)
 
-KICKOFF_TEST(opov::module::ConditionalAssgnMatcher(), COND, COND_S)
+KICKOFF_TEST(opov::module::ConditionalAssgnMatcher, COND, COND_S)
 
 #define _TYPE_ "scalar"
 SCENARIO("Conditional assign op. Module produces one match for type " _TYPE_, "[" _TYPE_ "_match]") {
 	GIVEN("The 'ConditionalAssgnMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::ConditionalAssgnMatcher());
+		app.addModule<opov::module::ConditionalAssgnMatcher>();
 #include "tests/ConditionalAssignMatchSet.inl"
 	}
 }
@@ -43,7 +43,7 @@ SCENARIO("Conditional assign op. Module produces no match for type " _TYPE_, "["
 	GIVEN("The 'ConditionalAssgnMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf);
 		app.init();
-		app.addModule(new opov::module::ConditionalAssgnMatcher());
+		app.addModule<opov::module::ConditionalAssgnMatcher>();
 #include "tests/ConditionalAssignNoMatchSet.inl"
 	}
 }
@@ -56,7 +56,7 @@ SCENARIO("Conditional assign op. Module produces one match for type " _TYPE_, "[
 	GIVEN("The 'ConditionalAssgnMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ConditionalAssgnMatcher());
+		app.addModule<opov::module::ConditionalAssgnMatcher>();
 #include "tests/ConditionalAssignMatchSet.inl"
 	}
 }
@@ -65,7 +65,7 @@ SCENARIO("Conditional assign op. Module produces no match for type " _TYPE_, "["
 	GIVEN("The 'ConditionalAssgnMatcher' module with type: " _TYPE_) {
 		opov::test::TestApp app(conf_double);
 		app.init();
-		app.addModule(new opov::module::ConditionalAssgnMatcher());
+		app.addModule<opov::module::ConditionalAssgnMatcher>();
 #include "tests/ConditionalAssignNoMatchSet.inl"
 	}
 }

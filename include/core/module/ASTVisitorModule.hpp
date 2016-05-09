@@ -13,6 +13,6 @@ template <typename T>
 ASTVisitorModule<T>::~ASTVisitorModule() {
 }
 
-}  // namespace opov
+} /* namespace opov */
 
 #endif

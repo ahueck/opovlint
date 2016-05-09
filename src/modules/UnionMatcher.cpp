@@ -6,14 +6,14 @@
  */
 
 #include <modules/UnionMatcher.h>
-#include <core/utility/ClangMatcherExt.h>
+#include <core/configuration/Configuration.h>
+#include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
+#include <core/transformation/TransformationHandler.h>
+#include <core/transformation/TransformationUtil.h>
+#include <core/utility/ClangMatcherExt.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
-#include <core/issue/IssueHandler.h>
-#include <core/transformation/TransformationHandler.h>
-#include <core/configuration/Configuration.h>
-#include <core/transformation/TransformationUtil.h>
 
 #include <algorithm>
 #include <vector>
@@ -27,12 +27,20 @@ using namespace clang::ast_matchers;
 UnionMatcher::UnionMatcher() {
 }
 
+/*
 void UnionMatcher::setupOnce(const Configuration* config) {
 }
-
+*/
 void UnionMatcher::setupMatcher() {
-  DeclarationMatcher invalid_unions = recordDecl(isUnion(), hasDescendant(fieldDecl(isTypedef(type_s)))).bind("union");
-
+  // clang-format off
+  DeclarationMatcher invalid_unions =
+      recordDecl(
+          isUnion()
+          , hasDescendant(
+                fieldDecl(isTypedef(type_s))
+            )
+      ).bind("union");
+  // clang-format on
   this->addMatcher(invalid_unions);
 }
 
@@ -60,13 +68,15 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
       if (decl_count == 1) {
         /*thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
                                                              clutil::node2str(ast_ctx, fieldDecls.front())));*/
-        thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union, clutil::node2str(ast_ctx, fieldDecls.front())));
+        thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union,
+                                                     clutil::node2str(ast_ctx, fieldDecls.front())));
       } else {
         const auto union_end = clutil::locOf(ast_ctx, inv_union, true).getEnd();
         if ((decl_count - scalar_count) < 2) {
-          //thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
+          // thandle.addReplacements(FixItHint::CreateReplacement(clutil::locOf(ast_ctx, inv_union),
           //                                                     clutil::node2str(ast_ctx, *inv_union->field_begin())));
-          thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union, clutil::node2str(ast_ctx, *inv_union->field_begin())));
+          thandle.addReplacements(tooling::Replacement(context->getSourceManager(), inv_union,
+                                                       clutil::node2str(ast_ctx, *inv_union->field_begin())));
           for (auto it = inv_union->field_begin(); it != inv_union->field_end(); ++it) {
             if (it == inv_union->field_begin()) {
               continue;
@@ -80,9 +90,9 @@ void UnionMatcher::run(const clang::ast_matchers::MatchFinder::MatchResult& resu
         } else {
           for (auto fd : fieldDecls) {
             thandle.addReplacements(trutil::removeNode(ast_ctx, fd, true));
-            //thandle.addReplacements(FixItHint::CreateRemoval(clutil::locOf(ast_ctx, fd, true)));
+            // thandle.addReplacements(FixItHint::CreateRemoval(clutil::locOf(ast_ctx, fd, true)));
             thandle.addReplacements(trutil::insertString(ast_ctx, clutil::node2str(ast_ctx, fd), inv_union));
-            //thandle.addReplacements(
+            // thandle.addReplacements(
             //    FixItHint::CreateInsertion(union_end, "\n" + clutil::node2str(ast_ctx, fd) + ";", true));
           }
         }
@@ -102,8 +112,7 @@ std::string UnionMatcher::moduleDescription() {
          "etc.).";
 }
 
-UnionMatcher::~UnionMatcher() {
-}
+UnionMatcher::~UnionMatcher() = default;
 
 } /* namespace module */
 } /* namespace opov */

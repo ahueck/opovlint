@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUE_H_
-#define ISSUE_H_
+#ifndef CORE_ISSUE_ISSUE_H
+#define CORE_ISSUE_ISSUE_H
 
 #include "map/PropertyMap.h"
 
@@ -14,14 +14,11 @@
 
 namespace opov {
 
-class Issue {
+class Issue final {
  private:
   property_map _properties;
 
  public:
-  Issue() {
-  }
-
   const property_map& properties() {
     return _properties;
   }
@@ -45,6 +42,6 @@ class Issue {
   std::string IssueProperty(ModuleDescription);
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* ISSUE_H_ */
+#endif  // CORE_ISSUE_ISSUE_H

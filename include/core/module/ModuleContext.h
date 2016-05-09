@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef MODULECONTEXT_H_
-#define MODULECONTEXT_H_
+#ifndef CORE_MODULE_MODULECONTEXT_H
+#define CORE_MODULE_MODULECONTEXT_H
 
 #include <memory>
 #include <vector>
@@ -16,8 +16,8 @@ class ASTContext;
 class SourceManager;
 namespace tooling {
 class Replacement;
-}
-}
+} /* namespace tooling */
+} /* namespace clang */
 
 namespace opov {
 
@@ -47,6 +47,6 @@ class ModuleContext {
   virtual ~ModuleContext();
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* MODULECONTEXT_H_ */
+#endif  // CORE_MODULE_MODULECONTEXT_H

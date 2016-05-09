@@ -6,16 +6,15 @@
  */
 
 #include <core/AbstractModuleConsumer.h>
-#include <core/logging/Logger.h>
 #include <core/configuration/Configuration.h>
+#include <core/logging/Logger.h>
 #include <core/module/Module.h>
 #include <core/module/ModuleContext.h>
 
 namespace opov {
 
 AbstractModuleConsumer::AbstractModuleConsumer(Module* module, ModuleContext* mcontext)
-    : module(module)
-    , mcontext(mcontext) {
+    : module(module), mcontext(mcontext) {
 }
 
 void AbstractModuleConsumer::Initialize(clang::ASTContext& Context) {
@@ -29,7 +28,6 @@ void AbstractModuleConsumer::HandleTranslationUnit(clang::ASTContext& Context) {
   module->execute(mcontext);
 }
 
-AbstractModuleConsumer::~AbstractModuleConsumer() {
-}
+AbstractModuleConsumer::~AbstractModuleConsumer() = default;
 
 } /* namespace opov */

@@ -5,16 +5,12 @@
  *      Author: ahueck
  */
 
-#ifndef ABSTRACTMODULE_H_
-#define ABSTRACTMODULE_H_
+#ifndef CORE_MODULE_ABSTRACTMODULE_H
+#define CORE_MODULE_ABSTRACTMODULE_H
 
 #include "Module.h"
 
 #include <string>
-
-namespace clang {
-class Stmt;
-}
 
 namespace opov {
 
@@ -29,14 +25,12 @@ class AbstractModule : public Module {
 
  public:
   AbstractModule();
-  virtual void init(const Configuration* config);
-  virtual void setupOnce(const Configuration* config) = 0;
-  virtual void execute(ModuleContext* context) override;
-  virtual ~AbstractModule();
+  void init(const Configuration* config) override;
+  virtual void setupOnce(const Configuration* config);
+  void execute(ModuleContext* context) override;
+  ~AbstractModule() override;
 };
 
 } /* namespace opov */
 
-//#include "AbstractModule.hpp"
-
-#endif /* ABSTRACTMODULE_H_ */
+#endif  // CORE_MODULE_ABSTRACTMODULE_H

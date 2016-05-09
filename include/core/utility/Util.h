@@ -5,16 +5,15 @@
  *      Author: ahueck
  */
 
-#ifndef UTIL_H_
-#define UTIL_H_
+#ifndef CORE_UTILITY_UTIL_H
+#define CORE_UTILITY_UTIL_H
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
+#include <sstream>
 #include <type_traits>
 #include <utility>
-#include <sstream>
-#include <algorithm>
-//#include <regex>
 
 namespace opov {
 namespace util {
@@ -96,7 +95,7 @@ typename _Unique_if<T>::_Unknown_bound make_unique(size_t n) {
 template <class T, class... Args>
 typename _Unique_if<T>::_Known_bound make_unique(Args&&...) = delete;
 
-}  // namespace util
-}  // namepace opov
+} /* namespace util */
+} /* namespace opov */
 
-#endif /* UTIL_H_ */
+#endif  // CORE_UTILITY_UTIL_H

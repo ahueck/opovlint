@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef UNIONMATCHER_H_
-#define UNIONMATCHER_H_
+#ifndef MODULES_UNIONMATCHER_H
+#define MODULES_UNIONMATCHER_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -18,15 +18,15 @@ namespace module {
 class UnionMatcher : public opov::ASTMatcherModule {
  public:
   UnionMatcher();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~UnionMatcher();
+  // virtual void setupOnce(const Configuration* config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~UnionMatcher() override;
 };
 
-}  // namespace module
+} /* namespace module */
 } /* namespace opov */
 
-#endif /* UNIONMATCHER_H_ */
+#endif  // MODULES_UNIONMATCHER_H

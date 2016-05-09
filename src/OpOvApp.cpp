@@ -6,27 +6,27 @@
  */
 
 #include "OpOvApp.h"
+#include <AnalyzerFactory.h>
 #include <core/IFactory.h>
 #include <core/configuration/JSONConfiguration.h>
+#include <core/issue/IssueHandler.h>
 #include <core/reporting/ConsoleReporter.h>
 #include <core/reporting/CSVReporter.h>
-#include <AnalyzerFactory.h>
-#include <core/utility/Util.h>
-#include <core/issue/IssueHandler.h>
 #include <core/transformation/TransformationHandler.h>
-#include <modules/ExplicitCast.h>
-#include <modules/ImplicitConversion.h>
-#include <modules/ImplicitConditionMatcher.h>
-#include <modules/UnionMatcher.h>
-#include <modules/ConditionalAssgnMatcher.h>
-#include <modules/ExplicitConstructor.h>
+#include <core/utility/Util.h>
+
 #include <modules/AllImplicitConversion.h>
+#include <modules/ConditionalAssgnMatcher.h>
+#include <modules/ExplicitCast.h>
+#include <modules/ExplicitConstructor.h>
 #include <modules/GlobalScope.h>
 #include <modules/IfElseAssign.h>
+#include <modules/ImplicitConditionMatcher.h>
+#include <modules/ImplicitConversion.h>
 #include <modules/LocalScope.h>
+#include <modules/UnionMatcher.h>
 
-OpOvApp::OpOvApp(const std::string &config_path)
-    : config_path(config_path) {
+OpOvApp::OpOvApp(const std::string& config_path) : config_path(config_path) {
 }
 
 void OpOvApp::loadConfig() {
@@ -35,7 +35,7 @@ void OpOvApp::loadConfig() {
   if (!success) {
     LOG_FATAL("Could not find configuration file under '" << config_path << "'."
                                                           << "Exiting...");
-    exit(-1);
+    std::exit(EXIT_FAILURE);
   }
 }
 
@@ -49,15 +49,12 @@ void OpOvApp::createFactory() {
 }
 
 void OpOvApp::initModules() {
-  addModule(new opov::module::ExplicitCast());
-  addModule(new opov::module::UnionMatcher());
-  addModule(new opov::module::ImplicitConversion());
-  addModule(new opov::module::ImplicitConditionMatcher());
-  addModule(new opov::module::ConditionalAssgnMatcher());
-  addModule(new opov::module::IfElseAssign());
-  addModule(new opov::module::LocalScope());
-  addModule(new opov::module::GlobalScope());
-}
-
-OpOvApp::~OpOvApp() {
+  addModule<opov::module::ExplicitCast>();
+  addModule<opov::module::UnionMatcher>();
+  addModule<opov::module::ImplicitConversion>();
+  addModule<opov::module::ImplicitConditionMatcher>();
+  addModule<opov::module::ConditionalAssgnMatcher>();
+  addModule<opov::module::IfElseAssign>();
+  addModule<opov::module::LocalScope>();
+  addModule<opov::module::GlobalScope>();
 }

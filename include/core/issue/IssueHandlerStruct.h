@@ -5,13 +5,13 @@
  *      Author: ahueck
  */
 
-#ifndef ISSUEHANDLERSTRUCT_H_
-#define ISSUEHANDLERSTRUCT_H_
+#ifndef CORE_ISSUE_ISSUEHANDLERSTRUCT_H
+#define CORE_ISSUE_ISSUEHANDLERSTRUCT_H
 
 #include <llvm/ADT/StringMap.h>
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace opov {
 
@@ -19,11 +19,11 @@ class Issue;
 
 struct TranslationUnitIssues {
   std::string MainSourceFile;
-  std::vector<std::shared_ptr<Issue> > Issues;
+  std::vector<std::shared_ptr<Issue>> Issues;
 };
 
 typedef llvm::StringMap<TranslationUnitIssues> TUIssuesMap;
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* ISSUEHANDLERSTRUCT_H_ */
+#endif  // CORE_ISSUE_ISSUEHANDLERSTRUCT_H

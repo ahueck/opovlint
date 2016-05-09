@@ -6,34 +6,32 @@
  */
 
 #include <core/Application.h>
-#include <core/IFactory.h>
-#include <core/module/Module.h>
 #include <core/configuration/Configuration.h>
-#include <core/issue/IssueHandler.h>
-#include <core/reporting/IssueReporter.h>
-#include <core/logging/Logger.h>
-#include <core/transformation/TransformationHandler.h>
+#include <core/IFactory.h>
 #include <core/issue/filter/IFilter.h>
 #include <core/issue/filter/UniqueFilter.h>
+#include <core/issue/IssueHandler.h>
+#include <core/logging/Logger.h>
+#include <core/module/Module.h>
+#include <core/reporting/IssueReporter.h>
+#include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
 #include <external/ReplacementHandling.h>
 
-#include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CommonOptionsParser.h>
-
+#include <clang/Tooling/Tooling.h>
+#include <llvm/ADT/SmallString.h>
+#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
-#include "llvm/ADT/SmallString.h"
-#include "llvm/Support/FileSystem.h"
-#include "llvm/Support/Path.h"
-#include "llvm/Support/Program.h"
-#include <limits.h>
+#include <llvm/Support/Program.h>
+
 #include <algorithm>
+#include <limits.h>
 
 namespace opov {
 
-Application::Application() {
-}
+Application::Application() = default;
 
 void Application::init() {
   loadConfig();
@@ -72,13 +70,13 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
   config->getValue("replacement:location", replacement_loc);
   config->getValue("replacement:apply", apply_replacements);
 
-  if(!replacementHandler.findClangApplyReplacements("")) {
-          LOG_ERROR("Could not find clang-apply-replacement");
-          return 0;
+  if (!replacementHandler.findClangApplyReplacements("")) {
+    LOG_ERROR("Could not find clang-apply-replacement");
+    return 0;
   }
 
-  for (auto module : modules) {
-    executor->setModule(module);
+  for (auto& module : modules) {
+    executor->setModule(module.get());
     int sig = tool.run(actionFactory.get());
     if (sig == 1) {
       /*LOG_ERROR("Module '" << module->moduleName() << "' failed.");*/
@@ -87,31 +85,30 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
   }
   report();
   replacementHandler.setDestinationDir(replacement_loc);
-  if(!replacementHandler.serializeReplacements(thandler->getAllReplacements())) {
-      LOG_DEBUG("Failed to serialize replacements");
+  if (!replacementHandler.serializeReplacements(thandler->getAllReplacements())) {
+    LOG_DEBUG("Failed to serialize replacements");
   }
-  if(apply_replacements) {
-      if(!replacementHandler.applyReplacements()) {
-          LOG_DEBUG("Failed to apply replacements");
-      }
+  if (apply_replacements) {
+    if (!replacementHandler.applyReplacements()) {
+      LOG_DEBUG("Failed to apply replacements");
+    }
   }
 
   return sig;
 }
 
 int Application::executeOnCode(const std::string& source, const std::vector<std::string>& args) {
-  int sig = 0;
-  for (auto module : modules) {
-    executor->setModule(module);
-    int sig = clang::tooling::runToolOnCodeWithArgs(actionFactory->create(), source, args);
-    if (sig < 1) {
+  for (auto& module : modules) {
+    executor->setModule(module.get());
+    const bool success = clang::tooling::runToolOnCodeWithArgs(actionFactory->create(), source, args);
+    if (!success) {
       LOG_DEBUG("Module '" << module->moduleName() << "' failed.");
-      return sig;
+      return -1;
     }
   }
   report();
 
-  return sig;
+  return 0;
 }
 
 void Application::report() {
@@ -128,26 +125,21 @@ void Application::report() {
 
   ihandler->clear();
 }
-
+/*
 void Application::addModule(Module* module) {
   LOG_DEBUG("Add module: " << module->moduleName());
   modules.push_back(module);
   module->init(config.get());
 }
+*/
 
 void Application::cleanUp() {
-  for (auto module : modules) {
-    delete module;
-  }
-  modules.clear();
 }
 
 std::string Application::getApplicationName() {
   return "GenericApplication";
 }
 
-Application::~Application() {
-  cleanUp();
-}
+Application::~Application() = default;
 
 } /* namespace opov */

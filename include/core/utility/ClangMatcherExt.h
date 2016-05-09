@@ -5,11 +5,11 @@
  *      Author: ahueck
  */
 
-#ifndef CLANGMATCHEREXT_H_
-#define CLANGMATCHEREXT_H_
+#ifndef CORE_UTILITY_CLANGMATCHEREXT_H
+#define CORE_UTILITY_CLANGMATCHEREXT_H
 
-#include <core/utility/ClangUtil.h>
 #include <core/logging/Logger.h>
+#include <core/utility/ClangUtil.h>
 
 #include <clang/ASTMatchers/ASTMatchers.h>
 
@@ -75,14 +75,14 @@ AST_MATCHER(TagDecl, isUnion) {
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
-  //auto& ct = Finder->getASTContext();
-  //LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
+  // auto& ct = Finder->getASTContext();
+  // LOG_MSG("ofType: '" << type << "' : " << is_type << " Statement: " << opov::clutil::node2str(ct, &Node));
   return is_type;
 }
 
 AST_MATCHER_P(CastExpr, hasSubExpr, internal::Matcher<Expr>, InnerMatcher) {
   const Expr* const SubExpression = Node.getSubExpr()->IgnoreParenImpCasts();
-  return (SubExpression != NULL && InnerMatcher.matches(*SubExpression, Finder, Builder));
+  return (SubExpression != nullptr && InnerMatcher.matches(*SubExpression, Finder, Builder));
 }
 
 AST_MATCHER_P(CXXConstructExpr, hasImplicitConversion, std::string, type) {
@@ -116,7 +116,7 @@ AST_MATCHER(NestedNameSpecifier, isGlobalNamespace) {
   return Node.getKind() == NestedNameSpecifier::SpecifierKind::Global;
 }
 
-}  // end namespace ast_matchers
-}  // end namespace clang
+} /* namespace ast_matchers */
+} /* namespace clang */
 
-#endif /* CLANGMATCHEREXT_H_ */
+#endif  // CORE_UTILITY_CLANGMATCHEREXT_H

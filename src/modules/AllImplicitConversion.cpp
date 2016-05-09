@@ -6,12 +6,11 @@
  */
 
 #include <modules/AllImplicitConversion.h>
-
-#include <core/utility/ClangMatcherExt.h>
-#include <core/utility/ClangUtil.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
+#include <core/utility/ClangMatcherExt.h>
+#include <core/utility/ClangUtil.h>
 
 namespace opov {
 namespace module {
@@ -20,23 +19,39 @@ using namespace clang;
 using namespace clang::ast_matchers;
 
 AllImplicitConversion::AllImplicitConversion() {
-  // TODO Auto-generated constructor stub
 }
 
-void AllImplicitConversion::setupOnce(const Configuration* config) {
-}
-
+/*
+ void AllImplicitConversion::setupOnce(const Configuration* config) {
+ }
+ */
 void AllImplicitConversion::setupMatcher() {
-  StatementMatcher impl_conversion = materializeTemporaryExpr(
-      hasTemporary(ignoringImpCasts(constructExpr(unless(temporaryObjectExpr())).bind("conversion"))));
-
-  /*constructExpr(unless(anyOf(
-                                                                                                  hasDeclaration(constructorDecl(isCopyOrMoveCtor()))
-                                                                                                  ,
-     hasParent(explicitCastExpr(isConstructorConversion()))
-                                                                                                  ,
-     hasParent(varDecl())))
-                                                                                  ).bind("conversion");*/
+  // clang-format off
+  StatementMatcher impl_conversion =
+      materializeTemporaryExpr(
+          hasTemporary(
+              ignoringImpCasts(
+                  constructExpr(
+                      unless(temporaryObjectExpr())
+                  ).bind("conversion")
+              )
+          )
+      );
+  /* constructExpr(
+          unless(
+              anyOf(
+                  hasDeclaration(
+                      constructorDecl(isCopyOrMoveCtor())
+                  )
+                  , hasParent(
+                        explicitCastExpr(
+                            isConstructorConversion())
+                        )
+                  , hasParent(varDecl())
+              )
+          )
+      ).bind("conversion");*/
+  // clang-format on
   this->addMatcher(impl_conversion);
 }
 
@@ -55,9 +70,7 @@ std::string AllImplicitConversion::moduleDescription() {
   return "Detects *all* implicit conversions.";
 }
 
-AllImplicitConversion::~AllImplicitConversion() {
-  // TODO Auto-generated destructor stub
-}
+AllImplicitConversion::~AllImplicitConversion() = default;
 
 } /* namespace module */
 } /* namespace opov */

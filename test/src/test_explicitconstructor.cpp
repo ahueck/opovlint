@@ -50,7 +50,7 @@ SCENARIO("Test with various constructor configurations, resulting in a single ma
 		// Config file sets the search for templates to true
 		opov::test::TestApp app;
 		app.init();
-		app.addModule(new opov::module::ExplicitConstructor());
+		app.addModule<opov::module::ExplicitConstructor>();
 #include "tests/ExplicitConstructorMatchSet.inl"
 	}
 }
@@ -59,7 +59,7 @@ SCENARIO("Test with various template constructor configurations, resulting in no
 	GIVEN("The static analyzer with the 'ExplicitCast' module") {
 		opov::test::TestApp app("test/data/explctor_conf.json");
 		app.init();
-		app.addModule(new opov::module::ExplicitConstructor());
+		app.addModule<opov::module::ExplicitConstructor>();
 #include "tests/ExplicitConstructorNoMatchSet.inl"
 	}
 }

@@ -13,8 +13,8 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef CLANG_MODERNIZE_INCLUDE_DIRECTIVES_H
-#define CLANG_MODERNIZE_INCLUDE_DIRECTIVES_H
+#ifndef EXTERNAL_INCLUDEDIRECTIVES_H
+#define EXTERNAL_INCLUDEDIRECTIVES_H
 
 #include "clang/Basic/SourceLocation.h"
 #include "clang/Tooling/Refactoring.h"
@@ -25,7 +25,6 @@
 
 namespace clang {
 class Preprocessor;
-class SourceLocation;
 } // namespace clang
 
 /// \brief Support for include directives handling.
@@ -51,7 +50,6 @@ public:
                                                llvm::StringRef Include);
   clang::tooling::Replacement addAngledInclude(const clang::FileEntry *File,
                                                llvm::StringRef Include);
-  clang::tooling::Replacement addAngledInclude(clang::SourceLocation loc, llvm::StringRef Include);
 
   /// \brief Check if \p Include is included by \p File or any of the files
   /// \p File includes.
@@ -140,4 +138,4 @@ private:
   HeaderToGuardMap HeaderToGuard;
 };
 
-#endif // CLANG_MODERNIZE_INCLUDE_DIRECTIVES_H
+#endif // EXTERNAL_INCLUDEDIRECTIVES_H

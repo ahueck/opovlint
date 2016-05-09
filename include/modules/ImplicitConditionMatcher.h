@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef IMPLICITCONDITIONMATCHER_H_
-#define IMPLICITCONDITIONMATCHER_H_
+#ifndef MODULES_IMPLICITCONDITIONMATCHER_H
+#define MODULES_IMPLICITCONDITIONMATCHER_H
 
 #include <core/module/ASTMatcherModule.h>
 
@@ -17,15 +17,15 @@ namespace module {
 class ImplicitConditionMatcher : public opov::ASTMatcherModule {
  public:
   ImplicitConditionMatcher();
-  virtual void setupOnce(const Configuration* config) override;
-  virtual void setupMatcher() override;
-  virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
-  virtual std::string moduleName() override;
-  virtual std::string moduleDescription() override;
-  virtual ~ImplicitConditionMatcher();
+  // void setupOnce(const Configuration *config) override;
+  void setupMatcher() override;
+  void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
+  std::string moduleName() override;
+  std::string moduleDescription() override;
+  ~ImplicitConditionMatcher() override;
 };
 
-}  // namespace module
+} /* namespace module */
 } /* namespace opov */
 
-#endif /* IMPLICITCONDITIONMATCHER_H_ */
+#endif  // MODULES_IMPLICITCONDITIONMATCHER_H

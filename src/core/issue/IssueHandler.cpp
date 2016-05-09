@@ -9,10 +9,7 @@
 
 namespace opov {
 
-IssueHandler::IssueHandler()
-    : source("")
-    , issues()
-    , ac(nullptr) {
+IssueHandler::IssueHandler() : source(""), issues(), ac(nullptr) {
 }
 
 void IssueHandler::setSource(const std::string& current) {
@@ -32,7 +29,6 @@ void IssueHandler::clear() {
   issues.clear();
 }
 
-IssueHandler::~IssueHandler() {
-}
+IssueHandler::~IssueHandler() = default;
 
 } /* namespace opov */

@@ -6,11 +6,10 @@
  */
 
 #include <modules/ExplicitConstructor.h>
-
-#include <core/utility/ClangMatcherExt.h>
-#include <core/module/ModuleContext.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
+#include <core/module/ModuleContext.h>
+#include <core/utility/ClangMatcherExt.h>
 
 namespace opov {
 namespace module {
@@ -18,8 +17,7 @@ namespace module {
 using namespace clang;
 using namespace clang::ast_matchers;
 
-ExplicitConstructor::ExplicitConstructor()
-    : warnOnTemplates(false) {
+ExplicitConstructor::ExplicitConstructor() : warnOnTemplates(false) {
 }
 
 void ExplicitConstructor::setupOnce(const Configuration* config) {
@@ -27,13 +25,27 @@ void ExplicitConstructor::setupOnce(const Configuration* config) {
 }
 
 void ExplicitConstructor::setupMatcher() {
-  auto isTemplSpecialization = hasParent(classTemplateSpecializationDecl());
-  auto constructor =
+  // clang-format off
+  auto isTemplSpecialization =
+      hasParent(classTemplateSpecializationDecl());
+  DeclarationMatcher constructor =
       (warnOnTemplates
-           ? constructorDecl(unless(isTemplSpecialization))
-           : constructorDecl(unless(anyOf(isTemplSpecialization,
-                                          hasParent(recordDecl(hasParent(classTemplateDecl()))))))).bind("constructor");
+           ? constructorDecl(
+               unless(isTemplSpecialization)
+             )
+           : constructorDecl(
+                 unless(
+                     anyOf(
+                         isTemplSpecialization
+                         , hasParent(
+                               recordDecl(hasParent(classTemplateDecl()))
+                           )
+                     )
+                 )
+             )
+       ).bind("constructor");
   ;
+  // clang-format on
   addMatcher(constructor);
 }
 
@@ -58,8 +70,7 @@ std::string ExplicitConstructor::moduleDescription() {
          "implicit conversions.";
 }
 
-ExplicitConstructor::~ExplicitConstructor() {
-}
+ExplicitConstructor::~ExplicitConstructor() = default;
 
 } /* namespace module */
 } /* namespace opov */

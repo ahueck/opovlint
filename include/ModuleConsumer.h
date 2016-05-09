@@ -19,7 +19,7 @@ class ModuleConsumer : public AbstractModuleConsumer {
  public:
   ModuleConsumer(Module* module, ModuleContext* mcontext);
   // virtual void HandleTranslationUnit(clang::ASTContext &Context) override;
-  virtual ~ModuleConsumer();
+  ~ModuleConsumer() override;
 };
 
 } /* namespace opov */

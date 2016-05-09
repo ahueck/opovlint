@@ -13,15 +13,12 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef CLANG_MODERNIZE_REPLACEMENTHANDLING_H
-#define CLANG_MODERNIZE_REPLACEMENTHANDLING_H
+#ifndef EXTERNAL_REPLACEMENTHANDLING_H
+#define EXTERNAL_REPLACEMENTHANDLING_H
 
 #include "llvm/ADT/StringRef.h"
 #include <clang/Tooling/Refactoring.h>
-
-
-typedef llvm::StringMap<clang::tooling::TranslationUnitReplacements>
-TUReplacementsMap;
+typedef llvm::StringMap<clang::tooling::TranslationUnitReplacements> TUReplacementsMap;
 
 class ReplacementHandling {
 public:
@@ -124,4 +121,4 @@ private:
   std::string StyleConfigDir;
 };
 
-#endif // CLANG_MODERNIZE_REPLACEMENTHANDLING_H
+#endif // EXTERNAL_REPLACEMENTHANDLING_H

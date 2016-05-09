@@ -15,16 +15,11 @@
 #include <clang/AST/ASTContext.h>
 #include <clang/Basic/SourceManager.h>
 #include <clang/Tooling/Refactoring.h>
-//#include <clang/AST/AST.h>
 
 namespace opov {
 
 ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
-    : config(config)
-    , issues()
-    , context(nullptr)
-    , ihandler(ihandler)
-    , thandler(thandler) {
+    : config(config), issues(), context(nullptr), ihandler(ihandler), thandler(thandler) {
   issues.reserve(100);
 }
 
@@ -55,6 +50,9 @@ TransformationHandler& ModuleContext::getTransformationHandler() {
 IssueHandler& ModuleContext::getIssueHandler() {
   return *ihandler;
 }
+
+ModuleContext::~ModuleContext() = default;
+
 /*
 std::vector<Issue*>& ModuleContext::getIssues() {
         return issues;
@@ -71,7 +69,5 @@ std::vector<Issue*>& ModuleContext::getIssues() {
  return issues;
  }
  */
-ModuleContext::~ModuleContext() {
-}
 
 } /* namespace opov */

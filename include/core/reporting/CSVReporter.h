@@ -5,27 +5,25 @@
  *      Author: ahueck
  */
 
-#ifndef CSVREPORTER_H_
-#define CSVREPORTER_H_
+#ifndef CORE_REPORTING_CSVREPORTER_H
+#define CORE_REPORTING_CSVREPORTER_H
 
 #include "IssueReporter.h"
-
-//#include <string>
 
 namespace opov {
 
 class CSVReporter : public opov::IssueReporter {
  public:
   CSVReporter();
-  virtual void addIssue(const TranslationUnitIssues& issue) override;
-  virtual void addIssues(const TUIssuesMap& issues) override;
-  virtual void addIssues(const filter::IssueSet& issues) override;
-  virtual ~CSVReporter();
+  void addIssue(const TranslationUnitIssues& issue) override;
+  void addIssues(const TUIssuesMap& issues) override;
+  void addIssues(const filter::IssueSet& issues) override;
+  ~CSVReporter() override;
 
  private:
   void print(const TranslationUnitIssues& issue);
 };
 
-}  // namespace opov
+} /* namespace opov */
 
-#endif /* CSVREPORTER_H_ */
+#endif  // CORE_REPORTING_CSVREPORTER_H

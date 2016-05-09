@@ -42,6 +42,7 @@ void IssueHandler::addIssue(T node, const std::string& module, const std::string
   }
   tunit.Issues.push_back(issue);
 }
-}
+
+} /* namespace opov */
 
 #endif /* ISSUEHANDLER_HPP_ */
