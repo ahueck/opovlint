@@ -1,11 +1,12 @@
 #!/bin/bash
 
 binary_dir=${2:-bin}
-checker_bin=./"$binary_dir"/find-type"$1"
+# Expect debug build for the sanitizer runs
+checker_bin=./"$binary_dir"/find-typeDebug
 failed=0
 
 if [ ! -e "$checker_bin" ] ; then
-  echo "Abort. Executable for sanitizer check not found at: " "$checker_bin"
+  echo "Abort. Executable for sanitizer check '" "$1" "' not found at: " "$checker_bin"
   exit 1
 fi
 
