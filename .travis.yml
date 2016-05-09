@@ -14,12 +14,10 @@ env:
   - CXX_COMPILER=g++-4.8 C_COMPILER=gcc-4.8 SANITIZE=0 BUILD_DIR=build BIN_DIR=bin BUILD_TYPE=Release UNIT_TEST=1
   - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=0 BUILD_DIR=build_clang BIN_DIR=bin_clang BUILD_TYPE=Release UNIT_TEST=1
   - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address BIN_DIR=bin_address BUILD_TYPE=Debug UNIT_TEST=0
-  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory BIN_DIR=bin_memory BUILD_TYPE=Debug UNIT_TEST=0
 
 matrix:
   allow_failures:
     - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address BIN_DIR=bin_address BUILD_TYPE=Debug UNIT_TEST=0
-    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory BIN_DIR=bin_memory BUILD_TYPE=Debug UNIT_TEST=0
 
 before_install:
   - sudo apt-get update -qq
