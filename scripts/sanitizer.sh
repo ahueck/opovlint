@@ -1,6 +1,7 @@
 #!/bin/bash
 
-checker_bin=./bin/find-type"$1"
+binary_dir=${2:-bin}
+checker_bin=./"$binary_dir"/find-type"$1"
 failed=0
 
 if [ ! -e "$checker_bin" ] ; then

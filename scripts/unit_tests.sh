@@ -1,6 +1,7 @@
 #!/bin/bash
 
 failed=0
+binary_dir=${1:-bin}
 
 function verify() {
   # returns ret indicating whether the test succeeded or failed
@@ -15,7 +16,7 @@ function verify() {
   fi
 }
 
-for test in ./bin/test_* ; do
+for test in ./"$binary_dir"/test_* ; do
   verify $test
   if [ $ret -eq 1 ] ; then
     ((failed++))

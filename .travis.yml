@@ -11,15 +11,15 @@ sudo:
   - required
 
 env:
-  - CXX_COMPILER=g++ C_COMPILER=gcc SANITIZE=0 BUILD_DIR=build
-  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=0 BUILD_DIR=build_clang
-  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address
-  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory
+  - CXX_COMPILER=g++-4.8 C_COMPILER=gcc-4.8 SANITIZE=0 BUILD_DIR=build BIN_DIR=bin BUILD_TYPE=Release UNIT_TEST=1
+  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=0 BUILD_DIR=build_clang BIN_DIR=bin_clang BUILD_TYPE=Release UNIT_TEST=1
+  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address BIN_DIR=bin_address BUILD_TYPE=Debug UNIT_TEST=0
+  - CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory BIN_DIR=bin_memory BUILD_TYPE=Debug UNIT_TEST=0
 
 matrix:
   allow_failures:
-    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Memory BUILD_DIR=build_memory
-    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address
+    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Asan BUILD_DIR=build_address BIN_DIR=bin_address BUILD_TYPE=Debug UNIT_TEST=0
+    - env: CXX_COMPILER=clang++-3.6 C_COMPILER=clang-3.6 SANITIZE=Msan BUILD_DIR=build_memory BIN_DIR=bin_memory BUILD_TYPE=Debug UNIT_TEST=0
 
 before_install:
   - sudo apt-get update -qq
@@ -32,11 +32,11 @@ before_script:
   - cd ${BUILD_DIR}
 
 script: 
-  - cmake -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DCMAKE_C_COMPILER=${C_COMPILER} -DMAKE_TEST=1 -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 ..
+  - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DCMAKE_C_COMPILER=${C_COMPILER} -DMAKE_TEST=${UNIT_TEST} -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 -DBINARY_OUTPUT_DIRECTORY=${BIN_DIR} ..
   - make
   - cd ..
-  - ./scripts/unit_tests.sh
-  - if [[ ! $SANITIZE -eq 0 ]] ; then ./scripts/sanitizer.sh ${SANITIZE} ; fi
+  - if [[ $UNIT_TEST -eq 1 ]] ; then ./scripts/unit_tests.sh ${BIN_DIR} ; fi
+  - if [[ ! $SANITIZE -eq 0 ]] ; then ./scripts/sanitizer.sh ${SANITIZE} ${BIN_DIR} ; fi
 
 branches:
   only:
