@@ -16,17 +16,18 @@ The status of this software is alpha level.
 License
 ------------
 
-Distributed under the MIT License. For details refer to the [LICENSE](LICENSE)
+Distributed under the MIT License. For details refer to the [LICENSE](LICENSE).
 
 
 Motivation
 ------------
 
 Operator overloading allows for the semantic augmentation of existing codes. 
-The basic arithmetic type in a code is replaced by a user-defined type.
+The basic arithmetic type in a code is replaced by a user-defined type (e.g., **adouble**).
 
-*Type change* (in theory this just works): 
-- typedef **double** scalar; -> typedef **userdef_double** scalar;
+*Type change* (in theory these just works): 
+- typedef **double** scalar; -> typedef **adouble** scalar;
+- using scalar = **double**; -> using scalar = **adouble**;
 
 However, several coding patterns are not compatible with user-defined classes 
 and result in compile time errors.
@@ -62,9 +63,14 @@ For Ubuntu/Debian, refer to the [Travis CI file](.travis.yml) for guidance.
 
 ### Prerequisites
 
-1.  C++ Compiler with C++11 support (GCC version >= 4.8. Also tested for Clang version 3.6)
+1.  C++ Compiler with C++11 support. Tested compilers: GCC-(4.8 4.9 5.0] and Clang-(3.5 3.6 3.7 3.8)
 2.  cmake (version >=2.8)
-3.  Clang/LLVM in Version 3.6.0. Other versions might not work due to the changing API.
+3.  Clang/LLVM-3.6 with development packages. For a Debian-based distro the following packages may work:
+		- clang-3.6
+		- llvm-3.6
+		- libclang-3.6-dev
+		- llvm-3.6-dev
+		Other versions might not work due to the changing API.
     The build system relies on the presence of the **llvm-config**(-3.6 -3.7 -3.8) binary.
     If it can not be found, set the cmake variable ${LLVM_ROOT_DIR} to point to the 
     respective bin/ folder where llvm-config is located.
