@@ -21,7 +21,7 @@ function(setup_llvm)
 
   find_program(LLVM_CONFIG
       NAMES ${llvm_config_names}
-      PATHS /usr/local/bin /opt/local/bin ${LLVM_ROOT_DIR}/bin
+      PATHS /usr/bin /usr/local/bin /opt/local/bin ${LLVM_ROOT_DIR}/bin
       DOC "llvm-config executable.")
 
   if(LLVM_CONFIG)

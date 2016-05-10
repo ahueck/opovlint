@@ -63,7 +63,7 @@ For Ubuntu/Debian, refer to the [Travis CI file](.travis.yml) for guidance.
 
 ### Prerequisites
 
-1.  C++ Compiler with C++11 support. Tested compilers: GCC-(4.8 4.9 5.0) and Clang-(3.5 3.6 3.7 3.8)
+1.  C++ Compiler with C++11 support. Tested compilers: GCC-(4.8 4.9 5.0) and Clang-(3.6 3.7 3.8)
 2.  cmake (version >=2.8)
 3.  Clang/LLVM-3.6 with development packages. For a Debian-based distro the following packages may work:
     - clang-3.6
