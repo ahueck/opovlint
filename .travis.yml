@@ -1,74 +1,54 @@
-language: 
-  - cpp
+language: c++
+os: linux
+sudo: false
 
-os:
-  - linux
+# This only exists because of a bug: https://github.com/travis-ci/travis-ci/issues/4681
+env:
+  matrix:
+    - EMPTY_JOB_IN_TRAVIS_CI=1
 
-dist:
-  - trusty
-
-sudo:
-  - required
+addons:
+  apt:
+    packages:
+      - clang-3.5
+      - clang-3.6
+      - clang-3.7
+      - clang-3.8
+      - g++-4.8
+      - g++-5
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-precise-3.8
+      - llvm-toolchain-precise-3.7
+      - llvm-toolchain-precise-3.6
+      - llvm-toolchain-precise-3.5
+      - llvm-toolchain-precise
 
 matrix:
+  exclude:
+    - env: EMPTY_JOB_IN_TRAVIS_CI=1
   include:
     - env: CLANG_VERSION=3.5 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &clang35
-        apt:
-          packages:
-            - clang-3.5
-          sources:
-            - llvm-toolchain-trusty-3.5
     - env: CLANG_VERSION=3.6 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
     - env: CLANG_VERSION=3.7 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &clang37
-        apt:
-          packages:
-            - clang-3.7
-          sources:
-            - llvm-toolchain-trusty-3.7
-    - env: CLANG_VERSION=3.8 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &clang38
-        apt:
-          packages:
-            - clang-3.8
-          sources:
-            - llvm-toolchain-trusty-3.8
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
-      addons: *clang38
     - env: GCC_VERSION=4.8 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons:
-        apt:
-          packages:
-            - g++-4.8
-          sources:
-            - ubuntu-toolchain-r-test
     - env: GCC_VERSION=4.9 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons:
-        apt:
-          packages:
-            - g++-4.9
-          sources:
-            - ubuntu-toolchain-r-test
     - env: GCC_VERSION=5 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons:
-        apt:
-          packages:
-            - g++-5
-          sources:
-            - ubuntu-toolchain-r-test
   allow_failures:
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
 
-before_install:
-  - sudo apt-get update -qq
-
-install:
-  - sudo apt-get --yes install zlib1g-dev libxml2-dev libedit-dev clang-3.6 libclang-common-3.6-dev libclang-3.6-dev libclang1-3.6 libllvm3.6 llvm-3.6 llvm-3.6-dev llvm-3.6-runtime
-
 before_script:
-  - if [[ -n $GCC_VERSION ]] ; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}" BIN_DIR="bin_gcc_${GCC_VERSION}_${SANITIZE}" ; fi
-  - if [[ -n $CLANG_VERSION ]] ; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}" ; fi
+  - |
+    if [[ -n $GCC_VERSION ]] ; then 
+      export CXX="g++-${GCC_VERSION}"
+      export CC="gcc-${GCC_VERSION}"
+    fi
+  - |
+    if [[ -n $CLANG_VERSION ]] ; then 
+      export CXX="clang++-${CLANG_VERSION}"
+      export CC="clang-${CLANG_VERSION}"
+    fi
   - export BUILD_DIR="build_${CC}_${SANITIZE}"
   - export BIN_DIR="bin_${CC}_${SANITIZE}"
   - mkdir -p ${BUILD_DIR}
@@ -78,8 +58,14 @@ script:
   - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DMAKE_TEST=${UNIT_TEST} -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 -DBINARY_OUTPUT_DIRECTORY=${BIN_DIR} ..
   - make
   - cd ..
-  - if [[ $UNIT_TEST -eq 1 ]] ; then ./scripts/unit_tests.sh ${BIN_DIR} ; fi
-  - if [[ ! $SANITIZE -eq 0 ]] ; then ./scripts/sanitizer.sh ${SANITIZE} ${BIN_DIR} ; fi
+  - |
+    if [[ $UNIT_TEST -eq 1 ]] ; then 
+      ./scripts/unit_tests.sh ${BIN_DIR}
+    fi
+  - |
+    if [[ ! $SANITIZE -eq 0 ]] ; then 
+      ./scripts/sanitizer.sh ${SANITIZE} ${BIN_DIR}
+    fi
 
 branches:
   only:
