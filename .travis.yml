@@ -10,13 +10,13 @@ env:
 addons:
   apt:
     packages:
-      - clang-3.5
       - clang-3.6
       - clang-3.7
       - clang-3.8
       - g++-4.8
+      - g++-4.9
       - g++-5
-    sources:
+    sources: &sources
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.8
       - llvm-toolchain-precise-3.7
@@ -29,6 +29,10 @@ matrix:
     - env: EMPTY_JOB_IN_TRAVIS_CI=1
   include:
     - env: CLANG_VERSION=3.5 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
+      addons: &clang35
+        apt:
+          packages: clang-3.5
+          sources: *sources
     - env: CLANG_VERSION=3.6 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
     - env: CLANG_VERSION=3.7 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
