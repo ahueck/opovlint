@@ -14,17 +14,14 @@ addons:
       - libclang-3.6-dev
       - llvm-3.6
       - llvm-3.6-dev
-      - clang-3.7
-      - clang-3.8
-      - g++-4.8
-      - g++-4.9
-      - g++-5
+      - zlib1g-dev
+      - libxml2-dev
+      - libedit-dev
     sources: &sources
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.8
       - llvm-toolchain-precise-3.7
       - llvm-toolchain-precise-3.6
-      - llvm-toolchain-precise-3.5
       - llvm-toolchain-precise
 
 matrix:
@@ -33,10 +30,30 @@ matrix:
   include:
     - env: CLANG_VERSION=3.6 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
     - env: CLANG_VERSION=3.7 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
+      addons: &clang37
+        apt:
+          packages: clang-3.7
+          sources: *sources
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
+      addons: &clang38
+        apt:
+          packages: clang-3.8
+          sources: *sources
     - env: GCC_VERSION=4.8 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
+      addons: &gcc48
+        apt:
+          packages: g++-4.8
+          sources: *sources
     - env: GCC_VERSION=4.9 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
+      addons: &gcc49
+        apt:
+          packages: g++-4.9
+          sources: *sources
     - env: GCC_VERSION=5 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
+      addons: &gcc5
+        apt:
+          packages: g++-5
+          sources: *sources
   allow_failures:
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
 
