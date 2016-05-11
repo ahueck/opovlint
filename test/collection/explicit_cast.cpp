@@ -11,7 +11,7 @@ inline scalar test_ret(scalar a) {
 }
 
 inline void broken() {
-  scalar a,b,c,d=1.0;
+  scalar a, b, c, d = 1.0;
   scalar* ptr = &a;
   static_cast<scalar>(*ptr);
   static_cast<scalar*>(&a);

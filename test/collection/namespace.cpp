@@ -4,8 +4,10 @@ struct adouble;
 adouble sin(const adouble& a);
 struct adouble {
   double v;
-  adouble(double a) : v(a) {}
-  adouble(const adouble& other) : v(other.v) {}
+  adouble(double a) : v(a) {
+  }
+  adouble(const adouble& other) : v(other.v) {
+  }
   friend adouble sin(const adouble& a) {
     return adouble(sin(a.v));
   }
@@ -40,21 +42,19 @@ scalar cos(scalar a) {
 }
 
 class edge {
-public:
-scalar ns_test(scalar c);
-//scalar mag(const edge&);
+ public:
+  scalar ns_test(scalar c);
+  // scalar mag(const edge&);
 };
 
-
 class vec {
-public:
-scalar mag(const vec&);
+ public:
+  scalar mag(const vec&);
 };
 
 scalar vec::mag(const vec& a) {
   return 0.0;
 }
-
 
 void caller() {
   scalar a(10.0);
@@ -72,7 +72,7 @@ void caller() {
   edge e;
   e.ns_test(10.0);
 }
-} // Foam
+}  // Foam
 
 Foam::scalar Foam::edge::ns_test(Foam::scalar c) {
   return mag(c);

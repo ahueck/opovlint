@@ -39,6 +39,8 @@ matrix:
         apt:
           packages: clang-3.8
           sources: *sources
+    - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Ubsan
+      addons: *clang38
     - env: GCC_VERSION=4.8 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
       addons: &gcc48
         apt:
@@ -56,6 +58,7 @@ matrix:
           sources: *sources
   allow_failures:
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
+    - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Ubsan
 
 before_script:
   - |

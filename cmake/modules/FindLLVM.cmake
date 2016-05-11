@@ -92,7 +92,7 @@ function(set_llvm_include_dir)
 endfunction()
 
 function(set_llvm_definitions)
-## Definitions used by LLVM (-D)
+## Definitions used by LLVM (-D) except -DNDEBUG or -DDEBUG
 ## Out:
 ##  Var: ${LLVM_DEFINITIONS}
   execute_process(
@@ -102,28 +102,20 @@ function(set_llvm_definitions)
   
   string(REGEX REPLACE "-I[^ ]*" "" llvm_definitions ${llvm_definitions})
   string(REGEX REPLACE "[ ]+" " " llvm_definitions ${llvm_definitions})
+  string(REGEX REPLACE "-DN?DEBUG" " " llvm_definitions ${llvm_definitions})
   set(LLVM_DEFINITIONS ${llvm_definitions} PARENT_SCOPE)
 endfunction()
 
 function(set_llvm_libs)
 ## LLVM libraries to link against.
-## Flag: ${LLVM_LINK_SMALL} = true indicates to use a minimal
-##       set of libraries for the Clang tool. Might fail.
 ## Out:
 ##  Var: ${LLVM_DEFINITIONS}
-  if(LLVM_LINK_SMALL)
-    set(llvm_libs LLVMTransformUtils
-                  LLVMAnalysis LLVMTarget LLVMIRReader
-                  LLVMObject LLVMMCParser LLVMMC
-                  LLVMBitReader LLVMAsmParser LLVMCore
-                  LLVMOption LLVMSupport)
-  else()
-    execute_process(
-      COMMAND ${LLVM_CONFIG} --libs
-      OUTPUT_VARIABLE llvm_libs
-      OUTPUT_STRIP_TRAILING_WHITESPACE)
-    string(REGEX REPLACE " -" ";-" llvm_libs ${llvm_libs})
-  endif()
+  execute_process(
+    COMMAND ${LLVM_CONFIG} --libs
+    OUTPUT_VARIABLE llvm_libs
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  string(REGEX REPLACE " -" ";-" llvm_libs ${llvm_libs})
+
   set(LLVM_LIBS ${llvm_libs} PARENT_SCOPE)
 endfunction()
 

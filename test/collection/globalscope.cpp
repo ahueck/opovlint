@@ -13,8 +13,9 @@ double c = 2.0;
 void f(const X& x);
 
 class X {
-public:
-	friend void f(const X& x) {  }
+ public:
+  friend void f(const X& x) {
+  }
 };
 
 void g(scalar a);
@@ -25,23 +26,22 @@ void f(const X& x);
 void g(scalar z);
 void f();
 void call() {
-	::f(X());
-	ns::f(X());
-	f();
-	::a;
-	::b;
-  	::g(scalar(1.0));
-	::g(::b);
-	::g(::b*scalar(1));
-	::h(::b);
-	::g(b);
-	g(scalar(1.0));
-	ns::g(scalar(1.0));
-	::ns::g(scalar(1.0));
-	
-	std::vector<scalar> v;
-	v.push_back(::b);
-	::sqrt(::b);
+  ::f(X());
+  ns::f(X());
+  f();
+  ::a;
+  ::b;
+  ::g(scalar(1.0));
+  ::g(::b);
+  ::g(::b * scalar(1));
+  ::h(::b);
+  ::g(b);
+  g(scalar(1.0));
+  ns::g(scalar(1.0));
+  ::ns::g(scalar(1.0));
 
+  std::vector<scalar> v;
+  v.push_back(::b);
+  ::sqrt(::b);
 }
 }

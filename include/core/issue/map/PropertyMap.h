@@ -24,7 +24,7 @@ typedef std::map<std::string, Value> property_map;
   void DS_CONCAT(set, NAME)(DS_CONCAT(NAME, PropertyType) value) {        \
     _properties[DS_STRINGIFY(NAME)] = Value(value);                       \
   }                                                                       \
-  DS_CONCAT(NAME, PropertyType) DS_CONCAT(get, NAME)() {                  \
+  DS_CONCAT(NAME, PropertyType) DS_CONCAT(get, NAME)() const {            \
     auto it = _properties.find(DS_STRINGIFY(NAME));                       \
     if (it == std::end(_properties))                                      \
       return PropertyType<DS_CONCAT(NAME, PropertyType)>::DefaultValue(); \

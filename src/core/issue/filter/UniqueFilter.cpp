@@ -13,7 +13,7 @@ IssueSet UniqueFilter::apply(const TUIssuesMap& map) {
   IssueSet unique_issues;
   for (auto& tu_issues : map) {
     for (auto& issue : tu_issues.second.Issues) {
-      const int ihash = issue->hash();
+      const size_t ihash = issue->hash();
       auto result = unique_issues.find(ihash);
       if (result != std::end(unique_issues)) {
         result->second.tunits.push_back(tu_issues.second.MainSourceFile);

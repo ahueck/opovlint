@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <type_traits>
 #include <utility>
 
@@ -20,6 +21,15 @@ namespace util {
 
 inline std::vector<std::string> split(const std::string& input, char delimiter = ':') {
   std::vector<std::string> tokens;
+  /*
+  auto lastPos = input.find_first_not_of(delimiter, 0);
+  auto pos = input.find_first_of(delimiter, lastPos);
+  while(std::string::npos != pos || std::string::npos != lastPos) {
+    tokens.push_back(input.substr(lastPos, pos - lastPos));
+    lastPos = input.find_first_not_of(delimiter, pos);
+    pos = input.find_first_of(delimiter, lastPos);
+  }
+  */
   std::stringstream sstream(input);
   std::string token;
   while (std::getline(sstream, token, delimiter)) {
@@ -34,8 +44,8 @@ inline bool startsWith(const std::string& str, const std::string prefix) {
 }
 
 template <typename T>
-std::string num2str(T val) {
-  std::stringstream sstream;
+inline std::string num2str(T val) {
+  std::ostringstream sstream;
   sstream << val;
   return sstream.str();
 }

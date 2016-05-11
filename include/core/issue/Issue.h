@@ -11,6 +11,7 @@
 #include "map/PropertyMap.h"
 
 #include <functional>
+#include <sstream>
 
 namespace opov {
 
@@ -23,12 +24,22 @@ class Issue final {
     return _properties;
   }
 
-  int hash() {
-    int hash = 7;
-    int pos_hash = getLineStart() ^ (getColumnStart() << 4) ^ (getLineEnd() << 8) ^ (getColumnEnd() << 16);
+  size_t hash() const {
+    std::ostringstream sstream;
+    std::hash<std::string> hash_str_fn;
+
+    sstream << getLineStart() << getColumnStart() << getLineEnd() << getColumnEnd();
+    sstream << getFile() << getModuleName() << getCode();
+    std::string hash_str(sstream.str());
+
+    return hash_str_fn(hash_str);
+    /*
+    size_t hash = 7;
+    size_t pos_hash = getLineStart() ^ (getColumnStart() << 4) ^ (getLineEnd() << 8) ^ (getColumnEnd() << 16);
     hash += std::hash<std::string>()(getFile());
     hash = 17 * hash + std::hash<std::string>()(getModuleName());
     return hash ^ pos_hash;
+    */
   }
 
   int IssueProperty(LineStart);
