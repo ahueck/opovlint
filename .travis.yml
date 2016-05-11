@@ -95,7 +95,7 @@ script:
       ./scripts/unit_tests.sh ${BIN_DIR}
     fi
   - |
-    if [[ ! $SANITIZE -eq 0 ]] ; then 
+    if [[ ! $SANITIZE == 0 ]] ; then 
       ./scripts/sanitizer.sh ${SANITIZE} ${BIN_DIR}
     fi
 
