@@ -9,7 +9,7 @@ env:
 
 addons:
   apt:
-    packages:
+    packages: &default_dep
       - clang-3.6
       - libclang-3.6-dev
       - llvm-3.6
@@ -30,31 +30,41 @@ matrix:
   include:
     - env: CLANG_VERSION=3.6 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
     - env: CLANG_VERSION=3.7 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &clang37
+      addons:
         apt:
-          packages: clang-3.7
+          packages:
+            - *default_dep
+            - clang-3.7
           sources: *sources
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
       addons: &clang38
         apt:
-          packages: clang-3.8
+          packages:
+            - *default_dep
+            - clang-3.8
           sources: *sources
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Ubsan
       addons: *clang38
     - env: GCC_VERSION=4.8 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &gcc48
+      addons:
         apt:
-          packages: g++-4.8
+          packages:
+            - *default_dep
+            - g++-4.8
           sources: *sources
     - env: GCC_VERSION=4.9 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &gcc49
+      addons:
         apt:
-          packages: g++-4.9
+          packages:
+            - *default_dep
+            - g++-4.9
           sources: *sources
     - env: GCC_VERSION=5 BUILD_TYPE=Release UNIT_TEST=1 SANITIZE=0
-      addons: &gcc5
+      addons:
         apt:
-          packages: g++-5
+          packages:
+            - *default_dep
+            - g++-5
           sources: *sources
   allow_failures:
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
