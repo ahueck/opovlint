@@ -1,4 +1,3 @@
-#include <cstddef>
 #include "reCast.h"
 #pragma clang diagnostic ignored "-Wunused-value"
 
@@ -16,8 +15,8 @@ inline void broken() {
   static_cast<scalar>(*ptr);
   static_cast<scalar*>(&a);
   static_cast<scalar*>(ptr);
-  std::size_t i = reinterpret_cast<std::size_t>(ptr);
-  i = static_cast<std::size_t>(a);
+  unsigned long long i = reinterpret_cast<unsigned long long>(ptr);
+  i = static_cast<unsigned long long>(a);
 
   int xx = int(reCast<int, scalar>(a));
 }
