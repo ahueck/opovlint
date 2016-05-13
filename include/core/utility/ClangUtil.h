@@ -96,7 +96,7 @@ inline unsigned declCount(const clang::TagDecl* node) {
 
 /*
  * Taken from the official clang documentation:
- * 	see: http://clang.llvm.org/docs/LibASTMatchersTutorial.html
+ * see: http://clang.llvm.org/docs/LibASTMatchersTutorial.html
  */
 inline bool areSameExpr(clang::ASTContext* context, const clang::Expr* first, const clang::Expr* second) {
   if (first == nullptr || second == nullptr) {

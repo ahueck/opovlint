@@ -14,10 +14,10 @@ function(setup_llvm)
 ##  Var: ${LLVM_ROOT_DIR} (Prefix of LLVM)
 ##  Exe: ${LLVM_CONFIG}
   set(llvm_config_names llvm-config-3.6
-                        llvm-config
                         llvm-config-3.7
                         llvm-config-3.8
-                        llvm-config-3.9)
+                        llvm-config-3.9
+                        llvm-config)
 
   find_program(LLVM_CONFIG
       NAMES ${llvm_config_names}
@@ -80,7 +80,7 @@ function(set_llvm_system_libs)
 endfunction()
 
 function(set_llvm_include_dir)
-## Include direcotry of LLVM (-I)
+## Include directory of LLVM (-I)
 ## Out:
 ##  Var: ${LLVM_SYSTEM_LIBS}
   execute_process(

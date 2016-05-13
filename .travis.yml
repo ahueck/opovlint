@@ -91,7 +91,7 @@ script:
   - make
   - cd ..
   - |
-    if [[ $UNIT_TEST -eq 1 ]] ; then 
+    if [[ $UNIT_TEST == 1 ]] ; then 
       ./scripts/unit_tests.sh ${BIN_DIR}
     fi
   - |
