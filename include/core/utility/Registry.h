@@ -16,13 +16,37 @@
 namespace opov {
 
 template <typename T>
-class RegistryEntry;
+class RegistryEntry final {
+  const char* name;
+  const char* description;
+  std::unique_ptr<T> (*ctor)();
 
+ public:
+  RegistryEntry(const char* name, const char* description, std::unique_ptr<T> (*ctor)())
+      : name(name), description(description), ctor(ctor) {
+  }
+
+  const char* get_name() const {
+    return name;
+  }
+
+  const char* get_description() const {
+    return description;
+  }
+
+  std::unique_ptr<T> instantiate() const {
+    return ctor();
+  }
+};
+
+/*
 template <typename T>
 using entry = RegistryEntry<T>;
+*/
 
 template <typename T>
 class Registry final {
+  using entry = RegistryEntry<T>;
   // TODO ability to iterate over entries and list all
   using registry = std::map<std::string, const entry*>;
 
@@ -67,30 +91,6 @@ class Registry final {
   static registry& entry_map() {
     static registry impl;
     return impl;
-  }
-};
-
-template <typename T>
-class RegistryEntry final {
-  const char* name;
-  const char* description;
-  std::unique_ptr<T> (*ctor)();
-
- public:
-  RegistryEntry(const char* name, const char* description, std::unique_ptr<T> (*ctor)())
-      : name(name), description(description), ctor(ctor) {
-  }
-
-  const char* get_name() const {
-    return name;
-  }
-
-  const char* get_description() const {
-    return description;
-  }
-
-  std::unique_ptr<T> instantiate() const {
-    return ctor();
   }
 };
 

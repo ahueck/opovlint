@@ -8,6 +8,8 @@
 #ifndef CORE_MODULE_MODULE_H
 #define CORE_MODULE_MODULE_H
 
+#include <core/module/ModuleRegistry.h>
+
 #include <memory>
 #include <string>
 

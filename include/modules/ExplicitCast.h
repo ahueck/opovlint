@@ -15,8 +15,6 @@
 namespace opov {
 namespace module {
 
-class ExplicitCastVisitor;
-
 class ExplicitCast : public opov::ASTMatcherModule {
  private:
   std::string header_cast;
@@ -31,6 +29,8 @@ class ExplicitCast : public opov::ASTMatcherModule {
   std::string moduleDescription() override;
   ~ExplicitCast() override;
 };
+
+REGISTER_MODULE(ExplicitCast)
 
 } /* namespace module */
 } /* namespace opov */
