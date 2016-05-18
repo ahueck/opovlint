@@ -23,7 +23,7 @@ void AbstractModule::init(const Configuration* config) {
   setupOnce(config);
 }
 
-void AbstractModule::setupOnce(const Configuration* config) {
+void AbstractModule::setupOnce(const Configuration*) {
 }
 
 void AbstractModule::execute(ModuleContext* context) {

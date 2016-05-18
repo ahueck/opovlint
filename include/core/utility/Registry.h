@@ -5,8 +5,8 @@
  *      Author: ahueck
  */
 
-#ifndef INCLUDE_CORE_UTILITY_REGISTRY_H_
-#define INCLUDE_CORE_UTILITY_REGISTRY_H_
+#ifndef CORE_UTILITY_REGISTRY_H_
+#define CORE_UTILITY_REGISTRY_H_
 
 #include <core/utility/Util.h>
 
@@ -14,7 +14,6 @@
 #include <memory>
 
 namespace opov {
-namespace registry {
 
 template <typename T>
 class RegistryEntry;
@@ -42,8 +41,8 @@ class Registry final {
     if (reg.find(name) == std::end(reg)) {
       return nullptr;
     }
-
-    return reg[name]->instantiate();
+    auto map_entry = reg[name];
+    return map_entry->instantiate();
   }
 
   template <typename U>
@@ -95,7 +94,6 @@ class RegistryEntry final {
   }
 };
 
-} /* namespace registry */
 } /* namespace opov */
 
-#endif /* INCLUDE_CORE_UTILITY_REGISTRY_H_ */
+#endif // CORE_UTILITY_REGISTRY_H_
