@@ -48,6 +48,7 @@ void OpOvApp::createFactory() {
   executor->init();
 }
 
+/*
 void OpOvApp::initModules() {
   addModule<opov::module::ExplicitCast>();
   addModule<opov::module::UnionMatcher>();
@@ -58,3 +59,4 @@ void OpOvApp::initModules() {
   addModule<opov::module::LocalScope>();
   addModule<opov::module::GlobalScope>();
 }
+*/

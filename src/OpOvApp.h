@@ -20,7 +20,6 @@ class OpOvApp : public opov::Application {
   void loadConfig() override;
   void createReporter() override;
   void createFactory() override;
-  void initModules() override;
 
  public:
   explicit OpOvApp(const std::string& config_path);

@@ -11,14 +11,15 @@
 #include <core/utility/Registry.h>
 
 namespace opov {
-  class Module;
-  using ModuleRegistry = Registry<Module>;
+class Module;
+using ModuleRegistry = Registry<Module>;
+using ModuleEntry = RegistryEntry<Module>;
 
-#define REGISTER_MODULE(NAME) \
-  namespace { \
-	ModuleRegistry::Add<NAME> _##NAME##_(#NAME); \
+#define REGISTER_MODULE(NAME)                  \
+  namespace {                                  \
+  ModuleRegistry::Add<NAME> _##NAME##_(#NAME); \
   }
 
 } /* namespace opov */
 
-#endif // CORE_MODULE_MODULEREGISTRY_H_
+#endif  // CORE_MODULE_MODULEREGISTRY_H_
