@@ -30,8 +30,6 @@ class ExplicitCast : public opov::ASTMatcherModule {
   ~ExplicitCast() override;
 };
 
-REGISTER_MODULE(ExplicitCast)
-
 } /* namespace module */
 } /* namespace opov */
 

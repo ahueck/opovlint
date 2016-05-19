@@ -26,8 +26,6 @@ class GlobalScope : public opov::ASTMatcherModule {
   ~GlobalScope() override;
 };
 
-REGISTER_MODULE(GlobalScope)
-
 } /* namespace module */
 } /* namespace opov */
 

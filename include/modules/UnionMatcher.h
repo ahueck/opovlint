@@ -26,8 +26,6 @@ class UnionMatcher : public opov::ASTMatcherModule {
   ~UnionMatcher() override;
 };
 
-REGISTER_MODULE(UnionMatcher)
-
 } /* namespace module */
 } /* namespace opov */
 

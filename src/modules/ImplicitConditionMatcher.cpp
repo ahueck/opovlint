@@ -9,6 +9,7 @@
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
+#include <core/module/ModuleRegistry.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/transformation/TransformationUtil.h>
 #include <core/utility/ClangMatcherExt.h>
@@ -19,6 +20,8 @@
 
 namespace opov {
 namespace module {
+
+REGISTER_MODULE(ImplicitConditionMatcher)
 
 using namespace clang;
 using namespace clang::ast_matchers;

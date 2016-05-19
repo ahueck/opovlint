@@ -31,8 +31,6 @@ class IfElseAssign : public opov::ASTMatcherModule {
                        const clang::BinaryOperator* else_e);
 };
 
-REGISTER_MODULE(IfElseAssign)
-
 } /* namespace module */
 } /* namespace opov */
 

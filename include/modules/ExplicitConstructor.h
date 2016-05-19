@@ -27,8 +27,6 @@ class ExplicitConstructor : public opov::ASTMatcherModule {
   ~ExplicitConstructor() override;
 };
 
-REGISTER_MODULE(ExplicitConstructor)
-
 } /* namespace module */
 } /* namespace opov */
 

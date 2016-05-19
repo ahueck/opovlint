@@ -32,8 +32,6 @@ class LocalScope : public opov::ASTMatcherModule {
   ~LocalScope() override;
 };
 
-REGISTER_MODULE(LocalScope)
-
 } /* namespace module */
 } /* namespace opov */
 

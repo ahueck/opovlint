@@ -18,8 +18,19 @@ using ModuleEntry = RegistryEntry<Module>;
 #define REGISTER_MODULE(NAME)                  \
   namespace {                                  \
   ModuleRegistry::Add<NAME> _##NAME##_(#NAME); \
-  }
+  }\
+  MODULE_ANCHOR(NAME) = 0;
 
+#define MODULE_ANCHOR(NAME) \
+  volatile int Anchor_##NAME##_
+
+#define LINK_MODULE(NAME) \
+    namespace opov {\
+    namespace module { \
+      extern MODULE_ANCHOR(NAME); \
+      static int LLVM_ATTRIBUTE_UNUSED Sink_##NAME##_ = Anchor_##NAME##_; \
+    } \
+    }
 } /* namespace opov */
 
 #endif  // CORE_MODULE_MODULEREGISTRY_H_

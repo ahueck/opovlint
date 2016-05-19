@@ -26,8 +26,6 @@ class ImplicitConversion : public opov::ASTMatcherModule {
   ~ImplicitConversion() override;
 };
 
-REGISTER_MODULE(ImplicitConversion)
-
 } /* namespace module */
 } /* namespace opov */
 

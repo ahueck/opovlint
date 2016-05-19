@@ -36,8 +36,6 @@ class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
   conditional_data buildReplacement(clang::ASTContext& ac, const clang::ConditionalOperator* e);
 };
 
-REGISTER_MODULE(ConditionalAssgnMatcher)
-
 } /* namespace module */
 } /* namespace opov */
 

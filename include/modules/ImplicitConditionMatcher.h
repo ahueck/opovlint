@@ -25,8 +25,6 @@ class ImplicitConditionMatcher : public opov::ASTMatcherModule {
   ~ImplicitConditionMatcher() override;
 };
 
-REGISTER_MODULE(ImplicitConditionMatcher)
-
 } /* namespace module */
 } /* namespace opov */
 
