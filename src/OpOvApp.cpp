@@ -16,18 +16,18 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
-/*
-#include <modules/AllImplicitConversion.h>
-#include <modules/ConditionalAssgnMatcher.h>
-#include <modules/ExplicitCast.h>
-#include <modules/ExplicitConstructor.h>
-#include <modules/GlobalScope.h>
-#include <modules/IfElseAssign.h>
-#include <modules/ImplicitConditionMatcher.h>
-#include <modules/ImplicitConversion.h>
-#include <modules/LocalScope.h>
-#include <modules/UnionMatcher.h>
-*/
+namespace opov {
+namespace module {
+LINK_MODULE(UnionMatcher);
+LINK_MODULE(ExplicitCast);
+LINK_MODULE(ImplicitConversion);
+LINK_MODULE(ImplicitConditionMatcher);
+LINK_MODULE(ConditionalAssgnMatcher);
+LINK_MODULE(IfElseAssign);
+LINK_MODULE(LocalScope);
+LINK_MODULE(GlobalScope);
+} /* namespace module */
+} /* namespace opov */
 
 OpOvApp::OpOvApp(const std::string& config_path) : config_path(config_path) {
 }
@@ -50,26 +50,3 @@ void OpOvApp::createFactory() {
   executor = opov::util::make_unique<opov::AnalyzerFactory>(config.get(), ihandler.get(), thandler.get());
   executor->init();
 }
-
-
-LINK_MODULE(UnionMatcher);
-LINK_MODULE(ExplicitCast);
-LINK_MODULE(ImplicitConversion);
-LINK_MODULE(ImplicitConditionMatcher);
-LINK_MODULE(ConditionalAssgnMatcher);
-LINK_MODULE(IfElseAssign);
-LINK_MODULE(LocalScope);
-LINK_MODULE(GlobalScope);
-
-/*
-void OpOvApp::initModules() {
-  addModule<opov::module::ExplicitCast>();
-  addModule<opov::module::UnionMatcher>();
-  addModule<opov::module::ImplicitConversion>();
-  addModule<opov::module::ImplicitConditionMatcher>();
-  addModule<opov::module::ConditionalAssgnMatcher>();
-  addModule<opov::module::IfElseAssign>();
-  addModule<opov::module::LocalScope>();
-  addModule<opov::module::GlobalScope>();
-}
-*/

@@ -9,6 +9,7 @@
 #define CORE_UTILITY_REGISTRY_H_
 
 #include <core/utility/Util.h>
+#include <core/logging/Logger.h>
 
 #include <map>
 #include <memory>
@@ -40,6 +41,17 @@ class RegistryEntry final {
   }
 };
 
+template <typename Entry>
+struct EntryTrait {
+  static const char* name() {
+    return Entry::name;
+  }
+
+  static const char* description() {
+    return Entry::description;
+  }
+};
+
 template <typename T>
 class Registry final {
   using entry = RegistryEntry<T>;
@@ -49,18 +61,6 @@ class Registry final {
 
  public:
   Registry() = delete;
-
-  /*
-    static const_iterator cbegin() {
-      auto& reg = entry_map();
-      return reg.cbegin();
-    }
-
-    static const_iterator cend() {
-      auto& reg = entry_map();
-      return reg.cend();
-    }
-  */
 
   static void registrate(const std::string& name, const entry* e) {
     auto& reg = entry_map();
@@ -93,6 +93,10 @@ class Registry final {
     entry e;
 
    public:
+    Add() : Add(EntryTrait<U>::name(), EntryTrait<U>::description()) {
+
+    }
+
     explicit Add(const char* name, const char* description = "") : e(name, description, make_ctor) {
       Registry::registrate(std::string(name), &e);
     }

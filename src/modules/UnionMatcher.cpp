@@ -30,10 +30,6 @@ using namespace clang::ast_matchers;
 UnionMatcher::UnionMatcher() {
 }
 
-/*
-void UnionMatcher::setupOnce(const Configuration* config) {
-}
-*/
 void UnionMatcher::setupMatcher() {
   // clang-format off
   DeclarationMatcher invalid_unions =
