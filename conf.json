@@ -2,10 +2,14 @@
   "global" : {
     "transform" : false,
     "filter" : true,
-    "type" : "scalar"  
+    "type" : "scalar",
+    "modules" : {
+    	"filter" : ["^ExplicitCast", "^Union.*", "^Implicit.*", "^.*Scope$"],
+    	"case" : false
+    }
   },
   "replacement" : {
-    "location" : "/home/ahueck/workspaces/workspace/opovlint/transform",
+    "location" : "opovlint/transform",
     "apply" : false
   },
   "ExplicitCast" : {

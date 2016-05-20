@@ -32,6 +32,9 @@ class IFilter;
 } /* namespace filter */
 
 class Application {
+ private:
+  bool addModule(const std::string& name);
+
  protected:
   std::unique_ptr<IFactory> executor;
   std::unique_ptr<Configuration> config;
@@ -49,7 +52,8 @@ class Application {
   virtual void createTransformationHandler();
   virtual void createFactory() = 0;
   virtual void createActionFactory();
-  virtual void initModules() = 0;
+  virtual void loadModules();
+  virtual void initModules();
 
  public:
   Application();

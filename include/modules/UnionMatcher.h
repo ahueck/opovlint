@@ -17,6 +17,8 @@ namespace module {
 
 class UnionMatcher : public opov::ASTMatcherModule {
  public:
+  static constexpr const char* name = "UnionMatcher";
+  static constexpr const char* description = "UnionMatcher";
   UnionMatcher();
   // virtual void setupOnce(const Configuration* config) override;
   void setupMatcher() override;

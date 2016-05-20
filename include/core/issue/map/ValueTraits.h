@@ -10,13 +10,7 @@
 
 #include <string>
 
-//#include <map>
-//#include <ostream>
-
 namespace opov {
-
-// static std::map <std::string, std::function<void(std::ostream &, void *)> >
-// formatters;
 
 // specializable Property type traits
 template <typename T>
@@ -35,8 +29,6 @@ template <>
 struct PropertyType<std::string> {
   static const std::string& name() {
     static std::string _name = "string";
-    // static int i = []() {formatters["string"] = [](std::ostream & out, void *
-    // in) {out << (*(std::string*)in);}; return 0;}();
     return _name;
   }
 
@@ -49,13 +41,11 @@ template <>
 struct PropertyType<int> {
   static const std::string& name() {
     static std::string _name = "int";
-    // static int i = []() {formatters["int"] = [](std::ostream & out, void *
-    // in) {out << (*(int*)in);}; return 0;}();
     return _name;
   }
 
   static int DefaultValue() {
-    return -1;
+    return 0;
   }
 };
 
@@ -63,8 +53,6 @@ template <>
 struct PropertyType<unsigned int> {
   static const std::string& name() {
     static std::string _name = "unsigned int";
-    // static int i = []() {formatters["unsigned int"] = [](std::ostream & out,
-    // void * in) {out << (*(unsigned int*)in);}; return 0;}();
     return _name;
   }
 

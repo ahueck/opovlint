@@ -9,10 +9,13 @@
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
+#include <core/module/ModuleRegistry.h>
 #include <core/utility/ClangMatcherExt.h>
 
 namespace opov {
 namespace module {
+
+REGISTER_MODULE(ExplicitConstructor)
 
 using namespace clang;
 using namespace clang::ast_matchers;
