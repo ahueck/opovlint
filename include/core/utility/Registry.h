@@ -94,7 +94,6 @@ class Registry final {
 
    public:
     Add() : Add(EntryTrait<U>::name(), EntryTrait<U>::description()) {
-
     }
 
     explicit Add(const char* name, const char* description = "") : e(name, description, make_ctor) {
