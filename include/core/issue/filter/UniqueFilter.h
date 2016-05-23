@@ -9,7 +9,7 @@ namespace filter {
 class UniqueFilter : public IFilter {
  public:
   UniqueFilter();
-  IssueSet apply(const TUIssuesMap& map) override;
+  std::vector<SingleIssue> apply(const TUIssuesMap& map) override;
   ~UniqueFilter() override;
 };
 

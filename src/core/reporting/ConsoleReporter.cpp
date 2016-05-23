@@ -24,7 +24,7 @@ void ConsoleReporter::addIssues(const TUIssuesMap& issues) {
   }
 }
 
-void ConsoleReporter::addIssues(const filter::IssueSet& issues) {
+void ConsoleReporter::addIssues(const std::vector<filter::SingleIssue>& issues) {
   LOG_ERROR("Not yet implemented!");
 }
 

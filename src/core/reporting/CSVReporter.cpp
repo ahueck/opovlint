@@ -27,18 +27,18 @@ void CSVReporter::addIssues(const TUIssuesMap& issues) {
   }
 }
 
-void CSVReporter::addIssues(const filter::IssueSet& issues) {
+void CSVReporter::addIssues(const std::vector<filter::SingleIssue>& issues) {
   std::stringstream csv;
   csv << "Module Name;File Path;Code;Line Start;Line End;Column Start;Column End;File Count;Files\n";
   for (auto& ifiltered : issues) {
-    auto i = ifiltered.second.issue;
+    auto i = ifiltered.issue;
     csv << i->getModuleName() << ";";
     csv << i->getFile() << ";";
     csv << "\"" << util::trim_rep(util::remove_nl(i->getCode())) << "\";";
     csv << i->getLineStart() << ";" << i->getLineEnd() << ";" << i->getColumnStart() << ";" << i->getColumnEnd() << ";";
-    csv << ifiltered.second.tunits.size() << ";";
+    csv << ifiltered.tunit_occurences.size() << ";";
     csv << "+";
-    for (auto& tunit : ifiltered.second.tunits) {
+    for (auto& tunit : ifiltered.tunit_occurences) {
       csv << tunit << "+";
     }
     LOG_MSG(csv.str());

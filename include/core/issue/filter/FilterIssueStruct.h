@@ -2,6 +2,7 @@
 #define CORE_ISSUE_FILTER_FILTERISSUESTRUCT_H
 
 #include "../Issue.h"
+#include <core/utility/Util.h>
 
 #include <map>
 #include <memory>
@@ -10,18 +11,7 @@
 namespace opov {
 namespace filter {
 
-struct IssuesFiltered {
-  std::shared_ptr<Issue> issue;
-  std::vector<std::string> tunits;
-};
-
-struct issue_compare {
-  bool operator()(const IssuesFiltered& a, const IssuesFiltered& b) {
-    return a.issue->hash() != b.issue->hash();
-  }
-};
-
-using IssueSet = std::map<int, IssuesFiltered>;
+using SingleIssue =  struct { std::shared_ptr<Issue> issue; std::vector<std::string> tunit_occurences; };
 
 } /* namespace filter */
 } /* namespace opov */

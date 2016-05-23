@@ -10,7 +10,7 @@ namespace filter {
 
 class IFilter {
  public:
-  virtual IssueSet apply(const TUIssuesMap& map) = 0;
+  virtual std::vector<SingleIssue> apply(const TUIssuesMap& map) = 0;
   virtual ~IFilter() = default;
 };
 

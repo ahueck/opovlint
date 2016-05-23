@@ -17,7 +17,7 @@ class ConsoleReporter : public opov::IssueReporter {
   ConsoleReporter();
   void addIssue(const TranslationUnitIssues& issue) override;
   void addIssues(const TUIssuesMap& issues) override;
-  void addIssues(const filter::IssueSet& issues) override;
+  void addIssues(const std::vector<filter::SingleIssue>& issues) override;
   ~ConsoleReporter() override;
 
  private:

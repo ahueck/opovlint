@@ -26,11 +26,11 @@ public:
 
 	}
 
-	void addIssue(const TranslationUnitIssues& issue) {
+	void addIssue(const TranslationUnitIssues& issue) override {
 		LOG_DEBUG("Not supposed to be called!");
 	}
 
-	void addIssues(const TUIssuesMap& issues) {
+	void addIssues(const TUIssuesMap& issues) override  {
 		//FIXME assert that only one issue is produced for the code snippets
 		//auto& i = (*issues.find("input.cc")).getValue();
 		//this->issues = std::move(i.Issues);
@@ -46,13 +46,11 @@ public:
 		}
 	}
 
-	virtual void addIssues(const filter::IssueSet& issues) {
+	void addIssues(const std::vector<filter::SingleIssue>& issues) override {
 	  LOG_DEBUG("Not supposed to be called!");
 	}
 
-	virtual ~MockReporter() {
-
-	}
+	virtual ~MockReporter() = default;
 };
 
 }

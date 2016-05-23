@@ -20,12 +20,14 @@
 
 // clang-format off
 #define _OO_LOG_LEVEL_MSG(LEVEL_NUM, LEVEL, MSG) \
-  if (LEVEL_NUM <= LOG_LEVEL) \
-    llvm::errs() << LEVEL << ": " << __FILE__ << "@'" << __func__ << "' (" << __LINE__ << "): " << MSG << "\n"
+  if (LEVEL_NUM <= LOG_LEVEL) { \
+    llvm::errs() << LEVEL << ": " << __FILE__ << "@'" << __func__ << "' (" << __LINE__ << "): " << MSG << "\n"; \
+  }
 
 #define _OO_LOG_LEVEL_MSG_S(LEVEL_NUM, LEVEL, STMT) \
-  if (LEVEL_NUM <= LOG_LEVEL) \
-    llvm::errs() << LEVEL << ": " << __FILE__ << "@'" << __func__ << "' (" << __LINE__ << "): " << #STMT << "=" << STMT << "\n"
+  if (LEVEL_NUM <= LOG_LEVEL) { \
+    llvm::errs() << LEVEL << ": " << __FILE__ << "@'" << __func__ << "' (" << __LINE__ << "): " << #STMT << "=" << STMT << "\n"; \
+  }
 
 #define LOG_DEBUG_S(STMT) _OO_LOG_LEVEL_MSG_S(3, "Debug", MSG)
 #define LOG_INFO_S(STMT) _OO_LOG_LEVEL_MSG_S(2, "Info", MSG)
