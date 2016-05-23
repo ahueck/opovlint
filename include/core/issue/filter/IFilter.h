@@ -2,10 +2,10 @@
 #define CORE_ISSUE_FILTER_IFILTER_H
 
 #include "FilterIssueStruct.h"
-#include "../Issue.h"
 #include "../IssueHandlerStruct.h"
 
 namespace opov {
+
 namespace filter {
 
 class IFilter {

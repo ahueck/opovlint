@@ -242,9 +242,16 @@ class TypeDeducer final : public clang::RecursiveASTVisitor<TypeDeducer> {
     // we cont. if binary/parens returns double/float, happens even with typedef
     // types
     // TODO: possibly extend to unary ops too!
-    return typeOf(expr) == type &&
-           !(is_builtin && (clang::isa<clang::BinaryOperator>(expr) || clang::isa<clang::ImplicitCastExpr>(expr) ||
-                            clang::isa<clang::ParenExpr>(expr)));
+    // clang-format off
+    return typeOf(expr) == type
+              && !(is_builtin
+                    && (
+                          clang::isa<clang::BinaryOperator>(expr)
+                          || clang::isa<clang::ImplicitCastExpr>(expr)
+                          || clang::isa<clang::ParenExpr>(expr)
+                       )
+                  );
+    // clang-format on
   }
 
   inline bool terminate(clang::Expr* expr) {
@@ -253,17 +260,17 @@ class TypeDeducer final : public clang::RecursiveASTVisitor<TypeDeducer> {
     // clang-format off
     const bool expr_returns_bool =
         typeOfE == "_Bool"
-            && (
-                  clang::isa<clang::UnaryOperator>(expr)
-                  || clang::isa<clang::BinaryOperator>(expr)
-                  || clang::isa<clang::CallExpr>(expr)
-               );
+          && (
+                clang::isa<clang::UnaryOperator>(expr)
+                || clang::isa<clang::BinaryOperator>(expr)
+                || clang::isa<clang::CallExpr>(expr)
+             );
     const bool type_is_swallowed =
         typeOfE != type
-        && (
-              clang::isa<clang::ExplicitCastExpr>(expr)
-              || clang::isa<clang::CallExpr>(expr)
-           );
+          && (
+                clang::isa<clang::ExplicitCastExpr>(expr)
+                || clang::isa<clang::CallExpr>(expr)
+             );
     // clang-format on
     return expr_returns_bool || type_is_swallowed;
   }

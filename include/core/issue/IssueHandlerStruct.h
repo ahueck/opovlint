@@ -10,7 +10,6 @@
 
 #include <llvm/ADT/StringMap.h>
 
-#include <memory>
 #include <vector>
 
 namespace opov {

@@ -16,14 +16,14 @@
 namespace clang {
 namespace ast_matchers {
 
-#define __CKIND(__NAME__)                       \
+#define OPOV_CKIND(__NAME__)                    \
   AST_MATCHER(CastExpr, is##__NAME__) {         \
     return Node.getCastKind() == CK_##__NAME__; \
   }
-
-__CKIND(FloatingToBoolean)
-__CKIND(ConstructorConversion)
-__CKIND(LValueToRValue)
+OPOV_CKIND(FloatingToBoolean)
+OPOV_CKIND(ConstructorConversion)
+OPOV_CKIND(LValueToRValue)
+#undef OPOV_CKIND
 
 AST_POLYMORPHIC_MATCHER_P(isTypedef, AST_POLYMORPHIC_SUPPORTED_TYPES_2(Expr, Decl), std::string, type) {
   const auto typeOf_expr = Node.getType().getUnqualifiedType().getAsString();

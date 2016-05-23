@@ -8,8 +8,7 @@
 #ifndef CORE_MODULE_MODULECONTEXT_H
 #define CORE_MODULE_MODULECONTEXT_H
 
-#include <memory>
-#include <vector>
+#include <string>
 
 namespace clang {
 class ASTContext;
@@ -29,8 +28,7 @@ class TransformationHandler;
 class ModuleContext {
  protected:
   Configuration* config;
-  std::vector<Issue*> issues;
-  // std::vector<clang::tooling::Replacement> replacements;
+  // std::vector<Issue*> issues;
   clang::ASTContext* context;
   IssueHandler* ihandler;
   TransformationHandler* thandler;

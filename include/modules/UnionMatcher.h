@@ -10,17 +10,12 @@
 
 #include <core/module/ASTMatcherModule.h>
 
-#include <string>
-
 namespace opov {
 namespace module {
 
 class UnionMatcher : public opov::ASTMatcherModule {
  public:
-  static constexpr const char* name = "UnionMatcher";
-  static constexpr const char* description = "UnionMatcher";
   UnionMatcher();
-  // virtual void setupOnce(const Configuration* config) override;
   void setupMatcher() override;
   void run(const clang::ast_matchers::MatchFinder::MatchResult& result) override;
   std::string moduleName() override;

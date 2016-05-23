@@ -33,13 +33,6 @@ class Issue final {
     std::string hash_str(sstream.str());
 
     return hash_str_fn(hash_str);
-    /*
-    size_t hash = 7;
-    size_t pos_hash = getLineStart() ^ (getColumnStart() << 4) ^ (getLineEnd() << 8) ^ (getColumnEnd() << 16);
-    hash += std::hash<std::string>()(getFile());
-    hash = 17 * hash + std::hash<std::string>()(getModuleName());
-    return hash ^ pos_hash;
-    */
   }
 
   int IssueProperty(LineStart);

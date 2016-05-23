@@ -1,7 +1,8 @@
 #include <core/issue/filter/UniqueFilter.h>
+#include <core/issue/filter/FilterIssueStruct.h>
 #include <core/issue/IssueHandlerStruct.h>
 
-#include <map>
+#include <vector>
 
 namespace opov {
 namespace filter {

@@ -15,6 +15,8 @@
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 
+#include <clang/Tooling/Core/Replacement.h>
+
 namespace opov {
 namespace module {
 

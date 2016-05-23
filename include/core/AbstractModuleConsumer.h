@@ -10,8 +10,6 @@
 
 #include <clang/AST/ASTConsumer.h>
 
-#include <vector>
-
 namespace opov {
 
 class Module;

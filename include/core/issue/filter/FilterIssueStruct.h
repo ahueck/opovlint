@@ -21,7 +21,7 @@ struct issue_compare {
   }
 };
 
-typedef std::map<int, IssuesFiltered> IssueSet;
+using IssueSet = std::map<int, IssuesFiltered>;
 
 } /* namespace filter */
 } /* namespace opov */

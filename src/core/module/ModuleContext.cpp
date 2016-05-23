@@ -19,8 +19,7 @@
 namespace opov {
 
 ModuleContext::ModuleContext(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler)
-    : config(config), issues(), context(nullptr), ihandler(ihandler), thandler(thandler) {
-  issues.reserve(100);
+    : config(config), context(nullptr), ihandler(ihandler), thandler(thandler) {
 }
 
 void ModuleContext::initContext(clang::ASTContext* context) {
@@ -52,22 +51,5 @@ IssueHandler& ModuleContext::getIssueHandler() {
 }
 
 ModuleContext::~ModuleContext() = default;
-
-/*
-std::vector<Issue*>& ModuleContext::getIssues() {
-        return issues;
-}
-*/
-/*
- void ModuleContext::addIssue(Issue* report) {
- issues.push_back(report);
- }
- */
-
-/*
- IssueReporter& ModuleContext::getIssues() {
- return issues;
- }
- */
 
 } /* namespace opov */

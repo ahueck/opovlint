@@ -11,9 +11,6 @@
 #include "../issue/IssueHandlerStruct.h"
 #include "../issue/filter/FilterIssueStruct.h"
 
-#include <string>
-#include <vector>
-
 namespace opov {
 
 class IssueReporter {

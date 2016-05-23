@@ -10,8 +10,6 @@
 
 #include <core/module/ASTMatcherModule.h>
 
-#include <string>
-
 namespace opov {
 namespace module {
 

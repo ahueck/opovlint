@@ -15,7 +15,7 @@
 
 namespace opov {
 
-typedef std::map<std::string, Value> property_map;
+using property_map = std::map<std::string, Value>;
 
 // creates a getter and setter using a std::map<std::string, Value> called
 // _properties as the property store

@@ -10,17 +10,13 @@
 
 #include <core/module/ASTMatcherModule.h>
 
-#include <string>
-
 namespace opov {
 namespace module {
-
-// class ConditionalAssgnVisitor;
 
 class ConditionalAssgnMatcher : public opov::ASTMatcherModule {
  private:
   bool apply_transform;
-  typedef struct { std::string type, variable, lhs, rhs, replacement; } conditional_data;
+  using conditional_data = struct { std::string type, variable, lhs, rhs, replacement; };
 
  public:
   ConditionalAssgnMatcher();

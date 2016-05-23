@@ -10,6 +10,8 @@
 
 #include <clang/Tooling/Tooling.h>
 
+#include <memory>
+
 namespace clang {
 class AstConsumer;
 } /* namespace clang */

@@ -11,7 +11,6 @@
 #include "IFactory.h"
 
 #include <memory>
-#include <vector>
 #include <string>
 
 namespace clang {

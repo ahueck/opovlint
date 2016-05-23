@@ -8,6 +8,8 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/logging/Logger.h>
 
+#include <external/IncludeDirectives.h>
+
 #include <clang/Rewrite/Core/Rewriter.h>
 #include <clang/Tooling/Refactoring.h>
 

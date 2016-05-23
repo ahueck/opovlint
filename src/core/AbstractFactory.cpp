@@ -15,6 +15,8 @@
 #include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
+#include <external/IncludeDirectives.h>
+
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Tooling/Refactoring.h>
 #include <llvm/ADT/StringRef.h>
