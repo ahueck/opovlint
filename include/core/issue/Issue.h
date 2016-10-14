@@ -24,17 +24,6 @@ class Issue final {
     return _properties;
   }
 
-  size_t hash() const {
-    std::ostringstream sstream;
-    std::hash<std::string> hash_str_fn;
-
-    sstream << getLineStart() << getColumnStart() << getLineEnd() << getColumnEnd();
-    sstream << getFile() << getModuleName() << getCode();
-    std::string hash_str(sstream.str());
-
-    return hash_str_fn(hash_str);
-  }
-
   int IssueProperty(LineStart);
   int IssueProperty(LineEnd);
   int IssueProperty(ColumnStart);

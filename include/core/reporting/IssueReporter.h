@@ -9,15 +9,12 @@
 #define CORE_REPORTING_ISSUEREPORTER_H
 
 #include "../issue/IssueHandlerStruct.h"
-#include "../issue/filter/FilterIssueStruct.h"
 
 namespace opov {
 
 class IssueReporter {
  public:
-  virtual void addIssue(const TranslationUnitIssues& issue) = 0;
-  virtual void addIssues(const TUIssuesMap& issues) = 0;
-  virtual void addIssues(const std::vector<filter::SingleIssue>& issues) = 0;
+  virtual void addIssues(const IssueVector&) = 0;
   virtual ~IssueReporter() = default;
 };
 

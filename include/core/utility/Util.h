@@ -19,6 +19,38 @@
 namespace opov {
 namespace util {
 
+namespace detail {
+
+enum class enabler {};
+constexpr detail::enabler dummy = {};
+
+template <typename T>
+using Not = std::integral_constant<bool, !T::value>;
+
+template <typename T>
+using is_number = std::integral_constant<bool, std::is_integral<T>::value || std::is_floating_point<T>::value>;
+
+template <typename T>
+using Enable_if = typename std::enable_if<T::value, enabler>::type;
+
+template <typename T>
+using Disable_if = typename std::enable_if<Not<T>::value, enabler>::type;
+
+} /* namespace detail */
+
+
+template <typename T, detail::Enable_if<detail::is_number<T>> = detail::dummy>
+inline std::string num2str(T val) {
+  return std::to_string(val);
+}
+
+template <typename T, detail::Disable_if<detail::is_number<T>> = detail::dummy>
+inline std::string num2str(T val) {
+  std::ostringstream sstream;
+  sstream << val;
+  return sstream.str();
+}
+
 inline std::vector<std::string> split(const std::string& input, char delimiter = ':') {
   std::vector<std::string> tokens;
   /*
@@ -41,13 +73,6 @@ inline std::vector<std::string> split(const std::string& input, char delimiter =
 
 inline bool startsWith(const std::string& str, const std::string prefix) {
   return std::equal(prefix.begin(), prefix.end(), str.begin());
-}
-
-template <typename T>
-inline std::string num2str(T val) {
-  std::ostringstream sstream;
-  sstream << val;
-  return sstream.str();
 }
 
 inline std::string remove_nl(std::string multi_line) {

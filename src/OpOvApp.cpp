@@ -11,8 +11,7 @@
 #include <core/configuration/JSONConfiguration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleRegistry.h>
-#include <core/reporting/ConsoleReporter.h>
-#include <core/reporting/CSVReporter.h>
+#include <core/reporting/FormattedReporter.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
@@ -43,7 +42,7 @@ void OpOvApp::loadConfig() {
 }
 
 void OpOvApp::createReporter() {
-  reporter = opov::util::make_unique<opov::CSVReporter>();
+  reporter = opov::util::make_unique<opov::FormattedReporter>(config.get());
 }
 
 void OpOvApp::createFactory() {

@@ -9,7 +9,7 @@
 
 namespace opov {
 
-IssueHandler::IssueHandler() : source(""), issues(), ac(nullptr) {
+IssueHandler::IssueHandler() : source(""), detected_issues(), ac(nullptr) {
 }
 
 void IssueHandler::setSource(const std::string& current) {
@@ -20,13 +20,17 @@ void IssueHandler::init(clang::ASTContext* ac) {
   this->ac = ac;
 }
 
-TUIssuesMap& IssueHandler::getAllIssues() {
+IssueVector IssueHandler::getAllIssues() {
+  IssueVector issues;
+  issues.reserve(detected_issues.size());
+  std::transform(std::begin(detected_issues), std::end(detected_issues), std::back_inserter(issues),
+                 [](std::pair<const std::string, IssueInstance>& entry) { return entry.second; });
   return issues;
 }
 
 void IssueHandler::clear() {
   source = "";
-  issues.clear();
+  detected_issues.clear();
 }
 
 IssueHandler::~IssueHandler() = default;

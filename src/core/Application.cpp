@@ -8,8 +8,6 @@
 #include <core/Application.h>
 #include <core/configuration/Configuration.h>
 #include <core/IFactory.h>
-#include <core/issue/filter/IFilter.h>
-#include <core/issue/filter/UniqueFilter.h>
 #include <core/issue/IssueHandler.h>
 #include <core/logging/Logger.h>
 #include <core/module/Module.h>
@@ -38,7 +36,6 @@ Application::Application() = default;
 void Application::init() {
   loadConfig();
   createIssueHandler();
-  createFilter();
   createTransformationHandler();
   createReporter();
   createFactory();
@@ -53,10 +50,6 @@ void Application::createActionFactory() {
 
 void Application::createIssueHandler() {
   ihandler = util::make_unique<IssueHandler>();
-}
-
-void Application::createFilter() {
-  filter = util::make_unique<filter::UniqueFilter>();
 }
 
 void Application::createTransformationHandler() {
@@ -125,16 +118,8 @@ int Application::executeOnCode(const std::string& source, const std::vector<std:
 }
 
 void Application::report() {
-  bool do_filter;
-  config->getValue("global:filter", do_filter, false);
-  TUIssuesMap& issuesMap = ihandler->getAllIssues();
-
-  if (do_filter) {
-    auto filteredSet = filter->apply(issuesMap);
-    reporter->addIssues(filteredSet);
-  } else {
-    reporter->addIssues(issuesMap);
-  }
+  auto issues = ihandler->getAllIssues();
+  reporter->addIssues(issues);
 
   ihandler->clear();
 }

@@ -12,6 +12,7 @@
 
 #include <llvm/ADT/StringMap.h>
 
+#include <unordered_map>
 #include <string>
 
 namespace clang {
@@ -24,7 +25,7 @@ namespace opov {
 class IssueHandler {
  private:
   std::string source;
-  TUIssuesMap issues;
+  std::unordered_map<std::string, IssueInstance> detected_issues;
   clang::ASTContext* ac;
 
  public:
@@ -33,7 +34,7 @@ class IssueHandler {
   void init(clang::ASTContext* ac);
   template <typename T>
   void addIssue(T node, const std::string& module, const std::string& module_descr, std::string message = "");
-  TUIssuesMap& getAllIssues();
+  IssueVector getAllIssues();
   void clear();
   virtual ~IssueHandler();
 };

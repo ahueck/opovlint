@@ -16,12 +16,12 @@ namespace opov {
 
 class Issue;
 
-struct TranslationUnitIssues {
-  std::string MainSourceFile;
-  std::vector<std::shared_ptr<Issue>> Issues;
+using IssueInstance = struct {
+  std::shared_ptr<Issue> issue;
+  std::vector<std::string> tunit_occurences;
 };
 
-typedef llvm::StringMap<TranslationUnitIssues> TUIssuesMap;
+using IssueVector = std::vector<IssueInstance>;
 
 } /* namespace opov */
 

@@ -27,9 +27,6 @@ class IssueReporter;
 class IssueHandler;
 class TransformationHandler;
 class Module;
-namespace filter {
-class IFilter;
-} /* namespace filter */
 
 class Application {
  private:
@@ -42,13 +39,11 @@ class Application {
   std::unique_ptr<clang::tooling::FrontendActionFactory> actionFactory;
   std::unique_ptr<IssueHandler> ihandler;
   std::unique_ptr<TransformationHandler> thandler;
-  std::unique_ptr<filter::IFilter> filter;
   std::vector<std::unique_ptr<Module>> modules;
 
   virtual void loadConfig() = 0;
   virtual void createReporter() = 0;
   virtual void createIssueHandler();
-  virtual void createFilter();
   virtual void createTransformationHandler();
   virtual void createFactory() = 0;
   virtual void createActionFactory();

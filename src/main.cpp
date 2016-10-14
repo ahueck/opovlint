@@ -11,6 +11,7 @@ int main(int argc, const char** argv) {
   int success = 0;
   if (argc > 1) {
     clang::tooling::CommonOptionsParser OptionsParser(argc, argv, OpOvLintCategory);
+    Conf.hasArgStr();
     OpOvApp app(Conf.getValue());
     app.init();
     success = app.execute(OptionsParser.getCompilations(), OptionsParser.getSourcePathList());
