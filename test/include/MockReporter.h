@@ -22,32 +22,15 @@ public:
 	std::vector<std::shared_ptr<Issue>> issues;
 	std::string file;
 
-	MockReporter() {
+	MockReporter() = default;
 
-	}
-
-	void addIssue(const TranslationUnitIssues& issue) override {
-		LOG_DEBUG("Not supposed to be called!");
-	}
-
-	void addIssues(const TUIssuesMap& issues) override  {
-		//FIXME assert that only one issue is produced for the code snippets
-		//auto& i = (*issues.find("input.cc")).getValue();
-		//this->issues = std::move(i.Issues);
-		//this->file = i.MainSourceFile;
-		this->issues.clear();
-		for(auto& unit : issues) {
-			file = unit.second.MainSourceFile;
-			for(auto i : unit.second.Issues) {
-                //Issue* leak = new Issue();
-                //leak->setCode(i->getCode());
-				this->issues.push_back(i);
-			}
-		}
-	}
-
-	void addIssues(const std::vector<filter::SingleIssue>& issues) override {
-	  LOG_DEBUG("Not supposed to be called!");
+	virtual void addIssues(const IssueVector& issues) override {
+	  //FIXME assert that only one issue is produced for the code snippets
+	  this->issues.clear();
+	  for (auto& issue : issues) {
+	    file = issue.tunit_occurences.front();
+	    this->issues.push_back(issue.issue);
+	  }
 	}
 
 	virtual ~MockReporter() = default;

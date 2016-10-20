@@ -8,15 +8,15 @@
 #ifndef CORE_ISSUE_ISSUEHANDLERSTRUCT_H
 #define CORE_ISSUE_ISSUEHANDLERSTRUCT_H
 
-#include <llvm/ADT/StringMap.h>
-
+#include <memory>
+#include <string>
 #include <vector>
 
 namespace opov {
 
 class Issue;
 
-using IssueInstance = struct {
+struct IssueInstance {
   std::shared_ptr<Issue> issue;
   std::vector<std::string> tunit_occurences;
 };
