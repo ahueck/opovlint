@@ -17,7 +17,7 @@ std::tuple<FormattedReporter::TokenType, Iter, Iter> FormattedReporter::format_r
   auto dist_to_end = std::distance(iter, end);
 
   if (dist_to_end != 0) {
-    auto& map_f = mapper();
+    auto& map_f = map_format();
     // parse 1 or 2 chars ahead and extract from map
     // (greedy: try 2 first)
     for (decltype(dist_to_end) i = lookahead; i >= 1; --i) {
@@ -44,7 +44,6 @@ std::tuple<FormattedReporter::TokenType, Iter, Iter> FormattedReporter::filler_r
 template <typename Iterator>
 std::vector<std::tuple<FormattedReporter::TokenType, Iterator, Iterator>> FormattedReporter::build_tokens(
     Iterator begin, Iterator iter_end) {
-
   using Token = std::tuple<TokenType, Iterator, Iterator>;
   std::vector<Token> tokenized_format;
 
@@ -82,8 +81,8 @@ std::vector<std::tuple<FormattedReporter::TokenType, Iterator, Iterator>> Format
 
 template <typename Iterator>
 std::vector<FormattedReporter::format_fn> FormattedReporter::build_formatter(Iterator begin, Iterator end) {
-  init_map();
-  auto& map_f = mapper();
+  map_init();
+  auto& map_f = map_format();
   auto tokenized_format = build_tokens(begin, end);
 
   std::vector<format_fn> formatter;

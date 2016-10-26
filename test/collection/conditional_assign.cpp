@@ -1,3 +1,5 @@
+// RUN: find-typeDebug %s -- | FileCheck-3.6 %s
+// XFAIL: *
 typedef double scalar;
 
 scalar ret(scalar a) {

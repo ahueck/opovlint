@@ -19,7 +19,6 @@
 #include <map>
 #include <vector>
 
-
 namespace opov {
 
 class Configuration;
@@ -32,14 +31,14 @@ class FormattedReporter : public IssueReporter {
 
   enum class TokenType { Var, Filler };
 
-  static std::map<std::string, format_fn>& mapper() {
+  static std::map<std::string, format_fn>& map_format() {
     static std::map<std::string, format_fn> fmap;
     return fmap;
   }
 
-  static void init_map() {
+  static void map_init() {
     using util::num2str;
-    auto& fmap = mapper();
+    auto& fmap = map_format();
     fmap["ls"] = [](const IssueInstance& i) { return num2str(i.issue->getLineStart()); };
     fmap["le"] = [](const IssueInstance& i) { return num2str(i.issue->getLineEnd()); };
     fmap["cs"] = [](const IssueInstance& i) { return num2str(i.issue->getColumnStart()); };
@@ -74,6 +73,7 @@ class FormattedReporter : public IssueReporter {
 
  public:
   explicit FormattedReporter(const Configuration* config);
+  FormattedReporter(const Configuration* config, std::ostream& output);
   virtual void addIssues(const IssueVector& issues) override;
   virtual ~FormattedReporter() = default;
 };

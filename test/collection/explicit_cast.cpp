@@ -1,3 +1,4 @@
+// RUN: find-typeDebug %s -- | FileCheck-3.6 %s
 #include "reCast.h"
 #pragma clang diagnostic ignored "-Wunused-value"
 
@@ -16,6 +17,7 @@ inline void broken() {
   static_cast<scalar*>(&a);
   static_cast<scalar*>(ptr);
   unsigned long long i = reinterpret_cast<unsigned long long>(ptr);
+  // CHECK: [[@LINE+1]]:7: [ExplicitCast]
   i = static_cast<unsigned long long>(a);
 
   int xx = int(reCast<int, scalar>(a));

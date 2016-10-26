@@ -1,3 +1,5 @@
+// RUN: find-typeDebug %s -- | FileCheck-3.6 %s
+// XFAIL: *
 #pragma clang diagnostic ignored "-Wunused-value"
 
 #include <vector>

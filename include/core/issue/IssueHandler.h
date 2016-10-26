@@ -34,7 +34,7 @@ class IssueHandler {
   void init(clang::ASTContext* ac);
   template <typename T>
   void addIssue(T node, const std::string& module, const std::string& module_descr, std::string message = "");
-  IssueVector getAllIssues();
+  IssueVector getAllIssues(bool sorted = true);
   void clear();
   virtual ~IssueHandler();
 };

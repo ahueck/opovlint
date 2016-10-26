@@ -10,7 +10,10 @@
 
 namespace opov {
 
-FormattedReporter::FormattedReporter(const Configuration* config) {
+FormattedReporter::FormattedReporter(const Configuration* config) : FormattedReporter(config, std::cout) {
+}
+
+FormattedReporter::FormattedReporter(const Configuration* config, std::ostream& output) : IssueReporter(output) {
   std::string format_string;
   config->getValue("global:format", format_string, "%f:%ls:%cs: %m @ %s");
   formatter = build_formatter(std::begin(format_string), std::end(format_string));
@@ -24,7 +27,7 @@ void FormattedReporter::addIssues(const IssueVector& issues) {
     }
     out_ss << "\n";
   }
-  std::cout << out_ss.str();
+  output << out_ss.str();
 }
 
 } /* namespace opov */

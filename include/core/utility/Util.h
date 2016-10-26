@@ -38,7 +38,6 @@ using Disable_if = typename std::enable_if<Not<T>::value, enabler>::type;
 
 } /* namespace detail */
 
-
 template <typename T, detail::Enable_if<detail::is_number<T>> = detail::dummy>
 inline std::string num2str(T val) {
   return std::to_string(val);

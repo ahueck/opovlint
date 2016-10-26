@@ -12,6 +12,7 @@
 
 #include <clang/Tooling/Refactoring.h>
 
+#include <locale>
 #include <vector>
 
 //#include <clang/Lex/Lexer.h>
@@ -22,19 +23,6 @@ namespace trutil {
 using namespace clang::tooling;
 using namespace clang;
 using namespace clutil;
-
-static inline bool isWhitespace(unsigned char c) {
-  switch (c) {
-    case ' ':
-    case '\t':
-    case '\f':
-    case '\v':
-    case '\r':
-      return true;
-    default:
-      return false;
-  }
-}
 
 template <typename T>
 inline StringRef whitespaces(const clang::SourceManager& sm, T node) {
@@ -47,7 +35,8 @@ inline StringRef whitespaces(const clang::SourceManager& sm, T node) {
   auto cache = sm.getSLocEntry(V.first).getFile().getContentCache();
   unsigned startLineOff = cache->SourceLineCache[startLineNo];
   unsigned i = startLineOff;
-  while (isWhitespace(text[i])) {
+  std::locale loc;
+  while (std::isspace(text[i], loc)) {
     ++i;
   }
   StringRef spaces = text.substr(startLineOff, i - startLineOff);
