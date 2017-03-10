@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(OpOv)
 
 include(${PROJECT_SOURCE_DIR}/cmake/ToolchainOptions.cmake)
@@ -59,5 +59,6 @@ target_link_libraries(find-type${EXE_SUFFIX} stdimpl)
 
 if(MAKE_TEST)
   message(STATUS "Requested generation of tests.")
+  enable_testing()
   add_subdirectory(test)
 endif()

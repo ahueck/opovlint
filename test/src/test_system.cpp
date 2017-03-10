@@ -21,7 +21,32 @@
 
 
 TEST_CASE("Configuration", "[config]") {
-	const std::string file = "test/data/config.json";
+	const std::string file_content = R"(
+    {
+        "geo": {
+              "coordinates": [
+                37.871609,
+                -122.25831
+              ],
+              "type": "Point"
+        },
+        "vectors": {
+              "a": [
+                37.871609,
+                -122.25831
+              ],
+              "b": [
+                10,
+                20
+              ],
+              "c": [
+                "c_aa",
+                "c_bb"
+              ],
+        },
+         "test" : "data",
+    })";
+	std::stringstream file(file_content);
 	std::unique_ptr<opov::Configuration> config = opov::util::make_unique<opov::JSONConfiguration>();
     SECTION("Simple Parsing") {
     	std::string tmp;

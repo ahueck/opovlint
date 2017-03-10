@@ -10,6 +10,8 @@
 
 #include "Configuration.h"
 
+#include <core/logging/Logger.h>
+
 #include <external/jsonpp.hpp>
 
 #include <string>
@@ -28,6 +30,7 @@ class JSONConfiguration : public opov::Configuration {
  public:
   JSONConfiguration();
   bool load(const std::string& file) override;
+  bool load(const std::istream& in) override;
   void getValue(const std::string& id, std::string& val, std::string def = "") const override;
   void getValue(const std::string& id, double& val, double def = 0.0) const override;
   void getValue(const std::string& id, int& val, int def = 0) const override;

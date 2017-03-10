@@ -57,7 +57,15 @@ SCENARIO("Test with various constructor configurations, resulting in a single ma
 
 SCENARIO("Test with various template constructor configurations, resulting in no match each time", "[template_no_match]") {
 	GIVEN("The static analyzer with the 'ExplicitCast' module") {
-		opov::test::TestApp app("test/data/explctor_conf.json");
+		opov::test::TestApp app(R"(
+{
+    "global" : {
+        "type" : "scalar"    
+    },
+    "ExplicitConstructor" : {
+        "warnOnTemplates" : false
+    }
+})");
 		app.init();
 		app.addModule<opov::module::ExplicitConstructor>();
 #include "tests/ExplicitConstructorNoMatchSet.inl"

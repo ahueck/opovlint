@@ -6,7 +6,6 @@
  */
 
 #include <core/configuration/JSONConfiguration.h>
-#include <core/logging/Logger.h>
 
 #include <fstream>
 
@@ -21,7 +20,16 @@ bool JSONConfiguration::load(const std::string& file) {
     LOG_INFO("Configuration file not found: " << file << ". Exiting...");
     return false;
   }
-  json::parse(in, data);
+  return load(in);
+}
+
+bool JSONConfiguration::load(const std::istream& in) {
+  try {
+    json::parse(in, data);
+  } catch (const json::parser_error& e) {
+    LOG_INFO("Exception parsing json from istream: " << e.what() << ".");
+    return false;
+  }
   return true;
 }
 

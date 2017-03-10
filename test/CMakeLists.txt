@@ -6,4 +6,5 @@ set(unit_test_names implicitcond_matcher union_matcher explicitcast conditionala
 foreach(name ${unit_test_names})
   add_executable(test_${name}${EXE_SUFFIX} src/test_${name}.cpp)
   target_link_libraries(test_${name}${EXE_SUFFIX}  stdimpl )
+  add_test(NAME ${name} COMMAND test_${name}${EXE_SUFFIX})
 endforeach()

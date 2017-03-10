@@ -17,24 +17,44 @@
 #include <core/transformation/TransformationHandler.h>
 #include "MockReporter.h"
 
+#include <sstream>
 
-#define _CONF_DOUBLE "test/data/test_double_conf.json"
-#define _CONF "test/data/test_conf.json"
-const static std::string conf_double = _CONF_DOUBLE;
-const static std::string conf = _CONF;
+
+const static std::string conf_double = R"({
+  "global" : {
+    "filter" : false,
+    "type" : "double"    
+  }
+}
+)";
+const static std::string conf = R"({
+  "global" : {
+    "filter" : false,
+    "type" : "scalar"    
+  }
+}
+)";
 
 namespace opov {
 namespace test {
 
-class TestApp: public Application {
+class TestApp : public Application {
 public:
-	std::string conf_file;
+	std::string config_data;
+	bool is_file;
 
 protected:
 	void loadConfig() {
 		config = opov::util::make_unique<JSONConfiguration>();
-		bool success = config->load(conf_file);
+		bool success = false;
+		if(!is_file) {
+		  std::stringstream stream(config_data);
+		  success = config->load(stream);
+		} else {
+		  success = config->load(config_data);
+		}
 		if (!success) {
+		  std::cerr << "Config not loaded. Terminating." << std::endl;
 		  std::exit(EXIT_FAILURE);
 		}
 	}
@@ -49,7 +69,7 @@ protected:
 	}
 
 public:
-	TestApp(std::string conf_file=conf) : conf_file(conf_file) {
+	TestApp(std::string conf_file=conf, bool is_file = false) : config_data(conf_file), is_file(is_file) {
 
 	}
 
