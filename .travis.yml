@@ -70,7 +70,22 @@ matrix:
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Asan
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug UNIT_TEST=0 SANITIZE=Ubsan
 
+
+before_install:
+  - export DEPENDENCY_DIR="${TRAVIS_BUILD_DIR}/dependency" 
+  - mkdir -p ${DEPENDENCY_DIR}
+  - cd ${DEPENDENCY_DIR}
+
+install:
+  - |
+      CMAKE_URL="https://cmake.org/files/v3.6/cmake-3.6.3-Linux-x86_64.tar.gz"
+      mkdir -p cmake
+      travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C cmake
+      export PATH=${DEPENDENCY_DIR}/cmake/bin:${PATH}
+  - cmake --version
+
 before_script:
+  - cd ${TRAVIS_BUILD_DIR}
   - |
     if [[ -n $GCC_VERSION ]] ; then 
       export CXX="g++-${GCC_VERSION}"
@@ -88,18 +103,17 @@ before_script:
 
 script: 
   - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DMAKE_TEST=${UNIT_TEST} -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 -DBINARY_OUTPUT_DIRECTORY=${BIN_DIR} ..
-  - make
-  - cd ..
+  - cmake --build .
   - |
     if [[ $UNIT_TEST == 1 ]] ; then 
-      ./scripts/unit_tests.sh ${BIN_DIR}
+      ctest
     fi
   - |
     if [[ ! $SANITIZE == 0 ]] ; then 
+      cd ..
       ./scripts/sanitizer.sh ${SANITIZE} ${BIN_DIR}
     fi
 
 branches:
   only:
     - master
-    - devel

@@ -15,7 +15,7 @@
 #include <TestUtil.h>
 
 #define CATCH_CONFIG_MAIN
-#include <catch/catch.hpp>
+#include <catch.hpp>
 
 
 #define PRAGMAS "#pragma clang diagnostic ignored \"-Wunused-comparison\"\n\n"

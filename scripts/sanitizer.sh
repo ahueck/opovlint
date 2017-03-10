@@ -19,4 +19,6 @@ done
 
 if [ $failed -ge 1 ] ; then
   echo "# of failed tests:" $failed && exit 1
+else
+  echo "$1" "passed"
 fi

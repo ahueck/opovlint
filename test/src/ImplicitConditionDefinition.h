@@ -15,7 +15,7 @@
 #include <TestUtil.h>
 
 #define CATCH_CONFIG_MAIN
-#include <catch/catch.hpp>
+#include <catch.hpp>
 
 
 #define HEADER "typedef double scalar;\n"

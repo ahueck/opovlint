@@ -15,7 +15,7 @@
 #include <core/logging/Logger.h>
 
 #define CATCH_CONFIG_MAIN
-#include <catch/catch.hpp>
+#include <catch.hpp>
 
 #define PRAGMAS "#pragma clang diagnostic ignored \"-Wunused-value\"\n\n"
 #define HEADER "typedef double scalar;\n"

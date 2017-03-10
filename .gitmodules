@@ -1,0 +1,6 @@
+[submodule "externalpackages/jsonpp"]
+	path = externalpackages/jsonpp
+	url = https://github.com/Rapptz/jsonpp.git
+[submodule "externalpackages/catch"]
+	path = externalpackages/catch
+	url = https://github.com/philsquared/Catch.git

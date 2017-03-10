@@ -15,8 +15,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 message(STATUS "Binary output directory: " ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
+set(EXTERNALPACKAGES ${PROJECT_SOURCE_DIR}/externalpackages)
+add_subdirectory(${EXTERNALPACKAGES})
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${JSONPP_INCLUDE})
 
 set(LSOURCES
   src/core/Application.cpp
@@ -32,7 +35,6 @@ set(LSOURCES
   src/core/reporting/FormattedReporter.cpp
   src/core/transformation/TransformationHandler.cpp
 )
-
 
 set(PSOURCES 
   src/AnalyzerFactory.cpp
@@ -50,7 +52,7 @@ set(PSOURCES
 )
 
 add_library(libopov ${LSOURCES})
-target_link_libraries(libopov ${TOOLCHAIN_LINK_LIB})
+target_link_libraries(libopov ${TOOLCHAIN_LINK_LIB} jsonpp)
 add_library(stdimpl ${PSOURCES})
 target_link_libraries(stdimpl libopov)
 
