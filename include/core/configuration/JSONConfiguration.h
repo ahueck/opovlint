@@ -12,7 +12,7 @@
 
 #include <core/logging/Logger.h>
 
-#include <external/jsonpp.hpp>
+#include <jsonpp.hpp>
 
 #include <string>
 

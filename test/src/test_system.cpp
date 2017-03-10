@@ -17,7 +17,7 @@
 #include <memory>
 
 #define CATCH_CONFIG_MAIN
-#include <catch/catch.hpp>
+#include <catch.hpp>
 
 
 TEST_CASE("Configuration", "[config]") {
