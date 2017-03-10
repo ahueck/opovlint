@@ -21,33 +21,30 @@ namespace util {
 
 namespace detail {
 
-enum class enabler {};
-constexpr detail::enabler dummy = {};
+template <typename T>
+using is_number_t = typename std::integral_constant<bool, std::is_integral<T>::value || std::is_floating_point<T>::value>::type;
 
 template <typename T>
-using Not = std::integral_constant<bool, !T::value>;
+using remove_ref_t = typename std::remove_reference<T>::type;
 
 template <typename T>
-using is_number = std::integral_constant<bool, std::is_integral<T>::value || std::is_floating_point<T>::value>;
-
-template <typename T>
-using Enable_if = typename std::enable_if<T::value, enabler>::type;
-
-template <typename T>
-using Disable_if = typename std::enable_if<Not<T>::value, enabler>::type;
-
-} /* namespace detail */
-
-template <typename T, detail::Enable_if<detail::is_number<T>> = detail::dummy>
-inline std::string num2str(T val) {
+inline std::string num2str(std::true_type, T val) {
   return std::to_string(val);
 }
 
-template <typename T, detail::Disable_if<detail::is_number<T>> = detail::dummy>
-inline std::string num2str(T val) {
+template <typename T>
+inline std::string num2str(std::false_type, T val) {
   std::ostringstream sstream;
   sstream << val;
   return sstream.str();
+}
+
+} /* namespace detail */
+
+template <typename T>
+inline std::string num2str(T&& val) {
+  using namespace detail;
+  return detail::num2str(is_number_t<remove_ref_t<T>>(), std::forward<T>(val));
 }
 
 inline std::vector<std::string> split(const std::string& input, char delimiter = ':') {
