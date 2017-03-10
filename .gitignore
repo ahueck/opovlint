@@ -28,7 +28,14 @@
 *.app
 
 # Build folder
-build/*
+build*/
 
 # bin folder
-bin/*
+bin/
+
+# Misc folder
+.settings/
+
+# Eclipse files
+.cproject
+.project

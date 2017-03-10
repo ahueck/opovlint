@@ -1,0 +1,11 @@
+#############
+# JSONPP
+set(JSONPP_INSTALL ${EXTERNALPACKAGES}/jsonpp PARENT_SCOPE)
+set(JSONPP_INCLUDE ${EXTERNALPACKAGES}/jsonpp PARENT_SCOPE)
+add_library(jsonpp INTERFACE)
+
+#############
+# Catch (Testing)
+set(CATCH_INSTALL ${EXTERNALPACKAGES}/catch PARENT_SCOPE)
+set(CATCH_INCLUDE ${EXTERNALPACKAGES}/catch/single_include PARENT_SCOPE)
+add_library(catch INTERFACE)
