@@ -9,3 +9,12 @@ foreach(name ${unit_test_names})
   target_link_libraries(test_${name}${EXE_SUFFIX}  stdimpl )
   add_test(NAME ${name} COMMAND test_${name}${EXE_SUFFIX})
 endforeach()
+
+set(OPOVLINT_TEST_DEPS find-type${EXE_SUFFIX})
+
+add_lit_testsuite(check-oolint "Running the OO-Lint regression tests"
+  ${CMAKE_CURRENT_SOURCE_DIR}/collection
+  PARAMS ${OPOVLINT_TEST_PARAMS}
+  DEPENDS ${OPOVLINT_TEST_DEPS}
+  ARGS ${OPOVLINT_TEST_EXTRA_ARGS}
+  )
