@@ -1,5 +1,6 @@
 function(add_lit_target target comment)
   cmake_parse_arguments(ARG "" "" "PARAMS;DEPENDS;ARGS" ${ARGN})
+  message(STATUS "Adding llvm-lit target '${target}' depends on '${ARG_DEPENDS}'")
   set(LIT_ARGS "${ARG_ARGS} ${LLVM_LIT_ARGS}")
   separate_arguments(LIT_ARGS)
   if (NOT CMAKE_CFG_INTDIR STREQUAL ".")
@@ -7,6 +8,9 @@ function(add_lit_target target comment)
   endif ()
   find_program(LIT_COMMAND 
                NAMES llvm-lit llvm-lit-4.0 llvm-lit-3.8 llvm-lit-3.7 llvm-lit-3.6)
+  if(NOT LIT_COMMAND)
+    message(WARNING "Could not find llvm-lit executable.")
+  endif()
   list(APPEND LIT_COMMAND ${LIT_ARGS})
   foreach(param ${ARG_PARAMS})
     list(APPEND LIT_COMMAND --param ${param})
@@ -23,7 +27,6 @@ function(add_lit_target target comment)
     message(STATUS "${target} does nothing.")
   endif()
   if (ARG_DEPENDS)
-    message(We have dependency "${ARG_DEPENDS}")
     add_dependencies(${target} ${ARG_DEPENDS})
   endif()
 
@@ -37,7 +40,7 @@ function(add_lit_testsuite target comment)
 
   # EXCLUDE_FROM_ALL excludes the test ${target} out of check-all.
   if(NOT EXCLUDE_FROM_ALL)
-    # Register the testsuites, params and depends for the global check rule.
+    # Register the testsuites, params and depends for the global check rule, if any.
     set_property(GLOBAL APPEND PROPERTY OPOV_LIT_TESTSUITES ${ARG_UNPARSED_ARGUMENTS})
     set_property(GLOBAL APPEND PROPERTY OPOV_LIT_PARAMS ${ARG_PARAMS})
     set_property(GLOBAL APPEND PROPERTY OPOV_LIT_DEPENDS ${ARG_DEPENDS})
