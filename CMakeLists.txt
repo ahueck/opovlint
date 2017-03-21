@@ -59,6 +59,11 @@ target_link_libraries(stdimpl libopov)
 add_executable(find-type${EXE_SUFFIX} src/main.cpp src/OpOvApp.cpp)
 target_link_libraries(find-type${EXE_SUFFIX} stdimpl)
 
+add_custom_target(executable
+  COMMENT "Target to compile find-type executable"
+  DEPENDS find-type${EXE_SUFFIX}
+)
+
 set(OPOVLINT_TEST_DEPS find-type${EXE_SUFFIX})
 add_lit_testsuite(check-oolint "Running the OO-Lint regression tests"
   ${CMAKE_CURRENT_SOURCE_DIR}/test/collection
@@ -67,8 +72,5 @@ add_lit_testsuite(check-oolint "Running the OO-Lint regression tests"
   ARGS ${OPOVLINT_TEST_EXTRA_ARGS}
 )
 
-if(MAKE_TEST)
-  message(STATUS "Requested generation of tests.")
-  enable_testing()
-  add_subdirectory(test)
-endif()
+enable_testing()
+add_subdirectory(test)

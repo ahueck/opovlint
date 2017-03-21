@@ -102,10 +102,11 @@ before_script:
   - cd ${BUILD_DIR}
 
 script: 
-  - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DMAKE_TEST=${UNIT_TEST} -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 -DBINARY_OUTPUT_DIRECTORY=${BIN_DIR} ..
-  - cmake --build .
+  - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DSANITIZE=${SANITIZE} -DLOG_LEVEL=0 -DBINARY_OUTPUT_DIRECTORY=${BIN_DIR} ..
+  - cmake --build . --target executable
   - |
     if [[ $UNIT_TEST == 1 ]] ; then 
+      cmake --build . --target unit-tests
       ctest
     fi
   - |
