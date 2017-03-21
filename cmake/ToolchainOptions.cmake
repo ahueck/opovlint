@@ -3,6 +3,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 # Setup of all necessary include/lib dirs for the development of a Clang based tool
 find_package(LLVM REQUIRED)
 find_package(Clang REQUIRED)
+include(AddLLVM)
 
 if(NOT CLANG_FOUND)
   message(FATAL_ERROR "Detection of Clang failed.")
