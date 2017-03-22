@@ -22,7 +22,8 @@ namespace util {
 namespace detail {
 
 template <typename T>
-using is_number_t = typename std::integral_constant<bool, std::is_integral<T>::value || std::is_floating_point<T>::value>::type;
+using is_number_t =
+    typename std::integral_constant<bool, std::is_integral<T>::value || std::is_floating_point<T>::value>::type;
 
 template <typename T>
 using remove_ref_t = typename std::remove_reference<T>::type;
