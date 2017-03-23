@@ -75,7 +75,7 @@ For Ubuntu/Debian, refer to the [Travis CI file](.travis.yml) for guidance.
 In the root folder of the project:
 
     mkdir build && cd build/
-    cmake -DCMAKE_BUILD_TYPE=Release -DMAKE_TEST=FALSE ..
-    cmake --build .
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    cmake --build . --target executable
 
 The binary  should be created in the project folder *bin*. 
