@@ -1,7 +1,7 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,misc-*,modernize-*,cppcoreguidelines-*,readability-*,performance-*,llvm-header-guard,llvm-namespace-comment,google-build-using-namespace,google-explicit-constructor,google-readability-*'
 WarningsAsErrors: ''
-HeaderFilterRegex: include
+HeaderFilterRegex: 'include'
 AnalyzeTemporaryDtors: false
 User:            ahueck
 CheckOptions:    
