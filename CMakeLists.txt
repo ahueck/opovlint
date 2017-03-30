@@ -61,14 +61,16 @@ add_tidy_target(tidy-run
   "Clang-tidy run on OO-Lint translation units"
   SOURCES ${PSOURCES} ${LSOURCES}
   EXCLUDES "external"
+  OTHER
+  -line-filter='[{"name":"IncludeDirectives.h","lines":[[1,1]]},{"name":"ReplacementHandling.h","lines":[[1,1]]}]'
 )
 
 add_tidy_fix_target(tidy-core-fix
   "Clang-tidy run on OO-Lint translation units"
-  SOURCES ${LSOURCES} ${PSOURCES}
+  SOURCES ${PSOURCES} ${LSOURCES}
   EXCLUDES "external"
   OTHER -checks=-*,modernize-*,llvm-header-guard,llvm-namespace-comment,google-explicit-constructor
-  -line-filter='[{"name":"IncludeDirectives.h","lines":[[1,141]]},{"name":"ReplacementHandling.h"}]'
+  -line-filter='[{"name":"IncludeDirectives.h","lines":[[1,1]]},{"name":"ReplacementHandling.h","lines":[[1,1]]}]'
 )
 
 add_library(opov ${LSOURCES})
