@@ -29,7 +29,7 @@ class FormattedReporter : public IssueReporter {
 
   std::vector<format_fn> formatter;
 
-  enum class TokenType { Var, Filler };
+  enum class TokenType { Var, Filler, TU_Access };
 
   static std::map<std::string, format_fn>& map_format() {
     static std::map<std::string, format_fn> fmap;

@@ -9,6 +9,8 @@
 
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
+#include <core/reporting/FormattedReporter.h>
+#include <core/issue/IssueHandlerStruct.h>
 #include <core/module/ASTMatcherModule.h>
 #include <core/configuration/JSONConfiguration.h>
 #include <modules/ExplicitCast.h>
@@ -18,6 +20,113 @@
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+
+
+TEST_CASE("FormattedReporter", "[fmtreporter]") {
+  using namespace opov;
+
+  auto i = std::make_shared<Issue>();
+  i->setFile("TestFile.h");
+  i->setCode("test++;");
+  i->setColumnStart(0); i->setColumnEnd(0);
+  i->setLineStart(0); i->setLineEnd(0);
+  IssueInstance inst{i, {"File1.cpp", "File2.cpp"}};
+  IssueVector issues{inst};
+
+  std::unique_ptr<Configuration> config = util::make_unique<JSONConfiguration>();
+  std::ostringstream out;
+  out.clear();
+
+  SECTION("Default Output") {
+    //Default is: "%f:%ls:%cs: %m @ %s"
+    const std::string file_content = R"(
+      {
+          "global": { } 
+      })";
+
+    std::stringstream file(file_content);
+    config->load(file);
+    FormattedReporter reporter(config.get(), out);
+    reporter.addIssues(issues);
+    const std::string expected = i->getFile() + ":0:0:  @ test++;\n";
+    REQUIRE(out.str() == expected);
+  }
+
+  SECTION("Simple Output") {
+    const std::string file_content = R"(
+      {
+          "global": {
+            "format" : "%f : %tu" 
+          } 
+      })";
+    std::stringstream file(file_content);
+    config->load(file);
+    FormattedReporter reporter(config.get(), out);
+    reporter.addIssues(issues);
+    const std::string expected = i->getFile() + " : " + "File1.cpp,File2.cpp\n";
+    REQUIRE(out.str() == expected);
+  }
+
+  SECTION("Array Access") {
+    const std::string file_content = R"(
+      {
+          "global": {
+            "format" : "%f : %tu[0]" 
+          } 
+      })";
+    std::stringstream file(file_content);
+    config->load(file);
+    FormattedReporter reporter(config.get(), out);
+    reporter.addIssues(issues);
+    const std::string expected = i->getFile() + " : " + "File1.cpp\n";
+    REQUIRE(out.str() == expected);
+  }
+
+  SECTION("Array Access Last Element") {
+    const std::string file_content = R"(
+      {
+          "global": {
+            "format" : "%f : %tu[1]" 
+          } 
+      })";
+    std::stringstream file(file_content);
+    config->load(file);
+    FormattedReporter reporter(config.get(), out);
+    reporter.addIssues(issues);
+    const std::string expected = i->getFile() + " : " + "File2.cpp\n";
+    REQUIRE(out.str() == expected);
+  }
+
+  SECTION("Array Access Out of Bounds") {
+    const std::string file_content = R"(
+      {
+          "global": {
+            "format" : "%f : %tu[2]" 
+          } 
+      })";
+    std::stringstream file(file_content);
+    config->load(file);
+    FormattedReporter reporter(config.get(), out);
+    reporter.addIssues(issues);
+    const std::string expected = i->getFile() + " : " + "\n";
+    REQUIRE(out.str() == expected);
+  }
+
+  SECTION("Array Access Negative Out of Bounds") {
+    const std::string file_content = R"(
+      {
+          "global": {
+            "format" : "%f : %tu[-1]" 
+          } 
+      })";
+    std::stringstream file(file_content);
+    config->load(file);
+    FormattedReporter reporter(config.get(), out);
+    reporter.addIssues(issues);
+    const std::string expected = i->getFile() + " : " + "\n";
+    REQUIRE(out.str() == expected);
+  }
+}
 
 
 TEST_CASE("Configuration", "[config]") {
@@ -153,3 +262,4 @@ TEST_CASE("TransformationHandle", "[thandle]") {
 		//REQUIRE(handle->getAllReplacements().size() == 1);
     }
 }
+

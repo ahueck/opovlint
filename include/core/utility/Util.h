@@ -45,7 +45,12 @@ inline std::string num2str(std::false_type, T val) {
 template <typename T>
 inline std::string num2str(T&& val) {
   using namespace detail;
-  return detail::num2str(is_number_t<remove_ref_t<T>>(), std::forward<T>(val));
+  return num2str(is_number_t<remove_ref_t<T>>(), std::forward<T>(val));
+}
+
+template <typename T>
+inline T str2num(const std::string& val) {
+  return static_cast<T>(stoll(val));
 }
 
 inline std::vector<std::string> split(const std::string& input, char delimiter = ':') {

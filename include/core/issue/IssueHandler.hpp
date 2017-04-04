@@ -27,14 +27,14 @@ void IssueHandler::addIssue(T node, const std::string& module, const std::string
   int line_s, line_e, col_s, col_e;
   std::tie(line_s, line_e, col_s, col_e) = clutil::posOf(sm, node);
 
-  auto to_string = [&]() -> std::string {
+  auto make_key = [&]() -> std::string {
     std::ostringstream sstream;
     sstream << line_s << line_e << col_s << col_e;
     sstream << issue_file << module << node_source;
     return sstream.str();
   };
 
-  auto key = to_string();
+  auto key = make_key();
   auto search_res = detected_issues.find(key);
   if (search_res != std::end(detected_issues)) {
     search_res->second.tunit_occurences.push_back(source);
