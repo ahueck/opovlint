@@ -49,7 +49,8 @@ void IssueHandler::addIssue(T node, const std::string& module, const std::string
     issue->setColumnStart(col_s);
     issue->setColumnEnd(col_e);
     issue->setFile(issue_file);
-    detected_issues[key] = IssueInstance{issue, {source}};
+    auto instance = source == issue_file ? IssueInstance{issue, {}} : IssueInstance{issue, {source}};
+    detected_issues[key] = instance;
   }
 }
 

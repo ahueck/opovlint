@@ -28,7 +28,8 @@ public:
 	  //FIXME assert that only one issue is produced for the code snippets
 	  this->issues.clear();
 	  for (auto& issue : issues) {
-	    file = issue.tunit_occurences.front();
+	    //file = issue.tunit_occurences.front();
+	    file = issue.issue->getFile();
 	    this->issues.push_back(issue.issue);
 	  }
 	}

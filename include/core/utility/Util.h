@@ -8,8 +8,12 @@
 #ifndef CORE_UTILITY_UTIL_H
 #define CORE_UTILITY_UTIL_H
 
+#include <llvm/ADT/StringRef.h>
+#include <llvm/Support/Regex.h>
+
 #include <algorithm>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -87,6 +91,62 @@ inline std::string trim_rep(std::string str, char rep = ' ') {
   auto end = std::unique(str.begin(), str.end(), [&](char a, char b) -> bool { return a == rep && (a == b); });
   str.erase(end, str.end());
   return str;
+}
+
+inline std::string glob2regex(const std::string& glob) {
+  // Handles glob with no error checking:
+  // Choice: '{a,b,c}' eq. (a|b|c)
+  // Any char in bracket: '[abc]' eq. [abc]
+  // Any char: '?' eq. .
+  // Any string: '*' eq. .*
+  std::ostringstream glob_reg;
+  int in_curly{0};
+  /*
+   * TODO: handle "\\" in glob:
+        case '\\':
+          if(escape) {
+            return "\\\\";
+            escape = false;
+          } else {
+            escape = true;
+          }
+  */
+  const auto glob2reg = [&in_curly] (char c) -> std::string {
+      switch(c) {
+      case '?':
+        return ".";
+      case '*':
+        return ".*";
+      case '{':
+        ++in_curly;
+        return "(";
+      case '}':
+        --in_curly;
+        return ")";
+      case ',':
+        return in_curly > 0 ? "|" : ",";
+      default:
+        std::string ret{""};
+        if(strchr("()^$|*+.\\", c)) {
+          ret += '\\';
+        }
+        ret += c;
+        return ret;
+      }
+    };
+
+  glob_reg << "^";
+  for(char c : glob) {
+    glob_reg << glob2reg(c);
+  }
+  glob_reg << "$";
+  return glob_reg.str();
+}
+
+inline bool regex_matches(std::string regex, const std::string& in, bool case_sensitive = false) {
+  using namespace llvm;
+  Regex r(regex, !case_sensitive ? Regex::IgnoreCase : Regex::NoFlags);
+  return r.match(in);
 }
 
 /*

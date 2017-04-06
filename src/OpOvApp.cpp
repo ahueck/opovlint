@@ -17,14 +17,14 @@
 
 namespace opov {
 namespace module {
-LINK_MODULE(UnionMatcher);
-LINK_MODULE(ExplicitCast);
-LINK_MODULE(ImplicitConversion);
-LINK_MODULE(ImplicitConditionMatcher);
-LINK_MODULE(ConditionalAssgnMatcher);
-LINK_MODULE(IfElseAssign);
-LINK_MODULE(LocalScope);
-LINK_MODULE(GlobalScope);
+LINK_MODULE(UnionMatcher)
+LINK_MODULE(ExplicitCast)
+LINK_MODULE(ImplicitConversion)
+LINK_MODULE(ImplicitConditionMatcher)
+LINK_MODULE(ConditionalAssgnMatcher)
+LINK_MODULE(IfElseAssign)
+LINK_MODULE(LocalScope)
+LINK_MODULE(GlobalScope)
 } /* namespace module */
 } /* namespace opov */
 

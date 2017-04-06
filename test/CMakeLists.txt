@@ -15,3 +15,8 @@ foreach(name ${unit_test_names})
   add_dependencies(unit-tests test_${name}${EXE_SUFFIX})
 endforeach()
 
+ add_executable(test_core${EXE_SUFFIX} src/test_core.cpp)
+ target_link_libraries(test_core${EXE_SUFFIX} opov)
+ add_test(NAME core COMMAND test_core${EXE_SUFFIX})
+ add_dependencies(unit-tests test_core${EXE_SUFFIX})
+

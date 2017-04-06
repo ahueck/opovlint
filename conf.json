@@ -4,7 +4,7 @@
     "filter" : true,
     "type" : "scalar",
     "modules" : {
-    	"filter" : ["^ExplicitCast", "^Union.*", "^Implicit.*", "^.*Scope$"],
+    	"filter" : ["ExplicitCast", "Union*", "Implicit*", "*Scope"],
     	"case" : false
     }
   },

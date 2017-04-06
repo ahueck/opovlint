@@ -14,23 +14,24 @@ template <typename Iter, std::ptrdiff_t lookahead>
 std::tuple<FormattedReporter::TokenType, Iter, Iter> FormattedReporter::format_range(Iter iter_start, Iter iter_end) {
   // iter_start: expected to be at "%"
   Iter iter_current = std::next(iter_start);
-  auto dist_to_end = std::distance(iter_current, iter_end);
+  const auto dist_to_end = std::distance(iter_current, iter_end);
+  static constexpr const char* tu_access_tok = "tu";
 
   if (dist_to_end != 0) {
     auto& map_f = map_format();
     // parse 1 or 2 chars ahead and extract from map
     // (greedy: try 2 first)
-    for (decltype(dist_to_end) i = lookahead; i >= 1; --i) {
+    for (auto i = lookahead; i >= 1; --i) {
       if (dist_to_end >= i) {
         std::string fmt(iter_current, iter_current + i);
         if (map_f.find(fmt) != std::end(map_f)) {
           std::advance(iter_current, i);
           return std::make_tuple(TokenType::Var, iter_start, iter_current);
-        } else if ("tu" == fmt) {
+        } else if (tu_access_tok == fmt) {
           std::advance(iter_current, i);
           // ignore "tu"
           auto special_start = iter_current;
-          // look for potential [%num] access after:
+          // look for potential [%num%] access after:
           if(*iter_current == '[') {
             auto bracket_pos = std::find(iter_current, iter_end, ']');
             if(bracket_pos != iter_end) {
@@ -60,9 +61,8 @@ std::vector<std::tuple<FormattedReporter::TokenType, Iterator, Iterator>> Format
   std::vector<Token> tokenized_format;
 
   auto inserter = [&tokenized_format](const Token& token) {
-    if (TokenType::Var == std::get<0>(token)) {
-      tokenized_format.push_back(token);
-    } else if(TokenType::TU_Access == std::get<0>(token)) {
+    auto tok_t = std::get<0>(token);
+    if (TokenType::Var == tok_t || TokenType::TU_Access == tok_t) {
       tokenized_format.push_back(token);
     } else {
       TokenType tok_t;
@@ -102,10 +102,10 @@ std::vector<FormattedReporter::format_fn> FormattedReporter::build_formatter(Ite
   auto tokenized_format = build_tokens(begin, end);
 
   auto build_tu_access = [&](Iterator begin, Iterator end) -> format_fn {
-    // we get begin='[' and end=']', between is a number
     if(begin == end) {
       return map_f["o"];
     }
+    // we get begin='[' and end=']', between is a number:
     auto num_iter_start = std::next(begin);
     std::advance(end, -1);
     std::string num(num_iter_start, end);
@@ -128,19 +128,19 @@ std::vector<FormattedReporter::format_fn> FormattedReporter::build_formatter(Ite
   std::vector<format_fn> formatter;
 
   for (auto& token : tokenized_format) {
-    TokenType tok;
+    TokenType tok_t;
     Iterator beg, end;
-    std::tie(tok, beg, end) = token;
-    if (TokenType::Var == tok) {
+    std::tie(tok_t, beg, end) = token;
+    if (TokenType::Var == tok_t) {
       std::string fmt(std::next(beg), end);
       format_fn func = map_f[fmt];
       formatter.push_back(func);
-    } else if(TokenType::TU_Access == tok) {
+    } else if(TokenType::TU_Access == tok_t) {
       format_fn func = build_tu_access(beg, end);
       formatter.push_back(func);
     } else {
       std::string fmt(beg, end);
-      formatter.push_back([fmt](const IssueInstance& i) { return fmt; });
+      formatter.push_back([fmt](const IssueInstance&) { return fmt; });
     }
   }
 
