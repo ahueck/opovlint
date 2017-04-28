@@ -65,6 +65,13 @@ TEST_CASE("Util", "[util]") {
     REQUIRE_FALSE(regex_matches(out, "abe"));
     REQUIRE_FALSE(regex_matches(out, "abcd"));
   }
+
+  SECTION("Glob2Regex - close } only") {
+    std::string in = "ab}cd";
+    const auto out = glob2regex(in);
+    REQUIRE("^ab}cd$" == out);
+    REQUIRE(regex_matches(out, "ab}cd"));
+  }
 }
 
 TEST_CASE("FormattedReporter", "[fmtreporter]") {

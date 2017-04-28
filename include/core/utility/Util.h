@@ -99,48 +99,41 @@ inline std::string glob2regex(const std::string& glob) {
   // Any char in bracket: '[abc]' eq. [abc]
   // Any char: '?' eq. .
   // Any string: '*' eq. .*
-  std::ostringstream glob_reg;
+  std::string glob_reg{"^"};
   int in_curly{0};
-  /*
-   * TODO: handle "\\" in glob:
-        case '\\':
-          if(escape) {
-            return "\\\\";
-            escape = false;
-          } else {
-            escape = true;
-          }
-  */
-  const auto glob2reg = [&in_curly] (char c) -> std::string {
-      switch(c) {
-      case '?':
-        return ".";
-      case '*':
-        return ".*";
-      case '{':
-        ++in_curly;
-        return "(";
-      case '}':
-        --in_curly;
-        return ")";
-      case ',':
-        return in_curly > 0 ? "|" : ",";
-      default:
-        std::string ret{""};
-        if(strchr("()^$|*+.\\", c)) {
-          ret += '\\';
-        }
-        ret += c;
-        return ret;
-      }
-    };
-
-  glob_reg << "^";
   for(char c : glob) {
-    glob_reg << glob2reg(c);
+    switch(c) {
+    case '?':
+      glob_reg += ".";
+      break;
+    case '*':
+      glob_reg += ".*";
+      break;
+    case '{':
+      ++in_curly;
+      glob_reg += "(";
+      break;
+    case '}':
+      if(in_curly > 0) {
+        --in_curly;
+        glob_reg += ")";
+      } else {
+        glob_reg += c;
+      }
+      break;
+    case ',':
+      glob_reg += (in_curly > 0 ? "|" : ",");
+      break;
+    default:
+      if(strchr("()^$|*+.\\", c)) {
+        glob_reg += '\\';
+      }
+      glob_reg += c;
+      break;
+    }
   }
-  glob_reg << "$";
-  return glob_reg.str();
+  glob_reg += "$";
+  return glob_reg;
 }
 
 inline bool regex_matches(std::string regex, const std::string& in, bool case_sensitive = false) {
