@@ -19,6 +19,7 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace opov {
 namespace util {
@@ -101,35 +102,35 @@ inline std::string glob2regex(const std::string& glob) {
   // Any string: '*' eq. .*
   std::string glob_reg{"^"};
   int in_curly{0};
-  for(char c : glob) {
-    switch(c) {
-    case '?':
-      glob_reg += ".";
-      break;
-    case '*':
-      glob_reg += ".*";
-      break;
-    case '{':
-      ++in_curly;
-      glob_reg += "(";
-      break;
-    case '}':
-      if(in_curly > 0) {
-        --in_curly;
-        glob_reg += ")";
-      } else {
+  for (char c : glob) {
+    switch (c) {
+      case '?':
+        glob_reg += ".";
+        break;
+      case '*':
+        glob_reg += ".*";
+        break;
+      case '{':
+        ++in_curly;
+        glob_reg += "(";
+        break;
+      case '}':
+        if (in_curly > 0) {
+          --in_curly;
+          glob_reg += ")";
+        } else {
+          glob_reg += c;
+        }
+        break;
+      case ',':
+        glob_reg += (in_curly > 0 ? "|" : ",");
+        break;
+      default:
+        if (strchr("()^$|*+.\\", c)) {
+          glob_reg += '\\';
+        }
         glob_reg += c;
-      }
-      break;
-    case ',':
-      glob_reg += (in_curly > 0 ? "|" : ",");
-      break;
-    default:
-      if(strchr("()^$|*+.\\", c)) {
-        glob_reg += '\\';
-      }
-      glob_reg += c;
-      break;
+        break;
     }
   }
   glob_reg += "$";
@@ -140,6 +141,28 @@ inline bool regex_matches(std::string regex, const std::string& in, bool case_se
   using namespace llvm;
   Regex r(regex, !case_sensitive ? Regex::IgnoreCase : Regex::NoFlags);
   return r.match(in);
+}
+
+inline std::string format_duration(unsigned duration_s) {
+  static char buffer[16];
+  const static auto n = sizeof(buffer);
+  const unsigned hours = duration_s / (60 * 60);
+  const unsigned minutes = (duration_s / 60) % 60;
+  const unsigned seconds = duration_s % 60;
+
+  if (duration_s < 60) {
+    snprintf(buffer, n, "%.2us", seconds);
+  } else if (hours > 0) {
+    if (hours > 3) {
+      snprintf(buffer, n, "~%uh", hours);
+    } else {
+      snprintf(buffer, n, "%.2uh:%.2um:%.2us", hours, minutes, seconds);
+    }
+  } else {
+    snprintf(buffer, n, "%.2um:%.2us", minutes, seconds);
+  }
+
+  return {buffer};
 }
 
 /*

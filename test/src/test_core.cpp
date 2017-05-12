@@ -11,6 +11,7 @@
 #include <core/issue/IssueHandlerStruct.h>
 #include <core/module/ASTMatcherModule.h>
 #include <core/reporting/FormattedReporter.h>
+#include <core/reporting/ProgressMonitor.h>
 #include <core/utility/Util.h>
 
 #include <string>
@@ -72,6 +73,64 @@ TEST_CASE("Util", "[util]") {
     REQUIRE("^ab}cd$" == out);
     REQUIRE(regex_matches(out, "ab}cd"));
   }
+
+  SECTION("format_duration 5s") {
+    auto formatted = format_duration(5);
+    REQUIRE("05s" == formatted);
+  }
+
+  SECTION("format_duration - 10s") {
+    auto formatted = format_duration(10);
+    REQUIRE("10s" == formatted);
+  }
+
+  SECTION("format_duration - 10m") {
+    auto formatted = format_duration(10 * 60);
+    REQUIRE("10m:00s" == formatted);
+  }
+
+  SECTION("format_duration - almost 1h") {
+    auto formatted = format_duration(50 * 70 + 99);
+    REQUIRE("59m:59s" == formatted);
+  }
+
+  SECTION("format_duration - 1h") {
+    auto formatted = format_duration(60 * 60);
+    REQUIRE("01h:00m:00s" == formatted);
+  }
+
+  SECTION("format_duration - almost 4h") {
+    auto formatted = format_duration(60 * 60 * 3 + 50 * 70 + 99);
+    REQUIRE("03h:59m:59s" == formatted);
+  }
+
+  SECTION("format_duration - 4h") {
+    auto formatted = format_duration(60 * 60 * 4);
+    REQUIRE("~4h" == formatted);
+  }
+}
+
+TEST_CASE("ProgressMonitor", "[progressmonitor]") {
+  using namespace opov;
+
+  SECTION("100") {
+    std::ostringstream out;
+    ProgressMonitor mon(100, out);
+    mon.update("t1", "f1");
+
+    REQUIRE(mon.get_count() == 1);
+    REQUIRE(mon.get_expected_count() == 100);
+  }
+
+  SECTION("restart") {
+      std::ostringstream out;
+      ProgressMonitor mon(100, out);
+      mon.update("t1", "f1");
+      mon.restart(10);
+      REQUIRE(mon.get_count() == 0);
+      REQUIRE(mon.get_expected_count() == 10);
+    }
+
 }
 
 TEST_CASE("FormattedReporter", "[fmtreporter]") {

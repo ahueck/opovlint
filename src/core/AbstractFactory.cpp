@@ -12,6 +12,7 @@
 #include <core/module/Module.h>
 #include <core/module/ModuleContext.h>
 #include <core/reporting/IssueReporter.h>
+#include <core/reporting/ProgressMonitor.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
@@ -32,6 +33,13 @@ bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::Strin
   this->context->setCurrentSource(currentSource);
   // FIXME relocate to modulecontext class
   thandler->setIncludeDirectives(new IncludeDirectives(CI));
+
+  if (p_monitor != nullptr) {
+    auto pos = currentSource.find_last_of('/');
+    auto file_s = pos != std::string::npos ? currentSource.substr(pos + 1) : currentSource;
+    p_monitor->update(module->moduleName(), file_s);
+  }
+
   return true;
 }
 
@@ -43,6 +51,10 @@ void AbstractFactory::handleEndSource() {
 
 void AbstractFactory::setModule(Module* m) {
   this->module = m;
+}
+
+void AbstractFactory::setProgressMonitor(ProgressMonitor* p_monitor) {
+  this->p_monitor = p_monitor;
 }
 
 void AbstractFactory::init() {

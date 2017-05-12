@@ -21,19 +21,20 @@ class CompilationDatabase;
 
 namespace opov {
 
-class IFactory;
+class AbstractFactory;
 class Configuration;
 class IssueReporter;
 class IssueHandler;
 class TransformationHandler;
 class Module;
+class ProgressMonitor;
 
 class Application {
  private:
   bool addModule(const std::string& name);
 
  protected:
-  std::unique_ptr<IFactory> executor;
+  std::unique_ptr<AbstractFactory> executor;
   std::unique_ptr<Configuration> config;
   std::unique_ptr<IssueReporter> reporter;
   std::unique_ptr<clang::tooling::FrontendActionFactory> actionFactory;

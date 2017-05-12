@@ -8,11 +8,13 @@
 #include <core/Application.h>
 #include <core/configuration/Configuration.h>
 #include <core/IFactory.h>
+#include <core/AbstractFactory.h>
 #include <core/issue/IssueHandler.h>
 #include <core/logging/Logger.h>
 #include <core/module/Module.h>
 #include <core/module/ModuleRegistry.h>
 #include <core/reporting/IssueReporter.h>
+#include <core/reporting/ProgressMonitor.h>
 #include <core/transformation/TransformationHandler.h>
 #include <core/utility/Util.h>
 
@@ -45,7 +47,7 @@ void Application::init() {
 }
 
 void Application::createActionFactory() {
-  actionFactory = clang::tooling::newFrontendActionFactory<IFactory>(executor.get(), executor.get());
+  actionFactory = clang::tooling::newFrontendActionFactory<AbstractFactory>(executor.get(), executor.get());
 }
 
 void Application::createIssueHandler() {
@@ -59,6 +61,13 @@ void Application::createTransformationHandler() {
 int Application::execute(const clang::tooling::CompilationDatabase& db, const std::vector<std::string>& sources) {
   clang::tooling::ClangTool tool(db, sources);
   int sig = 0;
+
+  bool show_progress;
+  config->getValue("global:progress", show_progress, true);
+  if (show_progress) {
+    ProgressMonitor p_monitor(modules.size() * sources.size());
+    executor->setProgressMonitor(&p_monitor);
+  }
 
   ReplacementHandling replacementHandler;
   bool apply_replacements;

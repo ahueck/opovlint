@@ -34,6 +34,7 @@ set(LSOURCES
   include/external/ReplacementHandling.cpp
   src/core/issue/IssueHandler.cpp
   src/core/reporting/FormattedReporter.cpp
+  src/core/reporting/ProgressMonitor.cpp
   src/core/transformation/TransformationHandler.cpp
 )
 

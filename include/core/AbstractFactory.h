@@ -27,6 +27,7 @@ class ModuleContext;
 class Configuration;
 class IssueHandler;
 class TransformationHandler;
+class ProgressMonitor;
 
 class AbstractFactory : public IFactory {
  protected:
@@ -36,6 +37,7 @@ class AbstractFactory : public IFactory {
   std::string currentSource;
   IssueHandler* ihandler;
   TransformationHandler* thandler;
+  ProgressMonitor* p_monitor{nullptr};
 
  public:
   AbstractFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
@@ -43,6 +45,7 @@ class AbstractFactory : public IFactory {
   void handleEndSource() override;
   void init() override;
   void setModule(Module* m) override;
+  void setProgressMonitor(ProgressMonitor* p_monitor);
   ~AbstractFactory() override;
 };
 

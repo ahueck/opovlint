@@ -35,11 +35,11 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
   set(CXX_ONLY_FLAGS "-std=c++11 -Wall -Wextra -pedantic -Wunreachable-code -Wwrite-strings -Wpointer-arith -Wcast-align -Wcast-qual -Wno-unused-parameter -fno-rtti ${CXX_ONLY_FLAGS}")
 
   # Release build
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
   # Release build with debug symbols
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O2")
   # Debug Build
-  set(CMAKE_CXX_FLAGS_DEBUG "-g")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Og")
   # Release build optimized for size
   set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os")
 

@@ -32,9 +32,9 @@ std::tuple<FormattedReporter::TokenType, Iter, Iter> FormattedReporter::format_r
           // ignore "tu"
           auto special_start = iter_current;
           // look for potential [%num%] access after:
-          if(*iter_current == '[') {
+          if (*iter_current == '[') {
             auto bracket_pos = std::find(iter_current, iter_end, ']');
-            if(bracket_pos != iter_end) {
+            if (bracket_pos != iter_end) {
               iter_current = std::next(bracket_pos);
             }
           }
@@ -102,18 +102,18 @@ std::vector<FormattedReporter::format_fn> FormattedReporter::build_formatter(Ite
   auto tokenized_format = build_tokens(begin, end);
 
   auto build_tu_access = [&](Iterator begin, Iterator end) -> format_fn {
-    if(begin == end) {
+    if (begin == end) {
       return map_f["o"];
     }
     // we get begin='[' and end=']', between is a number:
     auto num_iter_start = std::next(begin);
     std::advance(end, -1);
     std::string num(num_iter_start, end);
-    if(num.find_first_not_of("0123456789") == std::string::npos) {
+    if (num.find_first_not_of("0123456789") == std::string::npos) {
       const auto index = util::str2num<size_t>(num);
       format_fn f = [index](const IssueInstance& i) -> std::string {
         const auto& tu_vec = i.tunit_occurences;
-        if(index < tu_vec.size() && index >= 0) {
+        if (index < tu_vec.size() && index >= 0) {
           return tu_vec[index];
         }
         return "";
@@ -121,7 +121,7 @@ std::vector<FormattedReporter::format_fn> FormattedReporter::build_formatter(Ite
 
       return f;
     }
-    const format_fn fallback =[] (const IssueInstance&) { return ""; };
+    const format_fn fallback = [](const IssueInstance&) { return ""; };
     return fallback;
   };
 
@@ -135,7 +135,7 @@ std::vector<FormattedReporter::format_fn> FormattedReporter::build_formatter(Ite
       std::string fmt(std::next(beg), end);
       format_fn func = map_f[fmt];
       formatter.push_back(func);
-    } else if(TokenType::TU_Access == tok_t) {
+    } else if (TokenType::TU_Access == tok_t) {
       format_fn func = build_tu_access(beg, end);
       formatter.push_back(func);
     } else {
