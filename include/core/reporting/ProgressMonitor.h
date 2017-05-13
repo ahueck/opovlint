@@ -29,16 +29,13 @@ class ProgressMonitor {
 
   void restart(size_t expected_count_);
 
-  size_t update(std::string module, std::string file, size_t u_count = 1);
+  size_t update(std::string description, size_t u_count = 1);
 
   size_t get_count() const;
 
   size_t get_expected_count() const;
 
   virtual ~ProgressMonitor() = default;
-
- private:
-  void rm_line();
 };
 
 } /* namespace opov */

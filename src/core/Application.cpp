@@ -64,9 +64,10 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
 
   bool show_progress;
   config->getValue("global:progress", show_progress, true);
+  std::unique_ptr<ProgressMonitor> p_monitor;
   if (show_progress) {
-    ProgressMonitor p_monitor(modules.size() * sources.size());
-    executor->setProgressMonitor(&p_monitor);
+    p_monitor = util::make_unique<ProgressMonitor>(modules.size() * sources.size());
+    executor->setProgressMonitor(p_monitor.get());
   }
 
   ReplacementHandling replacementHandler;

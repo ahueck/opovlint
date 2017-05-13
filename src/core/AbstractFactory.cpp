@@ -37,7 +37,7 @@ bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::Strin
   if (p_monitor != nullptr) {
     auto pos = currentSource.find_last_of('/');
     auto file_s = pos != std::string::npos ? currentSource.substr(pos + 1) : currentSource;
-    p_monitor->update(module->moduleName(), file_s);
+    p_monitor->update(module->moduleName() + ": " + file_s);
   }
 
   return true;

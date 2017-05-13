@@ -22,7 +22,6 @@ void ProgressMonitor::restart(size_t expected_count_) {
   count = 0;
   this->expected_count = expected_count_;
 
-  rm_line();
   output << "Progress Monitor:\n";
 
   if (!expected_count) {
@@ -32,7 +31,7 @@ void ProgressMonitor::restart(size_t expected_count_) {
   chars_flushed = {0};
 }
 
-size_t ProgressMonitor::update(std::string module, std::string file, size_t u_count) {
+size_t ProgressMonitor::update(std::string description, size_t u_count) {
   count += u_count;
 
   unsigned duration{0u};
@@ -44,14 +43,21 @@ size_t ProgressMonitor::update(std::string module, std::string file, size_t u_co
     duration = static_cast<unsigned>((static_cast<double>(accum_s.count()) / count) * (expected_count - count));
   }
 
-  const double perc = (static_cast<double>(count) / expected_count) * 100.0;
-  const std::string job_str = module + ": " + file;
+  const double completion_percent = (static_cast<double>(count) / expected_count) * 100.0;
 
-  rm_line();
-  output << "[" << std::setw(5) << std::setprecision(1) << std::fixed << perc << "%]"
-         << "[" << std::setw(11) << std::right << util::format_duration(duration) << "]" << job_str << "\r"
-         << std::flush;
-  chars_flushed = job_str.length() + 16 + 5;
+  output  << "[" << std::setw(5) << std::setprecision(1) << std::fixed << completion_percent << "%]"
+          << "[" << std::setw(11) << std::right << util::format_duration(duration) << "]"
+          << description;
+
+  const size_t chars_written = description.length() + 16 + 5;
+  if(chars_written < chars_flushed) {
+    auto str_size = chars_flushed - chars_written;
+    const std::string empty_s(str_size, ' ');
+    output << empty_s << "\r" << std::flush;
+  } else {
+    output << "\r" << std::flush;
+  }
+  chars_flushed = chars_written;
 
   if (expected_count == count) {
     output << std::endl;
@@ -66,14 +72,6 @@ size_t ProgressMonitor::get_count() const {
 
 size_t ProgressMonitor::get_expected_count() const {
   return expected_count;
-}
-
-void ProgressMonitor::rm_line() {
-  if (!chars_flushed) {
-    return;
-  }
-  std::string empty_s(chars_flushed, ' ');
-  output << empty_s << "\r" << std::flush;
 }
 
 } /* namespace opov */

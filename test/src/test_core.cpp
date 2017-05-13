@@ -116,7 +116,7 @@ TEST_CASE("ProgressMonitor", "[progressmonitor]") {
   SECTION("100") {
     std::ostringstream out;
     ProgressMonitor mon(100, out);
-    mon.update("t1", "f1");
+    mon.update("t1: f1");
 
     REQUIRE(mon.get_count() == 1);
     REQUIRE(mon.get_expected_count() == 100);
@@ -125,7 +125,7 @@ TEST_CASE("ProgressMonitor", "[progressmonitor]") {
   SECTION("restart") {
       std::ostringstream out;
       ProgressMonitor mon(100, out);
-      mon.update("t1", "f1");
+      mon.update("t1: f1");
       mon.restart(10);
       REQUIRE(mon.get_count() == 0);
       REQUIRE(mon.get_expected_count() == 10);
