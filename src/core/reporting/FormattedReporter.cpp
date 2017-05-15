@@ -10,9 +10,6 @@
 
 namespace opov {
 
-FormattedReporter::FormattedReporter(const Configuration* config) : FormattedReporter(config, std::cout) {
-}
-
 FormattedReporter::FormattedReporter(const Configuration* config, std::ostream& output) : IssueReporter(output) {
   std::string format_string;
   config->getValue("global:format", format_string, "%f:%ls:%cs: %m @ %s");

@@ -19,10 +19,7 @@ class IssueReporter {
   std::ostream& output;
 
  public:
-  IssueReporter() : output(std::cout) {
-  }
-
-  explicit IssueReporter(std::ostream& output) : output(output) {
+  explicit IssueReporter(std::ostream& output = std::cout) : output(output) {
   }
 
   virtual void addIssues(const IssueVector&) = 0;

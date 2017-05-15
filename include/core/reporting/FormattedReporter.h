@@ -72,8 +72,7 @@ class FormattedReporter : public IssueReporter {
   std::vector<format_fn> build_formatter(Iterator begin, Iterator end);
 
  public:
-  explicit FormattedReporter(const Configuration* config);
-  FormattedReporter(const Configuration* config, std::ostream& output);
+  explicit FormattedReporter(const Configuration* config, std::ostream& output = std::cout);
   virtual void addIssues(const IssueVector& issues) override;
   virtual ~FormattedReporter() = default;
 };

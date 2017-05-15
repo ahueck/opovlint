@@ -34,30 +34,29 @@ void ProgressMonitor::restart(size_t expected_count_) {
 size_t ProgressMonitor::update(std::string description, size_t u_count) {
   count += u_count;
 
-  unsigned duration{0u};
+  size_t duration{0u};
   if (t_start == time_point{}) {
     t_start = p_clock::now();
   } else {
     auto t_now = p_clock::now();
     auto accum_s = std::chrono::duration_cast<std::chrono::seconds>(t_now - t_start);
-    duration = static_cast<unsigned>((static_cast<double>(accum_s.count()) / count) * (expected_count - count));
+    duration = static_cast<size_t>((static_cast<double>(accum_s.count()) / count) * (expected_count - count));
   }
 
   const double completion_percent = (static_cast<double>(count) / expected_count) * 100.0;
 
-  output  << "[" << std::setw(5) << std::setprecision(1) << std::fixed << completion_percent << "%]"
-          << "[" << std::setw(11) << std::right << util::format_duration(duration) << "]"
-          << description;
+  output << "[" << std::setw(5) << std::setprecision(1) << std::fixed << completion_percent << "%]"
+         << "[" << std::setw(11) << std::right << util::format_duration(duration) << "]" << description;
 
   const size_t chars_written = description.length() + 16 + 5;
-  if(chars_written < chars_flushed) {
+  if (chars_written < chars_flushed) {
     auto str_size = chars_flushed - chars_written;
     const std::string empty_s(str_size, ' ');
-    output << empty_s << "\r" << std::flush;
-  } else {
-    output << "\r" << std::flush;
+    output << empty_s;
   }
   chars_flushed = chars_written;
+
+  output << "\r" << std::flush;
 
   if (expected_count == count) {
     output << std::endl;
