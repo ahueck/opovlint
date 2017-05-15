@@ -46,7 +46,8 @@ size_t ProgressMonitor::update(std::string description, size_t u_count) {
   const double completion_percent = (static_cast<double>(count) / expected_count) * 100.0;
 
   output << "[" << std::setw(5) << std::setprecision(1) << std::fixed << completion_percent << "%]"
-         << "[" << std::setw(11) << std::right << util::format_duration(duration) << "]" << description;
+         << "[" << std::setw(11) << std::right << util::format_duration(duration) << "]"
+         << description;
 
   const size_t chars_written = description.length() + 16 + 5;
   if (chars_written < chars_flushed) {

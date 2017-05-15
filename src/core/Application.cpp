@@ -141,7 +141,6 @@ void Application::loadModules() {
   config->getVector("global:modules:filter", module_globs);
   config->getValue("global:modules:case", case_sensitive, false);
 
-  // TODO: for now, only valid regex allowed; later actual glob syntax
   std::vector<Regex> module_filter;
   for (const auto& glob : module_globs) {
     module_filter.emplace_back(Regex(util::glob2regex(glob), !case_sensitive ? Regex::IgnoreCase : Regex::NoFlags));
