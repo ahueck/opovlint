@@ -67,7 +67,6 @@ void ImplicitConversion::setupMatcher() {
             )
       ).bind("impl_assign");*/
 
-  // FIXME breaks unit test as of 29.04.2016
   DeclarationMatcher impl_assign =
       varDecl(
           isDefinition()

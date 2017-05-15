@@ -89,7 +89,7 @@ int Application::execute(const clang::tooling::CompilationDatabase& db, const st
 
   for (auto& module : modules) {
     executor->setModule(module.get());
-    int sig = tool.run(actionFactory.get());
+    const int sig = tool.run(actionFactory.get());
     if (sig == 1) {
       // In case a module fails, we only notify
       LOG_DEBUG("Module '" << module->moduleName() << "' failed.");
@@ -148,7 +148,7 @@ void Application::loadModules() {
 
   for (const auto& entry : ModuleRegistry::entry_map()) {
     llvm::StringRef name(entry.first);
-    auto i_pos = std::find_if(module_filter.begin(), module_filter.end(), [&](Regex& r) { return r.match(name); });
+    auto i_pos = std::find_if(module_filter.begin(), module_filter.end(), [&name](Regex& r) { return r.match(name); });
     if (i_pos != std::end(module_filter)) {
       addModule(entry.first);
     }

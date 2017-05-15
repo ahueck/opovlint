@@ -79,6 +79,10 @@ void IfElseAssign::setupMatcher() {
             )
       ).bind("conditional");
 
+#undef assign_bind
+#undef assign_expr
+
+
    /*StatementMatcher conditional =
        ifStmt(
            anyOf(
