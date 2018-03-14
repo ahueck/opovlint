@@ -38,9 +38,9 @@ void ImplicitConversion::setupMatcher() {
       materializeTemporaryExpr(
           hasTemporary(
               ignoringImpCasts(
-                  constructExpr(
+                  cxxConstructExpr(
                       hasImplicitConversion(type_s)
-                      , unless(temporaryObjectExpr())
+                      , unless(cxxTemporaryObjectExpr())
                   ).bind("conversion")
               )
           )

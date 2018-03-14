@@ -33,10 +33,10 @@ void ExplicitConstructor::setupMatcher() {
       hasParent(classTemplateSpecializationDecl());
   DeclarationMatcher constructor =
       (warnOnTemplates
-           ? constructorDecl(
+           ? cxxConstructorDecl(
                unless(isTemplSpecialization)
              )
-           : constructorDecl(
+           : cxxConstructorDecl(
                  unless(
                      anyOf(
                          isTemplSpecialization

@@ -25,7 +25,7 @@ OPOV_CKIND(ConstructorConversion)
 OPOV_CKIND(LValueToRValue)
 #undef OPOV_CKIND
 
-AST_POLYMORPHIC_MATCHER_P(isTypedef, AST_POLYMORPHIC_SUPPORTED_TYPES_2(Expr, Decl), std::string, type) {
+AST_POLYMORPHIC_MATCHER_P(isTypedef, AST_POLYMORPHIC_SUPPORTED_TYPES(Expr, Decl), std::string, type) {
   const auto typeOf_expr = Node.getType().getUnqualifiedType().getAsString();
   return type == typeOf_expr;
 }
@@ -34,7 +34,7 @@ AST_MATCHER(Stmt, notABinaryExpr) {
   return !isa<BinaryOperator>(Node);
 }
 
-const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
+//const internal::VariadicDynCastAllOfMatcher<Stmt, ParenExpr> parenExpr;
 
 //#define descendant_or_self(NODE) anyOf(NODE, hasDescendant(NODE))
 //#define ancestor_or_self(NODE) anyOf(NODE, hasAncestor(NODE))
@@ -68,10 +68,11 @@ AST_MATCHER_P(IfStmt, hasElseStmt, internal::Matcher<Stmt>, InnerMatcher) {
   return (Else != nullptr && InnerMatcher.matches(*Else, Finder, Builder));
 }
 
+/*
 AST_MATCHER(TagDecl, isUnion) {
   return Node.isUnion();
 }
-
+*/
 AST_MATCHER_P(Stmt, ofType, std::string, type) {
   opov::clutil::TypeDeducer deducer(type);
   const bool is_type = deducer.hasType(const_cast<Stmt*>(&Node));
@@ -90,7 +91,7 @@ AST_MATCHER_P(CXXConstructExpr, hasImplicitConversion, std::string, type) {
   unsigned int ctor_pos = 0;
   const unsigned int num = Node.getNumArgs();
   opov::clutil::TypeDeducer deducer(type);
-  for (auto ctor_param : constr->params()) {
+  for (auto ctor_param : constr->parameters()) {
     if (ctor_pos >= num) {
       // Will this ever be true? If yes: assume that default arg is used
       return ctor_param->hasDefaultArg();
