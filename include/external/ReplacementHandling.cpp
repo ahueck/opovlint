@@ -24,9 +24,8 @@ using namespace llvm;
 using namespace llvm::sys;
 using namespace clang::tooling;
 
-bool ReplacementHandling::findClangApplyReplacements(const char *Argv0) {
-  ErrorOr<std::string> CARPathOrErr =
-      findProgramByName("clang-apply-replacements");
+bool ReplacementHandling::findClangApplyReplacements(const char* Argv0) {
+  ErrorOr<std::string> CARPathOrErr = findProgramByName("clang-apply-replacements");
   if (!CARPathOrErr)
     return true;
 
@@ -46,27 +45,22 @@ StringRef ReplacementHandling::useTempDestinationDir() {
   return DestinationDir;
 }
 
-void ReplacementHandling::enableFormatting(StringRef Style,
-                                           StringRef StyleConfigDir) {
+void ReplacementHandling::enableFormatting(StringRef Style, StringRef StyleConfigDir) {
   DoFormat = true;
   FormatStyle = Style;
   this->StyleConfigDir = StyleConfigDir;
 }
 
-bool ReplacementHandling::serializeReplacements(
-    const TUReplacementsMap &Replacements) {
+bool ReplacementHandling::serializeReplacements(const TUReplacementsMap& Replacements) {
   assert(!DestinationDir.empty() && "Destination directory not set");
 
   bool Errors = false;
 
-  for (TUReplacementsMap::const_iterator I = Replacements.begin(),
-                                         E = Replacements.end();
-       I != E; ++I) {
+  for (TUReplacementsMap::const_iterator I = Replacements.begin(), E = Replacements.end(); I != E; ++I) {
     SmallString<128> ReplacementsFileName;
     SmallString<64> Error;
-    bool Result = generateReplacementsFileName(DestinationDir,
-                                               I->getValue().MainSourceFile,
-                                               ReplacementsFileName, Error);
+    bool Result =
+        generateReplacementsFileName(DestinationDir, I->getValue().MainSourceFile, ReplacementsFileName, Error);
     if (!Result) {
       errs() << "Failed to generate replacements filename:" << Error << "\n";
       Errors = true;
@@ -81,13 +75,13 @@ bool ReplacementHandling::serializeReplacements(
       continue;
     }
     yaml::Output YAML(ReplacementsFile);
-    YAML << const_cast<TranslationUnitReplacements &>(I->getValue());
+    YAML << const_cast<TranslationUnitReplacements&>(I->getValue());
   }
   return !Errors;
 }
 
 bool ReplacementHandling::applyReplacements() {
-  SmallVector<const char *, 8> Argv;
+  SmallVector<const char*, 8> Argv;
   Argv.push_back(CARPath.c_str());
   std::string Style = "--style=" + FormatStyle;
   std::string StyleConfig = "--style-config=" + StyleConfigDir;
@@ -106,9 +100,9 @@ bool ReplacementHandling::applyReplacements() {
   std::string ErrorMsg;
   bool ExecutionFailed = false;
   int ReturnCode = ExecuteAndWait(CARPath.c_str(), Argv.data(),
-                                  /* env */ nullptr, /* redirects */ nullptr,
-                                  /* secondsToWait */ 0, /* memoryLimit */ 0,
-                                  &ErrorMsg, &ExecutionFailed);
+                                  /* env */ nullptr, /* redirects */ {},
+                                  /* secondsToWait */ 0, /* memoryLimit */ 0, &ErrorMsg, &ExecutionFailed);
+
   if (ExecutionFailed || !ErrorMsg.empty()) {
     errs() << "Failed to launch clang-apply-replacements: " << ErrorMsg << "\n";
     errs() << "Command Line:\n";
@@ -120,8 +114,7 @@ bool ReplacementHandling::applyReplacements() {
   }
 
   if (ReturnCode != 0) {
-    errs() << "clang-apply-replacements failed with return code " << ReturnCode
-           << "\n";
+    errs() << "clang-apply-replacements failed with return code " << ReturnCode << "\n";
     return false;
   }
 
@@ -137,16 +130,13 @@ std::string ReplacementHandling::generateTempDir() {
   return Result.str();
 }
 
-bool ReplacementHandling::generateReplacementsFileName(
-    StringRef DestinationDir, StringRef MainSourceFile,
-    SmallVectorImpl<char> &Result, SmallVectorImpl<char> &Error) {
-
+bool ReplacementHandling::generateReplacementsFileName(StringRef DestinationDir, StringRef MainSourceFile,
+                                                       SmallVectorImpl<char>& Result, SmallVectorImpl<char>& Error) {
   Error.clear();
   SmallString<128> Prefix = DestinationDir;
   path::append(Prefix, path::filename(MainSourceFile));
-  if (std::error_code EC =
-          fs::createUniqueFile(Prefix + "_%%_%%_%%_%%_%%_%%.yaml", Result)) {
-    const std::string &Msg = EC.message();
+  if (std::error_code EC = fs::createUniqueFile(Prefix + "_%%_%%_%%_%%_%%_%%.yaml", Result)) {
+    const std::string& Msg = EC.message();
     Error.append(Msg.begin(), Msg.end());
     return false;
   }

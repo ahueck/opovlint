@@ -5,12 +5,12 @@
  *      Author: ahueck
  */
 
-#include <modules/ExplicitConstructor.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
 #include <core/module/ModuleRegistry.h>
 #include <core/utility/ClangMatcherExt.h>
+#include <modules/ExplicitConstructor.h>
 
 namespace opov {
 namespace module {
@@ -33,10 +33,10 @@ void ExplicitConstructor::setupMatcher() {
       hasParent(classTemplateSpecializationDecl());
   DeclarationMatcher constructor =
       (warnOnTemplates
-           ? constructorDecl(
+           ? cxxConstructorDecl(
                unless(isTemplSpecialization)
              )
-           : constructorDecl(
+           : cxxConstructorDecl(
                  unless(
                      anyOf(
                          isTemplSpecialization

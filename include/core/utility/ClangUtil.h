@@ -15,6 +15,8 @@
 #include <clang/Frontend/TextDiagnostic.h>
 #include <clang/Lex/Lexer.h>
 
+#include <llvm/ADT/StringRef.h>
+
 #include <iterator>
 #include <sstream>
 #include <string>
@@ -87,6 +89,14 @@ inline std::string fileOriginOf(const clang::SourceManager& sm, T node) {
     return EC ? FilePath.c_str() : Entry->getName();
   }
   return {""};
+}
+
+inline llvm::StringRef mainFilename(const clang::SourceManager& sm) {
+  if (const auto* F = sm.getFileEntryForID(sm.getMainFileID())) {
+    return F->getName();
+  }
+
+  return llvm::StringRef();
 }
 
 inline unsigned declCount(const clang::TagDecl* node) {

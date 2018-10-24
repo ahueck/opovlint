@@ -5,7 +5,6 @@
  *      Author: ahueck
  */
 
-#include <modules/ImplicitConversion.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
@@ -15,6 +14,7 @@
 #include <core/utility/ClangMatcherExt.h>
 #include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
+#include <modules/ImplicitConversion.h>
 
 namespace opov {
 namespace module {
@@ -38,9 +38,9 @@ void ImplicitConversion::setupMatcher() {
       materializeTemporaryExpr(
           hasTemporary(
               ignoringImpCasts(
-                  constructExpr(
+            		  cxxConstructExpr(
                       hasImplicitConversion(type_s)
-                      , unless(temporaryObjectExpr())
+                      , unless(cxxTemporaryObjectExpr())
                   ).bind("conversion")
               )
           )

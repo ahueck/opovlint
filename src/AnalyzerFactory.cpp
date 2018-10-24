@@ -22,8 +22,8 @@ AnalyzerFactory::AnalyzerFactory(Configuration* config, IssueHandler* ihandler, 
     : AbstractFactory(config, ihandler, thandler) {
 }
 
-bool AnalyzerFactory::handleBeginSource(clang::CompilerInstance& CI, clang::StringRef Filename) {
-  AbstractFactory::handleBeginSource(CI, Filename);
+bool AnalyzerFactory::handleBeginSource(clang::CompilerInstance& CI) {
+  AbstractFactory::handleBeginSource(CI);
   LOG_DEBUG("Called AnalyzerFactory beginsource: " << CI.hasASTConsumer());
   return true;
 }

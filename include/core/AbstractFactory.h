@@ -41,7 +41,7 @@ class AbstractFactory : public IFactory {
 
  public:
   AbstractFactory(Configuration* config, IssueHandler* ihandler, TransformationHandler* thandler);
-  bool handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) override;
+  bool handleBeginSource(clang::CompilerInstance& CI) override;
   void handleEndSource() override;
   void init() override;
   void setModule(Module* m) override;

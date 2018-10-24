@@ -31,15 +31,15 @@ using llvm::StringRef;
 class IncludeDirectivesPPCallback : public clang::PPCallbacks {
   // Struct helping the detection of header guards in the various callbacks
   struct GuardDetection {
-    GuardDetection(FileID FID)
-      : FID(FID), Count(0), TheMacro(nullptr), CountAtEndif(0) {}
+    GuardDetection(FileID FID) : FID(FID), Count(0), TheMacro(nullptr), CountAtEndif(0) {
+    }
 
     FileID FID;
     // count for relevant preprocessor directives
     unsigned Count;
     // the macro that is tested in the top most ifndef for the header guard
     // (e.g: GUARD_H)
-    const IdentifierInfo *TheMacro;
+    const IdentifierInfo* TheMacro;
     // the hash locations of #ifndef, #define, #endif
     SourceLocation IfndefLoc, DefineLoc, EndifLoc;
     // the value of Count once the #endif is reached
@@ -57,19 +57,18 @@ class IncludeDirectivesPPCallback : public clang::PPCallbacks {
     }
   };
 
-public:
-  IncludeDirectivesPPCallback(IncludeDirectives *Self)
-      : Self(Self), Guard(nullptr) {}
-  virtual ~IncludeDirectivesPPCallback() {}
+ public:
+  IncludeDirectivesPPCallback(IncludeDirectives* Self) : Self(Self), Guard(nullptr) {
+  }
+  virtual ~IncludeDirectivesPPCallback() {
+  }
 
-private:
-  void InclusionDirective(SourceLocation HashLoc, const Token &IncludeTok,
-                          StringRef FileName, bool IsAngled,
-                          CharSourceRange FilenameRange, const FileEntry *File,
-                          StringRef SearchPath, StringRef RelativePath,
-                          const Module *Imported) override {
-    SourceManager &SM = Self->Sources;
-    const FileEntry *FE = SM.getFileEntryForID(SM.getFileID(HashLoc));
+ private:
+  void InclusionDirective(SourceLocation HashLoc, const Token& IncludeTok, StringRef FileName, bool IsAngled,
+                          CharSourceRange FilenameRange, const FileEntry* File, StringRef SearchPath,
+                          StringRef RelativePath, const Module* Imported) override {
+    SourceManager& SM = Self->Sources;
+    const FileEntry* FE = SM.getFileEntryForID(SM.getFileID(HashLoc));
     assert(FE && "Valid file expected.");
 
     IncludeDirectives::Entry E(HashLoc, File, IsAngled);
@@ -78,34 +77,33 @@ private:
   }
 
   // Keep track of the current file in the stack
-  virtual void FileChanged(SourceLocation Loc, FileChangeReason Reason,
-                           SrcMgr::CharacteristicKind FileType,
+  virtual void FileChanged(SourceLocation Loc, FileChangeReason Reason, SrcMgr::CharacteristicKind FileType,
                            FileID PrevFID) override {
-    SourceManager &SM = Self->Sources;
+    SourceManager& SM = Self->Sources;
     switch (Reason) {
-    case EnterFile:
-      Files.push(GuardDetection(SM.getFileID(Loc)));
-      Guard = &Files.top();
-      break;
+      case EnterFile:
+        Files.push(GuardDetection(SM.getFileID(Loc)));
+        Guard = &Files.top();
+        break;
 
-    case ExitFile:
-      if (Guard->isPotentialHeaderGuard())
-        handlePotentialHeaderGuard(*Guard);
-      Files.pop();
-      Guard = &Files.top();
-      break;
+      case ExitFile:
+        if (Guard->isPotentialHeaderGuard())
+          handlePotentialHeaderGuard(*Guard);
+        Files.pop();
+        Guard = &Files.top();
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
   }
 
   /// \brief Mark this header as guarded in the IncludeDirectives if it's a
   /// proper header guard.
-  void handlePotentialHeaderGuard(const GuardDetection &Guard) {
-    SourceManager &SM = Self->Sources;
-    const FileEntry *File = SM.getFileEntryForID(Guard.FID);
-    const LangOptions &LangOpts = Self->CI.getLangOpts();
+  void handlePotentialHeaderGuard(const GuardDetection& Guard) {
+    SourceManager& SM = Self->Sources;
+    const FileEntry* File = SM.getFileEntryForID(Guard.FID);
+    const LangOptions& LangOpts = Self->CI.getLangOpts();
 
     // Null file can happen for the <built-in> buffer for example. They
     // shouldn't have header guards though...
@@ -115,23 +113,19 @@ private:
     // The #ifndef should be the next thing after the preamble. We aren't
     // checking for equality because it can also be part of the preamble if the
     // preamble is the whole file.
-    unsigned Preamble =
-        Lexer::ComputePreamble(SM.getBuffer(Guard.FID)->getBuffer(), LangOpts)
-            .first;
+    unsigned Preamble = Lexer::ComputePreamble(SM.getBuffer(Guard.FID)->getBuffer(), LangOpts).Size;
     unsigned IfndefOffset = SM.getFileOffset(Guard.IfndefLoc);
     if (IfndefOffset > (Preamble + 1))
       return;
 
     // No code is allowed in the code remaining after the #endif.
-    const llvm::MemoryBuffer *Buffer = SM.getBuffer(Guard.FID);
-    Lexer Lex(SM.getLocForStartOfFile(Guard.FID), LangOpts,
-              Buffer->getBufferStart(),
-              Buffer->getBufferStart() + SM.getFileOffset(Guard.EndifLoc),
-              Buffer->getBufferEnd());
+    const llvm::MemoryBuffer* Buffer = SM.getBuffer(Guard.FID);
+    Lexer Lex(SM.getLocForStartOfFile(Guard.FID), LangOpts, Buffer->getBufferStart(),
+              Buffer->getBufferStart() + SM.getFileOffset(Guard.EndifLoc), Buffer->getBufferEnd());
 
     // Find the first newline not part of a multi-line comment.
     Token Tok;
-    Lex.LexFromRawLexer(Tok); // skip endif
+    Lex.LexFromRawLexer(Tok);  // skip endif
     Lex.LexFromRawLexer(Tok);
 
     // Not a proper header guard, the remainder of the file contains something
@@ -143,15 +137,14 @@ private:
     Self->HeaderToGuard[File] = Guard.DefineLoc;
   }
 
-  virtual void Ifndef(SourceLocation Loc, const Token &MacroNameTok,
-                      const MacroDirective *MD) override {
+  virtual void Ifndef(SourceLocation Loc, const Token& MacroNameTok, const MacroDirective* MD) {
     Guard->Count++;
 
     // If this #ifndef is the top-most directive and the symbol isn't defined
     // store those information in the guard detection, the next step will be to
     // check for the define.
     if (Guard->Count == 1 && MD == nullptr) {
-      IdentifierInfo *MII = MacroNameTok.getIdentifierInfo();
+      IdentifierInfo* MII = MacroNameTok.getIdentifierInfo();
 
       if (MII->hasMacroDefinition())
         return;
@@ -160,15 +153,14 @@ private:
     }
   }
 
-  virtual void MacroDefined(const Token &MacroNameTok,
-                            const MacroDirective *MD) override {
+  virtual void MacroDefined(const Token& MacroNameTok, const MacroDirective* MD) override {
     Guard->Count++;
 
     // If this #define is the second directive of the file and the symbol
     // defined is the same as the one checked in the #ifndef then store the
     // information about this define.
     if (Guard->Count == 2 && Guard->TheMacro != nullptr) {
-      IdentifierInfo *MII = MacroNameTok.getIdentifierInfo();
+      IdentifierInfo* MII = MacroNameTok.getIdentifierInfo();
 
       // macro unrelated to the ifndef, doesn't look like a proper header guard
       if (MII->getName() != Guard->TheMacro->getName())
@@ -182,8 +174,7 @@ private:
     Guard->Count++;
 
     // If it's the #endif corresponding to the top-most #ifndef
-    if (Self->Sources.getDecomposedLoc(Guard->IfndefLoc) !=
-        Self->Sources.getDecomposedLoc(IfLoc))
+    if (Self->Sources.getDecomposedLoc(Guard->IfndefLoc) != Self->Sources.getDecomposedLoc(IfLoc))
       return;
 
     // And that the top-most #ifndef was followed by the right #define
@@ -196,39 +187,35 @@ private:
     Guard->EndifLoc = Loc;
   }
 
-  virtual void MacroExpands(const Token &, const MacroDirective *, SourceRange,
-                            const MacroArgs *) override {
+  virtual void MacroExpands(const Token& MacroNameTok, const MacroDefinition& MD, SourceRange Range,
+                            const MacroArgs* Args) override {
     Guard->Count++;
   }
-  virtual void MacroUndefined(const Token &,
-                              const MacroDirective *) override {
+  virtual void MacroUndefined(const Token& MacroNameTok, const MacroDefinition& MD,
+                              const MacroDirective* Undef) override {
     Guard->Count++;
   }
-  virtual void Defined(const Token &, const MacroDirective *,
-                       SourceRange) override {
+  virtual void Defined(const Token& MacroNameTok, const MacroDefinition& MD, SourceRange Range) override {
     Guard->Count++;
   }
-  virtual void If(SourceLocation, SourceRange,
-                  ConditionValueKind) override {
+  virtual void If(SourceLocation, SourceRange, ConditionValueKind) override {
     Guard->Count++;
   }
-  virtual void Elif(SourceLocation, SourceRange, ConditionValueKind,
-                    SourceLocation) override {
+  virtual void Elif(SourceLocation, SourceRange, ConditionValueKind, SourceLocation) override {
     Guard->Count++;
   }
-  virtual void Ifdef(SourceLocation, const Token &,
-                     const MacroDirective *) override {
+  virtual void Ifdef(SourceLocation Loc, const Token& MacroNameTok, const MacroDefinition& MD) override {
     Guard->Count++;
   }
   void Else(SourceLocation, SourceLocation) override {
     Guard->Count++;
   }
 
-  IncludeDirectives *Self;
+  IncludeDirectives* Self;
   // keep track of the guard info through the include stack
   std::stack<GuardDetection> Files;
   // convenience field pointing to Files.top().second
-  GuardDetection *Guard;
+  GuardDetection* Guard;
 };
 
 // Flags that describes where to insert newlines.
@@ -248,7 +235,7 @@ enum NewLineFlags {
 
 /// \brief Guess the end-of-line sequence used in the given FileID. If the
 /// sequence can't be guessed return an Unix-style newline.
-static StringRef guessEOL(SourceManager &SM, FileID ID) {
+static StringRef guessEOL(SourceManager& SM, FileID ID) {
   StringRef Content = SM.getBufferData(ID);
   StringRef Buffer = Content.substr(Content.find_first_of("\r\n"));
 
@@ -265,14 +252,12 @@ static StringRef guessEOL(SourceManager &SM, FileID ID) {
 // \return The offset into the file where the directive ends along with a
 // boolean value indicating whether the directive ends because the end of file
 // was reached or not.
-static std::pair<unsigned, bool> findDirectiveEnd(SourceLocation HashLoc,
-                                                  SourceManager &SM,
-                                                  const LangOptions &LangOpts) {
+static std::pair<unsigned, bool> findDirectiveEnd(SourceLocation HashLoc, SourceManager& SM,
+                                                  const LangOptions& LangOpts) {
   FileID FID = SM.getFileID(HashLoc);
   unsigned Offset = SM.getFileOffset(HashLoc);
   StringRef Content = SM.getBufferData(FID);
-  Lexer Lex(SM.getLocForStartOfFile(FID), LangOpts, Content.begin(),
-            Content.begin() + Offset, Content.end());
+  Lexer Lex(SM.getLocForStartOfFile(FID), LangOpts, Content.begin(), Content.begin() + Offset, Content.end());
   Lex.SetCommentRetentionState(true);
   Token Tok;
 
@@ -308,23 +293,18 @@ static std::pair<unsigned, bool> findDirectiveEnd(SourceLocation HashLoc,
   }
 }
 
-IncludeDirectives::IncludeDirectives(clang::CompilerInstance &CI)
-    : CI(CI), Sources(CI.getSourceManager()) {
+IncludeDirectives::IncludeDirectives(clang::CompilerInstance& CI) : CI(CI), Sources(CI.getSourceManager()) {
   // addPPCallbacks takes ownership of the callback
-  CI.getPreprocessor().addPPCallbacks(
-                          llvm::make_unique<IncludeDirectivesPPCallback>(this));
+  CI.getPreprocessor().addPPCallbacks(llvm::make_unique<IncludeDirectivesPPCallback>(this));
 }
 
-bool IncludeDirectives::lookForInclude(const FileEntry *File,
-                                       const LocationVec &IncludeLocs,
-                                       SeenFilesSet &Seen) const {
+bool IncludeDirectives::lookForInclude(const FileEntry* File, const LocationVec& IncludeLocs,
+                                       SeenFilesSet& Seen) const {
   // mark this file as visited
   Seen.insert(File);
 
   // First check if included directly in this file
-  for (LocationVec::const_iterator I = IncludeLocs.begin(),
-                                   E = IncludeLocs.end();
-       I != E; ++I)
+  for (LocationVec::const_iterator I = IncludeLocs.begin(), E = IncludeLocs.end(); I != E; ++I)
     if (Sources.getFileEntryForID(Sources.getFileID(*I)) == File)
       return true;
 
@@ -332,9 +312,7 @@ bool IncludeDirectives::lookForInclude(const FileEntry *File,
   FileToEntriesMap::const_iterator EntriesIt = FileToEntries.find(File);
   if (EntriesIt == FileToEntries.end())
     return false;
-  for (EntryVec::const_iterator I = EntriesIt->second.begin(),
-                                E = EntriesIt->second.end();
-       I != E; ++I) {
+  for (EntryVec::const_iterator I = EntriesIt->second.begin(), E = EntriesIt->second.end(); I != E; ++I) {
     // skip if this header has already been checked before
     if (Seen.count(I->getIncludedFile()))
       continue;
@@ -344,10 +322,8 @@ bool IncludeDirectives::lookForInclude(const FileEntry *File,
   return false;
 }
 
-bool IncludeDirectives::hasInclude(const FileEntry *File,
-                                   StringRef Include) const {
-  llvm::StringMap<LocationVec>::const_iterator It =
-      IncludeAsWrittenToLocationsMap.find(Include);
+bool IncludeDirectives::hasInclude(const FileEntry* File, StringRef Include) const {
+  llvm::StringMap<LocationVec>::const_iterator It = IncludeAsWrittenToLocationsMap.find(Include);
 
   // Include isn't included in any file
   if (It == IncludeAsWrittenToLocationsMap.end())
@@ -357,8 +333,7 @@ bool IncludeDirectives::hasInclude(const FileEntry *File,
   return lookForInclude(File, It->getValue(), Seen);
 }
 
-Replacement IncludeDirectives::addAngledInclude(const clang::FileEntry *File,
-                                                llvm::StringRef Include) {
+Replacement IncludeDirectives::addAngledInclude(const clang::FileEntry* File, llvm::StringRef Include) {
   FileID FID = Sources.translateFile(File);
   assert(!FID.isInvalid() && "Invalid file entry given!");
 
@@ -384,19 +359,16 @@ Replacement IncludeDirectives::addAngledInclude(const clang::FileEntry *File,
   return Replacement(File->getName(), Offset, 0, InsertionText);
 }
 
-Replacement IncludeDirectives::addAngledInclude(llvm::StringRef File,
-                                                llvm::StringRef Include) {
-  const FileEntry *Entry = Sources.getFileManager().getFile(File);
+Replacement IncludeDirectives::addAngledInclude(llvm::StringRef File, llvm::StringRef Include) {
+  const FileEntry* Entry = Sources.getFileManager().getFile(File);
   assert(Entry && "Invalid file given!");
   return addAngledInclude(Entry, Include);
 }
 
-std::pair<unsigned, unsigned>
-IncludeDirectives::findFileHeaderEndOffset(FileID FID) const {
+std::pair<unsigned, unsigned> IncludeDirectives::findFileHeaderEndOffset(FileID FID) const {
   unsigned NLFlags = NL_Prepend;
   StringRef Content = Sources.getBufferData(FID);
-  Lexer Lex(Sources.getLocForStartOfFile(FID), CI.getLangOpts(),
-            Content.begin(), Content.begin(), Content.end());
+  Lexer Lex(Sources.getLocForStartOfFile(FID), CI.getLangOpts(), Content.begin(), Content.begin(), Content.end());
   Lex.SetCommentRetentionState(true);
   Lex.SetKeepWhitespaceMode(true);
 
@@ -423,20 +395,16 @@ IncludeDirectives::findFileHeaderEndOffset(FileID FID) const {
   return std::make_pair(Sources.getFileOffset(Tok.getLocation()), NLFlags);
 }
 
-SourceLocation
-IncludeDirectives::angledIncludeHintLoc(FileID FID) const {
-  FileToEntriesMap::const_iterator EntriesIt =
-      FileToEntries.find(Sources.getFileEntryForID(FID));
+SourceLocation IncludeDirectives::angledIncludeHintLoc(FileID FID) const {
+  FileToEntriesMap::const_iterator EntriesIt = FileToEntries.find(Sources.getFileEntryForID(FID));
 
   if (EntriesIt == FileToEntries.end())
     return SourceLocation();
 
-  HeaderSearch &HeaderInfo = CI.getPreprocessor().getHeaderSearchInfo();
-  const EntryVec &Entries = EntriesIt->second;
+  HeaderSearch& HeaderInfo = CI.getPreprocessor().getHeaderSearchInfo();
+  const EntryVec& Entries = EntriesIt->second;
   EntryVec::const_reverse_iterator QuotedCandidate = Entries.rend();
-  for (EntryVec::const_reverse_iterator I = Entries.rbegin(),
-                                        E = Entries.rend();
-       I != E; ++I) {
+  for (EntryVec::const_reverse_iterator I = Entries.rbegin(), E = Entries.rend(); I != E; ++I) {
     // Headers meant for multiple inclusion can potentially appears in the
     // middle of the code thus making them a poor choice for an insertion point.
     if (!HeaderInfo.isFileMultipleIncludeGuarded(I->getIncludedFile()))
@@ -458,8 +426,7 @@ IncludeDirectives::angledIncludeHintLoc(FileID FID) const {
   return QuotedCandidate->getHashLocation();
 }
 
-std::pair<unsigned, unsigned>
-IncludeDirectives::angledIncludeInsertionOffset(FileID FID) const {
+std::pair<unsigned, unsigned> IncludeDirectives::angledIncludeInsertionOffset(FileID FID) const {
   SourceLocation Hint = angledIncludeHintLoc(FID);
   unsigned NL_Flags = NL_Prepend;
 
@@ -467,7 +434,7 @@ IncludeDirectives::angledIncludeInsertionOffset(FileID FID) const {
   // guarded header. If so the hint will be the location of the #define from the
   // guard.
   if (Hint.isInvalid()) {
-    const FileEntry *File = Sources.getFileEntryForID(FID);
+    const FileEntry* File = Sources.getFileEntryForID(FID);
     HeaderToGuardMap::const_iterator GuardIt = HeaderToGuard.find(File);
     if (GuardIt != HeaderToGuard.end()) {
       // get the hash location from the #define

@@ -41,16 +41,17 @@ void ExplicitCast::setupMatcher() {
    * as we deem it to be legal to write
    * static_cast<scalar*>(&my_scalar);
    */
+
   StatementMatcher invalid_expl_cast =
       explicitCastExpr(
-          unless(
-              anyOf(
-                  hasDestinationType(hasCanonicalType(pointerType()))
-                  , isTypedef(type_s)
-                  , isConstructorConversion()
-              )
-          )
-          , hasSourceExpression(ofType(type_s))
+    		  unless(
+					anyOf(
+						hasDestinationType(hasCanonicalType(pointerType()))
+						, isTypedef(type_s)
+						, isConstructorConversion()
+					)
+				)
+				, hasSourceExpression(ofType(type_s))
       ).bind("cast");
   // clang-format on
   this->addMatcher(invalid_expl_cast);

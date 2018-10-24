@@ -5,13 +5,13 @@
  *      Author: ahueck
  */
 
-#include <modules/AllImplicitConversion.h>
 #include <core/configuration/Configuration.h>
 #include <core/issue/IssueHandler.h>
 #include <core/module/ModuleContext.h>
 #include <core/module/ModuleRegistry.h>
 #include <core/utility/ClangMatcherExt.h>
 #include <core/utility/ClangUtil.h>
+#include <modules/AllImplicitConversion.h>
 
 namespace opov {
 namespace module {
@@ -34,8 +34,8 @@ void AllImplicitConversion::setupMatcher() {
       materializeTemporaryExpr(
           hasTemporary(
               ignoringImpCasts(
-                  constructExpr(
-                      unless(temporaryObjectExpr())
+                  cxxConstructExpr(
+                      unless(cxxTemporaryObjectExpr())
                   ).bind("conversion")
               )
           )

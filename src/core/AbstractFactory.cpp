@@ -14,6 +14,7 @@
 #include <core/reporting/IssueReporter.h>
 #include <core/reporting/ProgressMonitor.h>
 #include <core/transformation/TransformationHandler.h>
+#include <core/utility/ClangUtil.h>
 #include <core/utility/Util.h>
 
 #include <external/IncludeDirectives.h>
@@ -28,8 +29,9 @@ AbstractFactory::AbstractFactory(Configuration* config, IssueHandler* ihandler, 
     : module(nullptr), config(config), currentSource(""), ihandler(ihandler), thandler(thandler) {
 }
 
-bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI, llvm::StringRef Filename) {
-  currentSource = Filename;
+bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI) {
+  auto& sm = CI.getASTContext().getSourceManager();
+  currentSource = clutil::mainFilename(sm);
   this->context->setCurrentSource(currentSource);
   // FIXME relocate to modulecontext class
   thandler->setIncludeDirectives(new IncludeDirectives(CI));

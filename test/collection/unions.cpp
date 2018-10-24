@@ -42,4 +42,6 @@ struct test {
     int e;
     double f;
   };
+
+  
 };
