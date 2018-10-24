@@ -30,8 +30,10 @@ AbstractFactory::AbstractFactory(Configuration* config, IssueHandler* ihandler, 
 }
 
 bool AbstractFactory::handleBeginSource(clang::CompilerInstance& CI) {
-  auto& sm = CI.getASTContext().getSourceManager();
-  currentSource = clutil::mainFilename(sm);
+  currentSource = "_empty_";
+  if (CI.hasSourceManager()) {
+    currentSource = clutil::mainFilename(CI.getSourceManager());
+  }
   this->context->setCurrentSource(currentSource);
   // FIXME relocate to modulecontext class
   thandler->setIncludeDirectives(new IncludeDirectives(CI));

@@ -144,7 +144,7 @@ inline bool regex_matches(std::string regex, const std::string& in, bool case_se
 }
 
 inline std::string format_duration(unsigned duration_s) {
-  static char buffer[16];
+  static char buffer[18];
   const static auto n = sizeof(buffer);
   const unsigned hours = duration_s / (60 * 60);
   const unsigned minutes = (duration_s / 60) % 60;
