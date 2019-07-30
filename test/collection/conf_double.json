@@ -1,0 +1,13 @@
+{
+  "global" : {
+    "transform" : false,
+    "filter" : true,
+    "progress": false,
+    "format":"%f:%ls:%cs: [%m] @ %s",
+    "type" : "double",
+    "modules" : {
+    	"filter" : ["*"],
+    	"case" : false
+    }
+  },
+}
